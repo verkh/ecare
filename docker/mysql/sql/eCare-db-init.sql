@@ -1,3 +1,11 @@
+-- creating database if it doesn't exist
+
+CONNECT;
+CREATE DATABASE IF NOT EXISTS ecare;
+use ecare;
+
+-- creating tables for eCare database
+
 CREATE TABLE IF NOT EXISTS `plans` (
     id INT unsigned NOT NULL,
     name VARCHAR(255) NOT NULL,
@@ -34,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `subcribers` (
 );
 
 CREATE TABLE IF NOT EXISTS `contracts` (
-    phone_nubmer INT unsigned NOT NULL,
+    phone_nubmer BIGINT unsigned NOT NULL,
     plan_id INT unsigned NOT NULL,
     PRIMARY KEY(phone_nubmer),
     FOREIGN KEY(plan_id) REFERENCES plans(id)
@@ -42,18 +50,16 @@ CREATE TABLE IF NOT EXISTS `contracts` (
 
 CREATE TABLE IF NOT EXISTS `subcribers_contracts` (
     subcriber_id INT unsigned NOT NULL,
-    contract_phone_nubmer INT unsigned NOT NULL,
+    contract_phone_nubmer BIGINT unsigned NOT NULL,
     PRIMARY KEY(subcriber_id, contract_phone_nubmer),
     FOREIGN KEY(subcriber_id) REFERENCES subcribers(id),
     FOREIGN KEY(contract_phone_nubmer) REFERENCES contracts(phone_nubmer)
 );
 
 CREATE TABLE IF NOT EXISTS `subcribers_options` (
-    contract_id INT unsigned NOT NULL,
+    phone_nubmer BIGINT unsigned NOT NULL,
     option_id INT unsigned NOT NULL,
-    PRIMARY KEY(plan_id, option_id),
-    FOREIGN KEY (subcriber_id) REFERENCES plans (id),
+    PRIMARY KEY(phone_nubmer, option_id),
+    FOREIGN KEY (phone_nubmer) REFERENCES contracts (phone_nubmer),
     FOREIGN KEY (option_id) REFERENCES options (id)
 );
-
-

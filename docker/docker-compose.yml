@@ -1,0 +1,17 @@
+version: '3.3'
+
+# Volumes are not added because it's just test project
+
+services:
+   db:
+     build:
+       context: ./mysql
+     restart: always
+     environment:
+       MYSQL_ROOT_PASSWORD: eCareDontCare
+
+   tomcat:
+     image: tomcat:8.5-jre8
+     ports:
+      - "80:8080"
+     container_name: tomcat
