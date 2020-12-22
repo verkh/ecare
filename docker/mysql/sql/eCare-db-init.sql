@@ -42,24 +42,25 @@ CREATE TABLE IF NOT EXISTS `subcribers` (
 );
 
 CREATE TABLE IF NOT EXISTS `contracts` (
+    id INT unsigned NOT NULL,
     phone_nubmer BIGINT unsigned NOT NULL,
     plan_id INT unsigned NOT NULL,
-    PRIMARY KEY(phone_nubmer),
+    PRIMARY KEY(id),
     FOREIGN KEY(plan_id) REFERENCES plans(id)
 );
 
 CREATE TABLE IF NOT EXISTS `subcribers_contracts` (
     subcriber_id INT unsigned NOT NULL,
-    contract_phone_nubmer BIGINT unsigned NOT NULL,
-    PRIMARY KEY(subcriber_id, contract_phone_nubmer),
+    contract_id INT unsigned NOT NULL,
+    PRIMARY KEY(subcriber_id, contract_id),
     FOREIGN KEY(subcriber_id) REFERENCES subcribers(id),
-    FOREIGN KEY(contract_phone_nubmer) REFERENCES contracts(phone_nubmer)
+    FOREIGN KEY(contract_id) REFERENCES contracts(id)
 );
 
-CREATE TABLE IF NOT EXISTS `subcribers_options` (
-    phone_nubmer BIGINT unsigned NOT NULL,
+CREATE TABLE IF NOT EXISTS `contract_options` (
+    contract_id INT unsigned NOT NULL,
     option_id INT unsigned NOT NULL,
-    PRIMARY KEY(phone_nubmer, option_id),
-    FOREIGN KEY (phone_nubmer) REFERENCES contracts (phone_nubmer),
+    PRIMARY KEY(contract_id, option_id),
+    FOREIGN KEY (contract_id) REFERENCES contracts (id),
     FOREIGN KEY (option_id) REFERENCES options (id)
 );
