@@ -7,14 +7,14 @@ use ecare;
 -- creating tables for eCare database
 
 CREATE TABLE IF NOT EXISTS `plans` (
-    id INT unsigned NOT NULL,
+    id INT unsigned NOT NULL AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     price DOUBLE NOT NULL,
     PRIMARY KEY(id)
 );
 
 CREATE TABLE IF NOT EXISTS `options` (
-    id INT unsigned NOT NULL,
+    id INT unsigned NOT NULL AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     price DOUBLE NOT NULL,
     turn_on_price DOUBLE NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `plan_options` (
 );
 
 CREATE TABLE IF NOT EXISTS `subcribers` (
-    id INT unsigned NOT NULL,
+    id INT unsigned NOT NULL AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
     birth_date DATETIME NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `subcribers` (
 );
 
 CREATE TABLE IF NOT EXISTS `contracts` (
-    id INT unsigned NOT NULL,
+    id INT unsigned NOT NULL AUTO_INCREMENT,
     phone_nubmer BIGINT unsigned NOT NULL,
     plan_id INT unsigned NOT NULL,
     PRIMARY KEY(id),
