@@ -8,8 +8,8 @@ import javax.persistence.Table;
 import java.util.Date;
 
 @Entity
-@Table(name = "subsribers")
-public class SubscriberPO extends AbstractPO {
+@Table(name = "subscribers")
+public class SubscriberPO extends AbstractNamedPO {
 
     @Column(name = "last_name")
     private String lastName;
