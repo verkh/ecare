@@ -2,10 +2,10 @@ package models;
 
 import models.base.AbstractNamedPO;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.util.Date;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.sql.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "subscribers")
