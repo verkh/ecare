@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @MappedSuperclass
 public class AbstractNamedPO extends AbstractPO {
-    @Id
+
     @Column(name = "name")
     private String name;
 
