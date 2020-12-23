@@ -14,7 +14,7 @@ public class SubscriberPO extends AbstractNamedPO {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "date")
+    @Column(name = "birth_date")
     private Date date;
 
     @Column(name = "passport")
