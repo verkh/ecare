@@ -29,6 +29,14 @@ public class SubscriberPO extends AbstractNamedPO {
     @Column(name = "password")
     private String passwordHash;
 
+    @JoinTable(
+            name="subscribers_contracts",
+            joinColumns = @JoinColumn(name = "subscriber_id"),
+            inverseJoinColumns = @JoinColumn(name = "contract_id")
+    )
+    @OneToMany
+    public List<ContractPO> contracts = new ArrayList<>();
+
     public String getLastName() {
         return lastName;
     }
