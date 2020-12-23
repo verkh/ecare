@@ -6,6 +6,10 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * PlanPO describes a tariff plan represented in database, which also contains
+ * information regarding related to the plan options
+ */
 @Entity
 @Table (name = "plans")
 public class PlanPO extends AbstractNamedPO {

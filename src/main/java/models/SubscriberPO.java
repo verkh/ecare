@@ -7,6 +7,11 @@ import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
 
+/**
+ * SubscriberPO describes a client of eCare system and contains all information
+ * related to them. Also class contains information regarding list of contracts
+ * signed with company.
+ */
 @Entity
 @Table(name = "subscribers")
 public class SubscriberPO extends AbstractNamedPO {

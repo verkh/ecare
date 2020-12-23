@@ -2,6 +2,9 @@ package models.base;
 
 import javax.persistence.*;
 
+/**
+ * This class describes basic field for every entity in database
+ */
 @MappedSuperclass
 public class AbstractPO {
     @Id

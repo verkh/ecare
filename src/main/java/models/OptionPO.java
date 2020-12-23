@@ -4,6 +4,9 @@ import models.base.AbstractNamedPO;
 
 import javax.persistence.*;
 
+/**
+ * OptionsPO is a class which describes an option represented in database.
+ */
 @Entity
 @Table (name = "options")
 public class OptionPO extends AbstractNamedPO {

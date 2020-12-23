@@ -4,6 +4,10 @@ import models.base.AbstractNamedPO;
 
 import javax.persistence.*;
 
+/**
+ * ContractPO describes the 'contracts' table and contains information of
+ * the related tariff plan
+ */
 @Entity
 @Table (name = "contracts")
 public class ContractPO extends AbstractNamedPO {
