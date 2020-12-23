@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `plan_options` (
     FOREIGN KEY (option_id) REFERENCES options (id)
 );
 
-CREATE TABLE IF NOT EXISTS `subcribers` (
+CREATE TABLE IF NOT EXISTS `subscribers` (
     id INT unsigned NOT NULL AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
@@ -49,11 +49,11 @@ CREATE TABLE IF NOT EXISTS `contracts` (
     FOREIGN KEY(plan_id) REFERENCES plans(id)
 );
 
-CREATE TABLE IF NOT EXISTS `subcribers_contracts` (
-    subcriber_id INT unsigned NOT NULL,
+CREATE TABLE IF NOT EXISTS `subscribers_contracts` (
+    subscriber_id INT unsigned NOT NULL,
     contract_id INT unsigned NOT NULL,
-    PRIMARY KEY(subcriber_id, contract_id),
-    FOREIGN KEY(subcriber_id) REFERENCES subcribers(id),
+    PRIMARY KEY(subscriber_id, contract_id),
+    FOREIGN KEY(subscriber_id) REFERENCES subscribers(id),
     FOREIGN KEY(contract_id) REFERENCES contracts(id)
 );
 
