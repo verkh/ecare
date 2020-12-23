@@ -26,7 +26,7 @@ public class SubscriberPO extends AbstractPO {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "password");
+    @Column(name = "password")
     private String passwordHash;
 
     public String getLastName() {
