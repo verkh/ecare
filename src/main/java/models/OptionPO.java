@@ -2,9 +2,7 @@ package models;
 
 import models.base.AbstractNamedPO;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table (name = "options")
