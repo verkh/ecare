@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `subscribers` (
     id INT unsigned NOT NULL AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
-    birth_date DATETIME NOT NULL,
+    birth_date DATE NOT NULL,
     passport VARCHAR(255) NOT NULL,
     address VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
