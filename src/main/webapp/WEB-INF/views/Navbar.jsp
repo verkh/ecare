@@ -37,7 +37,7 @@
                     </li>
                 </ul>
                 <form class="d-flex">
-                    <a href="./SignIn" type="button" class="btn btn-default navbar-btn oi oi-account-login">Sign in</a>
+                    <a href="./Auth" type="button" class="btn btn-default navbar-btn oi oi-account-login">Sign in</a>
                     <a href="./Register" type="button" class="btn btn-default navbar-btn" >Register</a>
                 </form>
             </div>

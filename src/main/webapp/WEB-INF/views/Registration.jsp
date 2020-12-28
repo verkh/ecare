@@ -29,7 +29,7 @@
             integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
             crossorigin="anonymous"></script>
 
-    <form>
+    <form action="Register" method="POST">
         <div class="form-group">
             <label for="nameInput">Name</label>
             <input type="text" class="form-control" id="nameInput" aria-describedby="nameHelp" placeholder="Enter name">
@@ -64,7 +64,8 @@
             <label for="address">Address</label>
             <input type="text" class="form-control" id="address" placeholder="Enter address">
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <input type="submit" class="btn btn-primary"/>
     </form>
+</div>
 </body>
 </html>

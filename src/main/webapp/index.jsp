@@ -19,6 +19,8 @@
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <!-- eCare CSS -->
     <link href="./css/index.css" rel="stylesheet">
+
+    <link rel="icon" href="../../images/eCareIcon.png">
 </head>
 <body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
