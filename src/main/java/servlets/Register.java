@@ -14,9 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
 
-
-@WebServlet(value = "/AuthenticationServlet")
-public class Authentication extends HttpServlet {
+public class Register extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String firstName = request.getParameter("firstName");
@@ -28,7 +26,7 @@ public class Authentication extends HttpServlet {
         String address   = request.getParameter("address");
         String date      = request.getParameter("birthDate");
 
-        RequestDispatcher req = request.getRequestDispatcher("register.jsp");
+        RequestDispatcher req = request.getRequestDispatcher("Register.jsp");
         req.forward(request, response);
 
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("eCareDB");
