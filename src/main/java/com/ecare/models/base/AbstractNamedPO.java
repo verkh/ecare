@@ -1,4 +1,8 @@
-package models.base;
+package com.ecare.models.base;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -7,16 +11,10 @@ import javax.persistence.*;
  * database which has a 'name' column
  */
 @MappedSuperclass
+@Getter
+@Setter
+@NoArgsConstructor
 public class AbstractNamedPO extends AbstractPO {
-
     @Column(name = "name")
     private String name;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

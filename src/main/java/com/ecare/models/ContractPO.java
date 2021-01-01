@@ -1,6 +1,9 @@
-package models;
+package com.ecare.models;
 
-import models.base.AbstractNamedPO;
+import com.ecare.models.base.AbstractNamedPO;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -10,6 +13,9 @@ import javax.persistence.*;
  */
 @Entity
 @Table (name = "contracts")
+@Getter
+@Setter
+@NoArgsConstructor
 public class ContractPO extends AbstractNamedPO {
     @Column(name = "phone_number")
     private String phoneNumber;
@@ -17,20 +23,4 @@ public class ContractPO extends AbstractNamedPO {
     @OneToOne
     @JoinColumn(name = "plan_id", referencedColumnName = "id")
     private PlanPO plan;
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public PlanPO getPlan() {
-        return plan;
-    }
-
-    public void setPlan(PlanPO plan) {
-        this.plan = plan;
-    }
 }

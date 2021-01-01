@@ -1,6 +1,9 @@
-package models;
+package com.ecare.models;
 
-import models.base.AbstractNamedPO;
+import com.ecare.models.base.AbstractNamedPO;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -9,26 +12,13 @@ import javax.persistence.*;
  */
 @Entity
 @Table (name = "options")
+@Getter
+@Setter
+@NoArgsConstructor
 public class OptionPO extends AbstractNamedPO {
     @Column(name = "price")
     private Double price;
 
     @Column(name = "turn_on_price")
     private Boolean isOn;
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public Boolean getOn() {
-        return isOn;
-    }
-
-    public void setOn(Boolean on) {
-        isOn = on;
-    }
 }

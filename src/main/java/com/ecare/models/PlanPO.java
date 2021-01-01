@@ -1,6 +1,9 @@
-package models;
+package com.ecare.models;
 
-import models.base.AbstractNamedPO;
+import com.ecare.models.base.AbstractNamedPO;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,6 +15,7 @@ import java.util.List;
  */
 @Entity
 @Table (name = "plans")
+@Getter @Setter @NoArgsConstructor
 public class PlanPO extends AbstractNamedPO {
 
     @Column(name = "price")
@@ -23,13 +27,5 @@ public class PlanPO extends AbstractNamedPO {
             inverseJoinColumns = @JoinColumn(name = "option_id")
     )
     @OneToMany
-    public List<OptionPO> options = new ArrayList<>();
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
+    private List<OptionPO> options = new ArrayList<>();
 }
