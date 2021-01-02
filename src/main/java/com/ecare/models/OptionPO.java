@@ -19,6 +19,9 @@ public class OptionPO extends AbstractNamedPO {
     @Column(name = "price")
     private Double price;
 
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "turn_on_price")
     private Boolean isOn;
 }

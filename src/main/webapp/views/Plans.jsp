@@ -34,23 +34,20 @@
 
     <jstl:forEach items="${Plans}" var="plan">
         <br>
-        <div class="horizontal-card card p-3 bg-dark">
+        <div class="glow-horizontal-card card p-3 bg-dark">
             <div class="row">
                 <div class="col">
                     <h2>${plan.name}</h2>
                 </div>
                 <div class="col">
                     <jstl:forEach items="${plan.options}" var="option">
-                        <h4>${option.name}</h4>
+                        <h5>${option.name}</h5>
                     </jstl:forEach>
                 </div>
-
+                <div class="col"></div>
                 <div class="col">
-                    <h4>asdasdas</h4>
-                </div>
-                <div class="col">
-                    <h4>${plan.price}$/month</h4>
-                    <a href="${pageContext.request.contextPath}/Plans/id=${plan.id}" type="button" class="w-100 btn btn-lg btn-primary">Choose</a>
+                    <h4 class="text-center">${plan.price}$/month</h4>
+                    <a href="${pageContext.request.contextPath}/Plans/${plan.id}" type="button" class="w-100 btn btn-lg btn-primary">Choose</a>
                 </div>
             </div>
         </div>
