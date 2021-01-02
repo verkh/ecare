@@ -8,7 +8,7 @@ video {
     height: auto;
 }
 
-.horizontal-card:hover {
+.glow-horizontal-card:hover {
     -webkit-filter: drop-shadow(0px 0px 12px #d66834);
 }
 
