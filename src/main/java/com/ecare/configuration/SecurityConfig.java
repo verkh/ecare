@@ -65,11 +65,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication().dataSource(dataSource);
-//                .withUser("user").password(passwordEncoder().encode("password")).roles("USER")
-//                .and()
-//                .withUser("dictator").password(passwordEncoder().encode("password")).roles("DICTATOR")
-//                .and()
-//                .withUser("admin").password(passwordEncoder().encode("password")).roles("ADMIN");
+        auth.jdbcAuthentication().passwordEncoder(passwordEncoder()).dataSource(dataSource);
+    }
+
+    private CsrfTokenRepository csrfTokenRepository()
+    {
+        HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
+        repository.setSessionAttributeName("_csrf");
+        return repository;
     }
 }
