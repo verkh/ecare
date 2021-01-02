@@ -45,6 +45,12 @@
                 <version>3.0.2</version>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
     </build>
     <packaging>war</packaging>
 
@@ -102,6 +108,12 @@
 
         <dependency>
             <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
             <version>${spring.version}</version>
         </dependency>
@@ -131,6 +143,18 @@
             <scope>compile</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>3.4.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>${liquibase.version}</version>
+        </dependency>
+
     </dependencies>
 
     <properties>
@@ -148,6 +172,7 @@
 
         <spring.version>5.1.2.RELEASE</spring.version>
         <spring-security.version>4.0.2.RELEASE</spring-security.version>
-    </properties>
 
+        <liquibase.version>4.2.2</liquibase.version>
+    </properties>
 </project>

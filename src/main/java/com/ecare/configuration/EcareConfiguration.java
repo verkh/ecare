@@ -2,18 +2,16 @@ package com.ecare.configuration;
 
 import com.ecare.models.PlanPO;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-@Configuration
 public class EcareConfiguration extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[]{RootConfig.class};
+        return new Class[]{RootConfig.class, DBConfig.class, SecurityConfig.class};
     }
 
     @Override
