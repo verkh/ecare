@@ -4,6 +4,7 @@ import com.ecare.dao.Dao;
 import com.ecare.models.PlanPO;
 import org.springframework.ui.ModelMap;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.persistence.EntityManager;
@@ -14,7 +15,7 @@ import java.util.List;
 @Controller
 public class PlansController {
     @RequestMapping(value="/Plans")
-    public String printHello(ModelMap model) {
+    public String getPlans(ModelMap model) {
         try {
             EntityManagerFactory factory = Persistence.createEntityManagerFactory("eCareDB");
             EntityManager entityManager = factory.createEntityManager();
@@ -31,5 +32,10 @@ public class PlansController {
             model.addAttribute("errorStack", e.getStackTrace().toString());
         }
         return "Plans";
+    }
+
+    @RequestMapping(value="/Plans/{id}")
+    public String getPlan(ModelMap model, @PathVariable long id) {
+        return "Plan";
     }
 }

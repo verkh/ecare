@@ -50,7 +50,7 @@
                 </div>
                 <div class="col">
                     <h4>${plan.price}$/month</h4>
-                    <button type="button" class="w-100 btn btn-lg btn-primary">Choose</button>
+                    <a href="${pageContext.request.contextPath}/Plans/id=${plan.id}" type="button" class="w-100 btn btn-lg btn-primary">Choose</a>
                 </div>
             </div>
         </div>
