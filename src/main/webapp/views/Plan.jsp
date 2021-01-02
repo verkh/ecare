@@ -25,40 +25,40 @@
 <body>
 <jsp:include page="/views/Navbar.jsp"/>
 
-<div class="container">
-
-    <br/>
-    <h2>Plan for your mobile phone</h2>
-    <br/>
-
-    <div class="b-tarif-cards_center_block">
-
-        <div class="b-tarif-cards_center_block_left">
-            <div class="b-tarif-cards_center_block_left_main a">
-                <div class="b-tarif-cards_center_infoblock_icon">
-                    <img src="https://spb.shop.megafon.ru/files-pk-ceph/svg/ac3834e1-31c5-4ccf-8258-bcfb3eb64577/icon-full_set_24px-pigbank_24.svg"
-                         style="width:32px; height: 32px;">
-                </div>
-                <span class="b-tarif-cards_center_block_left_main_text">
-                    <a href="https://www.megafon.ru/go/kopilka">Копилка</a>
-                    <br>
-                    <div class="b-tarif-cards_center_block_left_caption">Подключите, и гигабайты и минуты всегда будут с вами!</div>
-                    <span class="b-tarif-cards_center_block_left_footnote_text footnote">Подробнее</span>
-                    <div class="b-tarif-cards_center_block_left_footnote footnote_hide">Все неизрасходованные остатки интернета и минут накапливаются и начнут расходоваться автоматически, когда закончится основной пакет по тарифу. Подключите бесплатную опцию в <a
-                    target="_blank" href="http://mlk.mgfn.ru">приложении</a> «МегаФон» или в <a
-                    target="_blank" href="https://lk.megafon.ru/">Личном кабинете</a>.</div>
-                </span>
-            </div>
+<br/>
+<div class="container horizontal-card card p-3 bg-dark">
+    <div class="row">
+        <div class="col">
+            <h1>${Plan.name}</h1>
         </div>
-        <!-- slider -->
-
-        <div class="b-tarif-cards_center_block_right">
-            <span class="b-tarif-cards__payment">
-                до 100 ГБ и до 1200 минут
-            </span>
-            <span class="b-tarif-cards__unit"></span>
+        <div class="col-md-auto">
+            <h4 class="text-center">${Plan.price}$/month</h4>
+            <a href="#" type="button" class="w-100 btn btn-sm btn-primary">Apply</a>
         </div>
     </div>
+</div>
+<br/>
+
+<div class="container horizontal-card card p-3 bg-dark">
+    <h2>Available options</h2>
+    <hr/>
+    <jstl:forEach items="${Plan.options}" var="option">
+        <br>
+        <div class="glow-horizontal-card card p-3 bg-dark">
+            <div class="row">
+                <div class="col">
+                    <h4>${option.name}</h4>
+                </div>
+                <div class="col">
+                    <p>${option.description}</p>
+                </div>
+                <div class="col-md-auto">
+                    <h4>${option.price} $</h4>
+                </div>
+            </div>
+        </div>
+        </br>
+    </jstl:forEach>
 
 </div>
 <!-- Footer -->
