@@ -44,7 +44,7 @@
     <hr/>
     <jstl:forEach items="${Plan.options}" var="option">
         <br>
-        <div class="glow-horizontal-card card p-3 bg-dark">
+        <div>
             <div class="row">
                 <div class="col">
                     <h4>${option.name}</h4>
@@ -57,6 +57,7 @@
                 </div>
             </div>
         </div>
+        <hr/>
         </br>
     </jstl:forEach>
 
