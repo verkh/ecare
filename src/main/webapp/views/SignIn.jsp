@@ -1,4 +1,5 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -26,20 +27,26 @@
 <br/>
 <br/>
 <main class="form-signin card p-3 bg-dark">
-    <form>
-    <div class="text-center mb-4">
-        <img class="mb-4" src="<spring:url value='/images/eCareIcon.png'/>" alt="" width="100" height="100">
-        <h1 class="h3 mb-3 font-weight-normal">Authentication</h1>
+    <form action="SignIn" method="POST">
+        <div class="text-center mb-4">
+            <img class="mb-4" src="<spring:url value='/images/eCareIcon.png'/>" alt="" width="100" height="100">
+            <h1 class="h3 mb-3 font-weight-normal">Authentication</h1>
         </div>
         <div class="form-label-group">
-            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+            <input name="username" type="text" id="inputLogin" class="form-control" placeholder="Email or phone or username" required autofocus>
         </div>
         <br/>
         <div class="form-label-group">
-            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+            <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
         </div>
+        <c:if test="${not empty error}">
+            <div class="text-danger text-sm-center" role="alert">${error}</div>
+        </c:if>
+        <input type="hidden"
+               name="${_csrf.parameterName}"
+               value="${_csrf.token}"/>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-        <a type="button"  class="btn" href="${pageContext.request.contextPath}/SignUp">Don't have an account?</a>
+        <a type="button" class="btn" href="${pageContext.request.contextPath}/SignUp">Don't have an account?</a>
         <p class="mt-5 mb-3 text-muted text-center">&copy; 2020 - Until death do us part</p>
     </form>
 </main>
