@@ -1,5 +1,7 @@
 package com.ecare.dao;
 
+import com.ecare.base.BaseData;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
@@ -11,7 +13,7 @@ import java.util.function.Consumer;
  * DAO is an interface that represents common manipulation methods for data objects;
  * @param <T> Template parameter describes handled data
  */
-public class Dao<T> {
+public class Dao<T> implements BaseData<T> {
 
     private final Class<T> type;
     private final String pojoClassName;
@@ -24,23 +26,28 @@ public class Dao<T> {
         this.entityManager = entityManager;
     }
 
+    @Override
     public Optional<T> get(long id) {
         return Optional.ofNullable(entityManager.find(type, id));
     }
 
+    @Override
     public List<T> getAll() {
         Query q = entityManager.createQuery(String.format("SELECT e FROM %s e", pojoClassName));
         return q.getResultList();
     }
 
+    @Override
     public void save(T value) {
         execute(entityManager -> entityManager.persist(value));
     }
 
+    @Override
     public void update(T value) {
         execute(entityManager -> entityManager.merge(value));
     }
 
+    @Override
     public void delete(T value) {
         execute(entityManager -> entityManager.remove(value));
     }
