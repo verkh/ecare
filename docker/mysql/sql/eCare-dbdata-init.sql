@@ -39,4 +39,11 @@ VALUES
        (2,3),
        (3,5);
 
+INSERT INTO subscribers(id, name, last_name, birth_date, passport, address, email, password)
+VALUES
+       (1, "Denis", "Verkhovskii", "1991-09-11", "1232 123122", "spb street 11", "verkh@gmail.com", "somePassword"),
+       (2, "Oleg", "Oooo", "1992-09-11", "42332 123122", "lo street 11", "oleg@gmail.com", "somePassword"),
+       (3, "Maria", "Mmmmm", "1941-09-11", "342 123122", "moscow street 11", "maria@gmail.com", "somePassword"),
+       (4, "Anna", "Aaaaa", "1985-09-11", "65443 123122", "dom 12", "anna@gmail.com", "somePassword"),
+       (5, "Peasant", "Peasantov", "1999-09-11", "23553 123122", "some box", "peasant@gmail.com", "somePassword");
 

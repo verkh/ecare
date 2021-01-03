@@ -5,6 +5,7 @@ import com.ecare.base.BaseData;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -31,6 +32,13 @@ public class Dao<T> implements BaseData<T> {
         return Optional.ofNullable(entityManager.find(type, id));
     }
 
+    public List<T> get(int from, int number) {
+        Query q = entityManager.createQuery(String.format("SELECT e FROM %s e", pojoClassName));
+        q.setFirstResult(from);
+        q.setMaxResults(number);
+        return q.getResultList();
+    }
+
     @Override
     public List<T> getAll() {
         Query q = entityManager.createQuery(String.format("SELECT e FROM %s e", pojoClassName));
@@ -50,6 +58,13 @@ public class Dao<T> implements BaseData<T> {
     @Override
     public void delete(T value) {
         execute(entityManager -> entityManager.remove(value));
+    }
+
+    @Override
+    public long count() {
+        Query q = entityManager.createQuery(String.format("SELECT count(e) FROM %s e", pojoClassName));
+        Object res = q.getSingleResult();
+        return res == null ? null : (Long)res;
     }
 
     private void execute(Consumer<EntityManager> action) {
