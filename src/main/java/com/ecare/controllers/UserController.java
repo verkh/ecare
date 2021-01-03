@@ -62,7 +62,7 @@ public class UserController {
     public String getUsers(ModelMap model,
         @RequestParam(value = "currentPage", required = false) Integer currentPage
     ) {
-        final int recordsPerPage = 100;
+        final int recordsPerPage = 15;
 
         long rows = userService.count();
         int nOfPages = (int)(rows / recordsPerPage);
