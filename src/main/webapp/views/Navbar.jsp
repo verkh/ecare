@@ -18,6 +18,16 @@
                     <li class="nav-item">
                         <a class="nav-link" href="${pageContext.request.contextPath}/">Home</a>
                     </li>
+                    <security:authorize access="hasRole('DICTATOR') || hasRole('ADMIN')">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="adminNavbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Administration
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="adminNavbarDropdownItem">
+                                <a class="dropdown-item" href="${pageContext.request.contextPath}/Users">Users</a>
+                            </div>
+                        </li>
+                    </security:authorize>
                     <li class="nav-item">
                         <a class="nav-link" href="${pageContext.request.contextPath}/Plans">Plans</a>
                     </li>
