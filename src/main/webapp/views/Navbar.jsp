@@ -18,19 +18,8 @@
                     <li class="nav-item">
                         <a class="nav-link" href="${pageContext.request.contextPath}/">Home</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            Plans
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/Plans">All plans</a></li>
-                            <li><a class="dropdown-item" href="#">For rulers</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">For peasants</a></li>
-                        </ul>
+                    <li class="nav-item">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/Plans">Plans</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Promo</a>
