@@ -19,6 +19,13 @@ public class UserController {
         return "SignIn";
     }
 
+//    @RequestMapping(value="/login", method = RequestMethod.POST)
+//    public String signIn(ModelMap model)
+//    {
+//        System.out.println(model);
+//        return "Plans";
+//    }
+
     @RequestMapping(value="/SignUp", method = RequestMethod.GET)
     public String getSignUp() {
         System.out.println("Im here one!");
@@ -35,5 +42,11 @@ public class UserController {
     public String getSignUpFinish() {
         System.out.println("At last here");
         return "SignUpFinish";
+    }
+
+    @RequestMapping(value="/Profile")
+    public String getProfile(ModelMap model) {
+
+        return "Profile";
     }
 }

@@ -1,7 +1,5 @@
 package com.ecare.dao;
 
-import org.springframework.stereotype.Repository;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
@@ -13,19 +11,16 @@ import java.util.function.Consumer;
  * DAO is an interface that represents common manipulation methods for data objects;
  * @param <T> Template parameter describes handled data
  */
-//@Repository
 public class Dao<T> {
 
     private final Class<T> type;
-    private final String tableName;
+    private final String pojoClassName;
+
     private EntityManager entityManager;
 
-    public Dao(Class<T> type, String tableName) {
+    public Dao(Class<T> type, String pojoClassName, EntityManager entityManager) {
         this.type = type;
-        this.tableName = tableName;
-    }
-
-    public void setEntityManager(EntityManager entityManager) {
+        this.pojoClassName = pojoClassName;
         this.entityManager = entityManager;
     }
 
@@ -34,7 +29,7 @@ public class Dao<T> {
     }
 
     public List<T> getAll() {
-        Query q = entityManager.createQuery(String.format("SELECT e FROM %s e", tableName));
+        Query q = entityManager.createQuery(String.format("SELECT e FROM %s e", pojoClassName));
         return q.getResultList();
     }
 
