@@ -25,10 +25,10 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="adminNavbarDropdownItem">
                                 <a class="dropdown-item" href="${pageContext.request.contextPath}/Users">Users</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Register subscriber</a>
+                                <a class="dropdown-item" href="#">Manage plans</a>
                             </div>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Register subscriber</a>
-                            <a class="dropdown-item" href="#">Manage plans</a>
                         </li>
                     </security:authorize>
                     <li class="nav-item">
