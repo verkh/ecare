@@ -42,7 +42,7 @@
                 <div class="form-group">
                     <label for="nameInput">Name</label>
                     <input type="text" name="firstName" class="form-control" id="nameInput" aria-describedby="nameHelp"
-                           placeholder="Enter name">
+                           placeholder="Enter name" value="${user.name}">
                     <small id="nameHelp" class="form-text text-muted">Fake information leads to jail</small>
                 </div>
             </div>
@@ -50,7 +50,7 @@
                 <div class="form-group">
                     <label for="lastNameInput">Last Name</label>
                     <input type="text" name="lastName" class="form-control" id="lastNameInput"
-                           placeholder="Enter last name">
+                           placeholder="Enter last name"  value="${user.lastName}">
                 </div>
             </div>
         </div>
@@ -59,7 +59,7 @@
                 <div class="form-group">
                     <label for="exampleInputEmail1">Email address</label>
                     <input type="email" name="email" class="form-control" id="exampleInputEmail1"
-                           aria-describedby="emailHelp" placeholder="Enter email">
+                           aria-describedby="emailHelp" placeholder="Enter email" value="${user.email}">
                     <small id="emailHelp" class="form-text text-muted">You're email would be used for Dictator's
                         notifications</small>
                 </div>
@@ -89,7 +89,7 @@
             <div class="col">
                 <div class="form-group">
                     <label for="birthDate">Birth Date</label>
-                    <input type="date" name="birthDate" class="form-control" id="birthDate">
+                    <input type="date" name="birthDate" class="form-control" id="birthDate" value="${user.date}">
                 </div>
             </div>
         </div>
@@ -97,14 +97,14 @@
         <div class="row">
             <div class="form-group">
                 <label for="passport">Passport</label>
-                <input type="text" name="passport" class="form-control" id="passport" placeholder="Enter passport">
+                <input type="text" name="passport" class="form-control" id="passport" placeholder="Enter passport" value="${user.passport}">
             </div>
         </div>
 
         <div class="row">
             <div class="form-group">
                 <label for="address">Address</label>
-                <input type="text" name="address" class="form-control" id="address" placeholder="Enter address">
+                <input type="text" name="address" class="form-control" id="address" placeholder="Enter address" value="${user.address}">
             </div>
         </div>
 

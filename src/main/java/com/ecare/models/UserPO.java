@@ -16,11 +16,11 @@ import java.util.List;
  * signed with company.
  */
 @Entity
-@Table(name = "subscribers")
+@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
-public class SubscriberPO extends AbstractNamedPO {
+public class UserPO extends AbstractNamedPO {
 
     @Column(name = "last_name")
     private String lastName;
@@ -40,9 +40,15 @@ public class SubscriberPO extends AbstractNamedPO {
     @Column(name = "password")
     private String passwordHash;
 
+    @Column(name = "enabled")
+    private boolean enabled;
+
+    @Column(name = "authority")
+    private String authority;
+
     @JoinTable(
-            name="subscribers_contracts",
-            joinColumns = @JoinColumn(name = "subscriber_id"),
+            name="user_contracts",
+            joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "contract_id")
     )
     @OneToMany

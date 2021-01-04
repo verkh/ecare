@@ -1,6 +1,7 @@
 package com.ecare.dao;
 
 import com.ecare.base.BaseData;
+import com.ecare.models.ContractPO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -16,10 +17,10 @@ import java.util.function.Consumer;
  */
 public class Dao<T> implements BaseData<T> {
 
-    private final Class<T> type;
-    private final String pojoClassName;
+    protected final Class<T> type;
+    protected final String pojoClassName;
 
-    private EntityManager entityManager;
+    protected EntityManager entityManager;
 
     public Dao(Class<T> type, String pojoClassName, EntityManager entityManager) {
         this.type = type;
@@ -78,5 +79,12 @@ public class Dao<T> implements BaseData<T> {
         catch (RuntimeException e){
             tx.rollback();
         }
+    }
+
+    protected T findBy(String value, String column) {
+        String sql = String.format("SELECT e FROM %s e WHERE e.%s = '%s'", pojoClassName, column, value);
+        Query q = entityManager.createQuery(sql);
+        List<T> data = q.getResultList();
+        return data.isEmpty() ? null : data.get(0); // FIXME: is this ok?
     }
 }

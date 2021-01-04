@@ -23,4 +23,12 @@ public class ContractPO extends AbstractNamedPO {
     @OneToOne
     @JoinColumn(name = "plan_id", referencedColumnName = "id")
     private PlanPO plan;
+
+    @JoinTable(
+            name="user_contracts",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "contract_id")
+    )
+    @ManyToOne(fetch=FetchType.LAZY)
+    private UserPO user;
 }

@@ -1,7 +1,9 @@
 package com.ecare.configuration;
 
+import com.ecare.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -22,6 +24,7 @@ import javax.sql.DataSource;
 
 @EnableWebSecurity(debug = true)
 @EnableGlobalMethodSecurity
+@ComponentScan("com.ecare")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
@@ -60,12 +63,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(); }
 
+    @Bean
+    public AuthService authService(){
+        return new AuthService();
+    }
+
     @Autowired
     private DataSource dataSource;
 
     @Autowired
+    private AuthService authService;
+
+    @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication().passwordEncoder(passwordEncoder()).dataSource(dataSource);
+        //auth.jdbcAuthentication().passwordEncoder(passwordEncoder()).dataSource(dataSource);
+        auth.userDetailsService(authService).passwordEncoder(passwordEncoder());
     }
 
     private CsrfTokenRepository csrfTokenRepository()

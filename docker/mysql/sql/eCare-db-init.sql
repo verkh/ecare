@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `plan_options` (
     FOREIGN KEY (option_id) REFERENCES options (id)
 );
 
-CREATE TABLE IF NOT EXISTS `subscribers` (
+CREATE TABLE IF NOT EXISTS `users` (
     id INT unsigned NOT NULL AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
@@ -39,6 +39,8 @@ CREATE TABLE IF NOT EXISTS `subscribers` (
     address VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
+    enabled TINYINT NOT NULL DEFAULT 1,
+    authority VARCHAR(50) NOT NULL,
     PRIMARY KEY(id)
 );
 
@@ -50,11 +52,11 @@ CREATE TABLE IF NOT EXISTS `contracts` (
     FOREIGN KEY(plan_id) REFERENCES plans(id)
 );
 
-CREATE TABLE IF NOT EXISTS `subscribers_contracts` (
-    subscriber_id INT unsigned NOT NULL,
+CREATE TABLE IF NOT EXISTS `user_contracts` (
+    user_id INT unsigned NOT NULL,
     contract_id INT unsigned NOT NULL,
-    PRIMARY KEY(subscriber_id, contract_id),
-    FOREIGN KEY(subscriber_id) REFERENCES subscribers(id),
+    PRIMARY KEY(user_id, contract_id),
+    FOREIGN KEY(user_id) REFERENCES users(id),
     FOREIGN KEY(contract_id) REFERENCES contracts(id)
 );
 
@@ -65,20 +67,3 @@ CREATE TABLE IF NOT EXISTS `contract_options` (
     FOREIGN KEY (contract_id) REFERENCES contracts (id),
     FOREIGN KEY (option_id) REFERENCES options (id)
 );
-
--- AUTHENTICATION
-
-CREATE TABLE IF NOT EXISTS `users` (
-    username VARCHAR(50) NOT NULL,
-    password VARCHAR(100) NOT NULL,
-    enabled TINYINT NOT NULL DEFAULT 1,
-    PRIMARY KEY (username)
-);
-
-CREATE TABLE IF NOT EXISTS `authorities` (
-    username VARCHAR(50) NOT NULL,
-    authority VARCHAR(50) NOT NULL,
-    FOREIGN KEY (username) REFERENCES users(username)
-);
-
-CREATE UNIQUE INDEX ix_auth_username on authorities (username,authority);

@@ -1,15 +1,14 @@
 package com.ecare.controllers;
 
-import com.ecare.models.SubscriberPO;
+import com.ecare.models.UserPO;
 import com.ecare.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
 
 @Controller
 public class UserController {
@@ -66,21 +65,10 @@ public class UserController {
         return "administration/Users";
     }
 
-        if (nOfPages % recordsPerPage > 0) {
-            nOfPages++;
-        }
-
-        if(currentPage == null)
-            currentPage = 1;
-
-        List<SubscriberPO> users = userService.get((currentPage-1)*recordsPerPage, recordsPerPage);
-
-        model.addAttribute("users", users);
-
-        model.addAttribute("noOfPages", nOfPages);
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("recordsPerPage", recordsPerPage);
-
-        return "Users";
+    @RequestMapping(value="/administration/Users/{id}")
+    public String getPlan(ModelMap model, @PathVariable long id) {
+        UserPO user = userService.get(id).get();
+        model.addAttribute("user", user);
+        return "Profile";
     }
 }

@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public class BaseService<DAOType extends Dao, POJOType> implements BaseData<POJOType> {
     @Autowired
-    private DAOType dao;
+    protected DAOType dao;
 
     @Override
     public Optional<POJOType> get(long id) { return dao.get(id); }
