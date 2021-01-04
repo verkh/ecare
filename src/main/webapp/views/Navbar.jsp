@@ -45,9 +45,6 @@
                         <a class="nav-link" href="${pageContext.request.contextPath}/Plans">Plans</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Promo</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="#">About</a>
                     </li>
                 </ul>
