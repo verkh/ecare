@@ -27,9 +27,9 @@
 <br>
 <br>
 
-<div class="container">
+<div class="container horizontal-card card p-3 bg-dark">
 
-    <h2>eCare Users</h2>
+    <h2>eCare Plans</h2>
     <hr/>
     <br/>
 
@@ -91,7 +91,7 @@
 </div>
 </hr>
 <!-- Footer -->
-${footer}
+<jsp:include page="/views/Footer.jsp"/>
 
 </body>
 </html>

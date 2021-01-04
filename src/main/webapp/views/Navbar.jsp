@@ -45,7 +45,7 @@
                         <a class="nav-link" href="${pageContext.request.contextPath}/Plans">Plans</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/About">About</a>
                     </li>
                 </ul>
                 <form class="d-flex">
