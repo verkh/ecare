@@ -5,6 +5,7 @@ import com.ecare.models.ContractPO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.Iterator;
 import java.util.List;
@@ -19,11 +20,11 @@ public class Dao<T> implements BaseData<T> {
 
     protected final Class<T> type;
 
+    @PersistenceContext
     protected EntityManager entityManager;
 
-    public Dao(Class<T> type, EntityManager entityManager) {
+    public Dao(Class<T> type) {
         this.type = type;
-        this.entityManager = entityManager;
     }
 
     @Override

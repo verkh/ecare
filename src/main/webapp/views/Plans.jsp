@@ -1,4 +1,4 @@
-<%@ taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
@@ -29,7 +29,7 @@
     <h2>Plan for your mobile phone</h2>
     <br/>
 
-    <jstl:forEach items="${Plans}" var="plan">
+    <c:forEach items="${Plans}" var="plan">
         <br>
         <div class="glow-horizontal-card card p-3 bg-dark">
             <div class="row">
@@ -37,9 +37,9 @@
                     <h2>${plan.name}</h2>
                 </div>
                 <div class="col">
-                    <jstl:forEach items="${plan.options}" var="option">
+                    <c:forEach items="${plan.options}" var="option">
                         <h5>${option.name}</h5>
-                    </jstl:forEach>
+                    </c:forEach>
                 </div>
                 <div class="col"></div>
                 <div class="col">
@@ -49,7 +49,7 @@
             </div>
         </div>
         </br>
-    </jstl:forEach>
+    </c:forEach>
 
 </div>
 <!-- Footer -->

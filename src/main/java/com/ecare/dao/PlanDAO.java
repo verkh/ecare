@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 public class PlanDAO extends Dao<PlanPO> {
 
     PlanDAO(EntityManagerFactory factory) {
-        super(PlanPO.class, factory.createEntityManager());
+        super(PlanPO.class);
     }
 }

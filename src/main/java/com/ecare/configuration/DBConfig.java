@@ -36,14 +36,6 @@ public class DBConfig {
     @Bean
     public DataSource getDataSource(HikariConfig hikariConfig) { return new HikariDataSource(hikariConfig); }
 
-//    @Bean
-//    public SpringLiquibase liquibase(DataSource dataSource) {
-//        SpringLiquibase liquibase = new SpringLiquibase();
-//        liquibase.setChangeLog("classpath:liquibase-changelog.yaml");
-//        liquibase.setDataSource(dataSource);
-//        return liquibase;
-//    }
-
     @Bean
     public EntityManagerFactory getEntityManagerFactory(
             DataSource dataSource,
@@ -57,7 +49,6 @@ public class DBConfig {
             LocalContainerEntityManagerFactoryBean lef = new LocalContainerEntityManagerFactoryBean();
             lef.setDataSource(dataSource);
             lef.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-//        String[] packages = environment.getProperty("com.ecare").split(",");
             lef.setPackagesToScan("*.models*");
 
             Properties props = new Properties();

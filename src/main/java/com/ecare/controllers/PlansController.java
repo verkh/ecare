@@ -17,37 +17,27 @@ public class PlansController {
     @Autowired
     PlanService planService;
 
-    @RequestMapping(value="/Plans")
+    @RequestMapping(value = "/Plans")
     public String getPlans(ModelMap model) {
-        try {
-            List<PlanPO> plans = planService.getAll();
-            System.out.println("PLANS: " + plans.size() + " options:" + plans.get(0).getOptions().size());
-            model.addAttribute("Plans", plans);
-        }
-        catch (Exception e)
-        {
-            model.addAttribute("error", e.toString());
-            model.addAttribute("errorStack", e.getStackTrace().toString());
-        }
+        List<PlanPO> plans = planService.getAll();
+        model.addAttribute("Plans", plans);
         return "Plans";
     }
 
-    @RequestMapping(value="/Plans/{id}")
+    @RequestMapping(value = "/Plans/{id}")
     public String getPlan(ModelMap model, @PathVariable long id) {
         try {
             PlanPO plan = planService.get(id).get();
             System.out.println(plan.getId() + " " + plan.getName() + " " + plan.getOptions().size());
             model.addAttribute("Plan", plan);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             model.addAttribute("error", e.toString());
             model.addAttribute("errorStack", e.getStackTrace().toString());
         }
         return "Plan";
     }
 
-    @RequestMapping(value="/administration/Tariffs")
+    @RequestMapping(value = "/administration/Tariffs")
     public String getUsers(ModelMap model,
                            @RequestParam(value = "currentPage", required = false) Integer currentPage
     ) {

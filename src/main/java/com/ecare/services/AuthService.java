@@ -15,11 +15,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 @Service("authService")
+@Transactional
 public class AuthService implements UserDetailsService {
 
     @Autowired
