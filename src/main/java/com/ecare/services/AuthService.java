@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 @Service("authService")
 public class AuthService implements UserDetailsService {
@@ -36,29 +37,18 @@ public class AuthService implements UserDetailsService {
     public class UserPrincipal implements UserDetails {
         private String password;
         private String username;
-        private Role authority;
+        private List<Role> authorities;
         private boolean enabled;
+        private boolean accountNonExpired = true;
+        private boolean accountNonLocked = true;
+        private boolean credentialsNonExpired = true;
 
         UserPrincipal(UserPO subscriber) {
             this.username = subscriber.getEmail();
             this.password = subscriber.getPasswordHash();
             this.enabled = subscriber.isEnabled();
-            this.authority = new Role(subscriber.getAuthority());
+            this.authorities = Arrays.asList(new Role(subscriber.getAuthority()));
         }
-
-        @Override
-        public Collection<? extends GrantedAuthority> getAuthorities() {
-            return Arrays.asList(authority);
-        }
-
-        @Override
-        public boolean isAccountNonExpired() { return true; }
-
-        @Override
-        public boolean isAccountNonLocked() { return true; }
-
-        @Override
-        public boolean isCredentialsNonExpired() { return true; }
     }
 
     @Override
