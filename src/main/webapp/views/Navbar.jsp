@@ -31,10 +31,10 @@
                                 Administration
                             </a>
                             <div class="dropdown-menu" aria-labelledby="adminNavbarDropdownItem">
-                                <a class="dropdown-item" href="${pageContext.request.contextPath}/Users">Users</a>
+                                <a class="dropdown-item" href="${pageContext.request.contextPath}/administration/Users">Users</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Register subscriber</a>
-                                <a class="dropdown-item" href="#">Manage plans</a>
+                                <a class="dropdown-item" href="${pageContext.request.contextPath}/SignUp">Register subscriber</a>
+                                <a class="dropdown-item" href="${pageContext.request.contextPath}/administration/Tariffs">Manage plans</a>
                             </div>
                         </li>
                     </security:authorize>
