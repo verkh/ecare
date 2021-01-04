@@ -1,6 +1,7 @@
 package com.ecare.controllers;
 
 import com.ecare.models.UserPO;
+import com.ecare.services.AuthService;
 import com.ecare.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,9 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    AuthService authService;
+
     @RequestMapping(value="/SignIn", method = RequestMethod.GET)
     public String getSignIn(ModelMap model,
         @RequestParam(value = "error", required = false) String error)
@@ -26,13 +30,6 @@ public class UserController {
 
         return "SignIn";
     }
-
-//    @RequestMapping(value="/login", method = RequestMethod.POST)
-//    public String signIn(ModelMap model)
-//    {
-//        System.out.println(model);
-//        return "Plans";
-//    }
 
     @RequestMapping(value="/SignUp", method = RequestMethod.GET)
     public String getSignUp() {
@@ -54,6 +51,8 @@ public class UserController {
 
     @RequestMapping(value="/Profile")
     public String getProfile(ModelMap model) {
+        UserPO currentUser = authService.getCurrentUser();
+        model.addAttribute("user", currentUser);
         return "Profile";
     }
 

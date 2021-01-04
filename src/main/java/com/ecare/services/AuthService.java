@@ -6,7 +6,10 @@ import com.ecare.models.ContractPO;
 import com.ecare.models.UserPO;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -35,6 +38,7 @@ public class AuthService implements UserDetailsService {
 
     @Getter
     public class UserPrincipal implements UserDetails {
+        private long id;
         private String password;
         private String username;
         private List<Role> authorities;
@@ -44,6 +48,7 @@ public class AuthService implements UserDetailsService {
         private boolean credentialsNonExpired = true;
 
         UserPrincipal(UserPO subscriber) {
+            this.id = subscriber.getId();
             this.username = subscriber.getEmail();
             this.password = subscriber.getPasswordHash();
             this.enabled = subscriber.isEnabled();
@@ -66,5 +71,11 @@ public class AuthService implements UserDetailsService {
             throw new UsernameNotFoundException(username);
 
         return new UserPrincipal(user);
+    }
+
+    public UserPO getCurrentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserPrincipal principal = (UserPrincipal) auth.getPrincipal();
+        return userDAO.get(principal.getId()).orElse(null);
     }
 }
