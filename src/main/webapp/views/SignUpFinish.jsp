@@ -19,20 +19,12 @@
     <link href="<spring:url value='/css/form.css'/>" rel="stylesheet">
 </head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
-        crossorigin="anonymous"></script>
 
 <!-- Navigation panel -->
 <jsp:include page="/views/Navbar.jsp"/>
 <br/>
 <br/>
 <div id=wrapper class="container">
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
-            crossorigin="anonymous"></script>
-
     <form action="${pageContext.request.contextPath}/SignUp" method="POST" class="form card p-3 bg-dark">
         <div class="text-center mb-4">
             <img class="mb-4" src="<spring:url value='/images/eCareIcon.png'/>" alt="" width="100" height="100">
