@@ -12,7 +12,7 @@ import java.util.List;
 public class ContractDAO extends Dao<ContractPO> {
 
     ContractDAO(EntityManagerFactory factory) {
-        super(ContractPO.class,"ContractPO", factory.createEntityManager());
+        super(ContractPO.class, factory.createEntityManager());
     }
 
     public ContractPO findByPhone(String phone) {

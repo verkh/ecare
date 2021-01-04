@@ -18,13 +18,11 @@ import java.util.function.Consumer;
 public class Dao<T> implements BaseData<T> {
 
     protected final Class<T> type;
-    protected final String pojoClassName;
 
     protected EntityManager entityManager;
 
-    public Dao(Class<T> type, String pojoClassName, EntityManager entityManager) {
+    public Dao(Class<T> type, EntityManager entityManager) {
         this.type = type;
-        this.pojoClassName = pojoClassName;
         this.entityManager = entityManager;
     }
 
@@ -34,7 +32,7 @@ public class Dao<T> implements BaseData<T> {
     }
 
     public List<T> get(int from, int number) {
-        Query q = entityManager.createQuery(String.format("SELECT e FROM %s e", pojoClassName));
+        Query q = entityManager.createQuery(String.format("SELECT e FROM %s e", type.getSimpleName()));
         q.setFirstResult(from);
         q.setMaxResults(number);
         return q.getResultList();
@@ -42,7 +40,7 @@ public class Dao<T> implements BaseData<T> {
 
     @Override
     public List<T> getAll() {
-        Query q = entityManager.createQuery(String.format("SELECT e FROM %s e", pojoClassName));
+        Query q = entityManager.createQuery(String.format("SELECT e FROM %s e", type.getSimpleName()));
         return q.getResultList();
     }
 
@@ -63,7 +61,7 @@ public class Dao<T> implements BaseData<T> {
 
     @Override
     public long count() {
-        Query q = entityManager.createQuery(String.format("SELECT count(e) FROM %s e", pojoClassName));
+        Query q = entityManager.createQuery(String.format("SELECT count(e) FROM %s e", type.getSimpleName()));
         Object res = q.getSingleResult();
         return res == null ? null : (Long)res;
     }
@@ -82,7 +80,7 @@ public class Dao<T> implements BaseData<T> {
     }
 
     protected T findBy(String value, String column) {
-        String sql = String.format("SELECT e FROM %s e WHERE e.%s = '%s'", pojoClassName, column, value);
+        String sql = String.format("SELECT e FROM %s e WHERE e.%s = '%s'", type.getSimpleName(), column, value);
         Query q = entityManager.createQuery(sql);
         List<T> data = q.getResultList();
         return data.isEmpty() ? null : data.get(0); // FIXME: is this ok?

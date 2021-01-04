@@ -13,7 +13,7 @@ import java.util.Optional;
 public class UserDAO extends Dao<UserPO> {
 
     UserDAO(EntityManagerFactory factory) {
-        super(UserPO.class,"UserPO", factory.createEntityManager());
+        super(UserPO.class, factory.createEntityManager());
     }
 
     public UserPO findByEmail(String email) {
