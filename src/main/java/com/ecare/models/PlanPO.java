@@ -26,6 +26,6 @@ public class PlanPO extends AbstractNamedPO {
             joinColumns = @JoinColumn(name = "plan_id"),
             inverseJoinColumns = @JoinColumn(name = "option_id")
     )
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<OptionPO> options = new ArrayList<>();
 }
