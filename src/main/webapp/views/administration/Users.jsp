@@ -47,6 +47,7 @@
             <th scope="col">Address</th>
             <th scope="col">Email</th>
             <th scope="col"></th>
+            <th scope="col"></th>
         </tr>
         <c:forEach items="${users}" var="user">
             <tr>
@@ -58,7 +59,10 @@
                 <td>${user.getAddress()}</td>
                 <td>${user.getEmail()}</td>
                 <td>
-                    <a href="${pageContext.request.contextPath}/Users/${user.getId()}" type="button" class="btn btn-secondary btn-sm">View</a>
+                    <a href="${pageContext.request.contextPath}/administration/Users/${user.getId()}" type="button" class="btn btn-secondary btn-sm">View</a>
+                </td>
+                <td>
+                    <a href="${pageContext.request.contextPath}/administration/Users/${user.getId()}?block=true" type="button" class="btn btn-secondary btn-sm">Block</a>
                 </td>
             </tr>
         </c:forEach>

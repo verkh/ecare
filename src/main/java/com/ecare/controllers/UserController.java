@@ -58,14 +58,13 @@ public class UserController {
         return "Profile";
     }
 
-    @RequestMapping(value="/Users")
+    @RequestMapping(value="/administration/Users")
     public String getUsers(ModelMap model,
         @RequestParam(value = "currentPage", required = false) Integer currentPage
     ) {
-        final int recordsPerPage = 15;
-
-        long rows = userService.count();
-        int nOfPages = (int)(rows / recordsPerPage);
+        Utils.pagination(userService, model, currentPage, "users");
+        return "administration/Users";
+    }
 
         if (nOfPages % recordsPerPage > 0) {
             nOfPages++;

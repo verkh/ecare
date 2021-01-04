@@ -46,10 +46,12 @@ public class PlansController {
         return "Plan";
     }
 
-//    @RequestMapping(value="/Plans/{id}")
-//    @PostAuthorize("hasPermission(returnObject, 'WRITE')")
-//    public String setupPlan(ModelMap model, @PathVariable long id) {
-//        System.out.println("Im here!");
-//        return "SignUpFinish";
-//    }
+    @RequestMapping(value="/administration/Tariffs")
+    public String getUsers(ModelMap model,
+                           @RequestParam(value = "currentPage", required = false) Integer currentPage
+    ) {
+        Utils.pagination(planService, model, currentPage, "tariffs");
+        return "administration/Tariffs";
+    }
+
 }
