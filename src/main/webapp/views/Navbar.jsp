@@ -34,18 +34,18 @@
                                 Administration
                             </a>
                             <div class="dropdown-menu" aria-labelledby="adminNavbarDropdownItem">
-                                <a class="dropdown-item" href="${pageContext.request.contextPath}/administration/Users">Users</a>
+                                <a class="dropdown-item" href="${pageContext.request.contextPath}/administration/users">Users</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="${pageContext.request.contextPath}/SignUp">Register subscriber</a>
-                                <a class="dropdown-item" href="${pageContext.request.contextPath}/administration/Tariffs">Manage plans</a>
+                                <a class="dropdown-item" href="${pageContext.request.contextPath}/register">Register subscriber</a>
+                                <a class="dropdown-item" href="${pageContext.request.contextPath}/administration/tariffs">Manage plans</a>
                             </div>
                         </li>
                     </security:authorize>
                     <li class="nav-item">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/Plans">Plans</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/plans">Plans</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/About">About</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/about">About</a>
                     </li>
                 </ul>
                 <form class="d-flex">
@@ -58,7 +58,7 @@
                                     <%= request.getUserPrincipal().getName() %>
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="userProfilenavbarDropdown">
-                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/Profile">Profile</a></li>
+                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/profile">Profile</a></li>
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>
@@ -71,8 +71,8 @@
                             </div>
                         </c:when>
                         <c:otherwise>
-                            <a href="${pageContext.request.contextPath}/SignIn" type="button" class="btn btn-default navbar-btn oi oi-account-login">Sign in</a>
-                            <a href="${pageContext.request.contextPath}/SignUp" type="button" class="btn btn-default navbar-btn" >Sign up</a>
+                            <a href="${pageContext.request.contextPath}/auth" type="button" class="btn btn-default navbar-btn oi oi-account-login">Sign in</a>
+                            <a href="${pageContext.request.contextPath}/register" type="button" class="btn btn-default navbar-btn" >Sign up</a>
                         </c:otherwise>
                     </c:choose>
                 </form>

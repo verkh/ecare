@@ -27,13 +27,13 @@
 <br/>
 <div id=wrapper class="container">
     <div class="d-flex justify-content-center">
-        <form action="Profile" method="POST">
+        <form action="${current_action}" method="POST">
             <div class="row">
                 <div class="col col-sm-auto" style="padding-right: 3px; padding-left:3px; margin-right:3px; margin-left:3px">
                     <div class="form card p-3 bg-dark">
                         <div class="text-center mb-4">
                             <img class="mb-4" src="<spring:url value='/images/eCareIcon.png'/>" alt="" width="100" height="100">
-                            <h1 class="h3 mb-3 font-weight-normal">${current_action}</h1>
+                            <h1 class="h3 mb-3 font-weight-normal">${current_action_title}</h1>
                         </div>
                         <div class="row">
                             <div class="col">

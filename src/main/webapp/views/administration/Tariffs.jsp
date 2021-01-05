@@ -48,10 +48,10 @@
                 <td>${tariff.getName()}</td>
                 <td>${tariff.getPrice()}</td>
                 <td>
-                    <a href="${pageContext.request.contextPath}/administration/Users/${tariff.getId()}" type="button" class="btn btn-secondary btn-sm">View</a>
+                    <a href="${pageContext.request.contextPath}/administration/tariffs/${tariff.getId()}" type="button" class="btn btn-secondary btn-sm">View</a>
                 </td>
                 <td>
-                    <a href="${pageContext.request.contextPath}/administration/Users/${tariff.getId()}?block=true" type="button" class="btn btn-secondary btn-sm">Delete</a>
+                    <a href="${pageContext.request.contextPath}/administration/tariffs/${tariff.getId()}?block=true" type="button" class="btn btn-secondary btn-sm">Delete</a>
                 </td>
             </tr>
         </c:forEach>
@@ -62,7 +62,7 @@
         <ul class="pagination">
             <c:if test="${currentPage != 1}">
                 <li class="page-item"><a class="page-link"
-                                         href="Users?recordsPerPage=${recordsPerPage}&currentPage=${currentPage-1}">Previous</a>
+                                         href="tariffs?recordsPerPage=${recordsPerPage}&currentPage=${currentPage-1}">Previous</a>
                 </li>
             </c:if>
 
@@ -75,7 +75,7 @@
                     </c:when>
                     <c:otherwise>
                         <li class="page-item"><a class="page-link"
-                                                 href="Users?recordsPerPage=${recordsPerPage}&currentPage=${i}">${i}</a>
+                                                 href="tariffs?recordsPerPage=${recordsPerPage}&currentPage=${i}">${i}</a>
                         </li>
                     </c:otherwise>
                 </c:choose>
@@ -83,7 +83,7 @@
 
             <c:if test="${currentPage lt noOfPages}">
                 <li class="page-item"><a class="page-link"
-                                         href="Users?recordsPerPage=${recordsPerPage}&currentPage=${currentPage+1}">Next</a>
+                                         href="tariffs?recordsPerPage=${recordsPerPage}&currentPage=${currentPage+1}">Next</a>
                 </li>
             </c:if>
         </ul>

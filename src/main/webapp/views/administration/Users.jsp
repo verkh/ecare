@@ -57,10 +57,10 @@
                 <td>${user.getAddress()}</td>
                 <td>${user.getEmail()}</td>
                 <td>
-                    <a href="${pageContext.request.contextPath}/administration/Users/${user.getId()}" type="button" class="btn btn-secondary btn-sm">View</a>
+                    <a href="${pageContext.request.contextPath}/administration/users/${user.getId()}" type="button" class="btn btn-secondary btn-sm">View</a>
                 </td>
                 <td>
-                    <a href="${pageContext.request.contextPath}/administration/Users/${user.getId()}?block=true" type="button" class="btn btn-secondary btn-sm">Block</a>
+                    <a href="${pageContext.request.contextPath}/administration/users/${user.getId()}?block=true" type="button" class="btn btn-secondary btn-sm">Block</a>
                 </td>
             </tr>
         </c:forEach>
@@ -71,7 +71,7 @@
         <ul class="pagination">
             <c:if test="${currentPage != 1}">
                 <li class="page-item"><a class="page-link"
-                                         href="Users?recordsPerPage=${recordsPerPage}&currentPage=${currentPage-1}">Previous</a>
+                                         href="users?recordsPerPage=${recordsPerPage}&currentPage=${currentPage-1}">Previous</a>
                 </li>
             </c:if>
 
@@ -84,7 +84,7 @@
                     </c:when>
                     <c:otherwise>
                         <li class="page-item"><a class="page-link"
-                                                 href="Users?recordsPerPage=${recordsPerPage}&currentPage=${i}">${i}</a>
+                                                 href="users?recordsPerPage=${recordsPerPage}&currentPage=${i}">${i}</a>
                         </li>
                     </c:otherwise>
                 </c:choose>
@@ -92,7 +92,7 @@
 
             <c:if test="${currentPage lt noOfPages}">
                 <li class="page-item"><a class="page-link"
-                                         href="Users?recordsPerPage=${recordsPerPage}&currentPage=${currentPage+1}">Next</a>
+                                         href="users?recordsPerPage=${recordsPerPage}&currentPage=${currentPage+1}">Next</a>
                 </li>
             </c:if>
         </ul>

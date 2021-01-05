@@ -28,7 +28,7 @@
 <br/>
 <br/>
 <main class="form-signin card p-3 bg-dark">
-    <form action="SignIn" method="POST">
+    <form action="auth" method="POST">
         <div class="text-center mb-4">
             <img class="mb-4" src="<spring:url value='/images/eCareIcon.png'/>" alt="" width="100" height="100">
             <h1 class="h3 mb-3 font-weight-normal">Authentication</h1>

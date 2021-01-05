@@ -44,7 +44,7 @@
                 <div class="col"></div>
                 <div class="col">
                     <h4 class="text-center">${plan.price}$/month</h4>
-                    <a href="${pageContext.request.contextPath}/Plans/${plan.id}" type="button" class="w-100 btn btn-lg btn-primary">Choose</a>
+                    <a href="${pageContext.request.contextPath}/plans/${plan.id}" type="button" class="w-100 btn btn-lg btn-primary">Choose</a>
                 </div>
             </div>
         </div>

@@ -20,7 +20,7 @@ public class UserController {
     @Autowired
     AuthService authService;
 
-    @RequestMapping(value="/SignIn", method = RequestMethod.GET)
+    @RequestMapping(value="/auth", method = RequestMethod.GET)
     public String getSignIn(ModelMap model,
         @RequestParam(value = "error", required = false) String error)
     {
@@ -31,26 +31,30 @@ public class UserController {
         return "SignIn";
     }
 
-    @RequestMapping(value="/SignUp", method = RequestMethod.GET)
-    public String getSignUp() {
-        System.out.println("Im here one!");
+    @RequestMapping(value="/register", method = RequestMethod.GET)
+    public String getSignUp(ModelMap model) {
+        model.addAttribute("current_action", "register");
+        model.addAttribute("current_action_title", "Registration");
         return "Profile";
     }
 
-    @RequestMapping(value="/SignUp", method = RequestMethod.POST)
-    public String submitSignUp() {
-        System.out.println("Im here!");
+    @RequestMapping(value="/register", method = RequestMethod.POST)
+    public String submitSignUp(ModelMap model) {
+        model.addAttribute("current_action", "register");
+        model.addAttribute("current_action_title", "Registration");
         return "Profile";
     }
 
-    @RequestMapping(value="/Profile")
+    @RequestMapping(value="/profile")
     public String getProfile(ModelMap model) {
         UserPO currentUser = authService.getCurrentUser();
         model.addAttribute("user", currentUser);
+        model.addAttribute("current_action", "profile");
+        model.addAttribute("current_action_title", "Profile");
         return "Profile";
     }
 
-    @RequestMapping(value="/administration/Users")
+    @RequestMapping(value="/administration/users")
     public String getUsers(ModelMap model,
         @RequestParam(value = "currentPage", required = false) Integer currentPage
     ) {
@@ -58,10 +62,12 @@ public class UserController {
         return "administration/Users";
     }
 
-    @RequestMapping(value="/administration/Users/{id}")
+    @RequestMapping(value="/administration/users/{id}")
     public String getPlan(ModelMap model, @PathVariable long id) {
         UserPO user = userService.get(id).get();
         model.addAttribute("user", user);
+        model.addAttribute("current_action", "/administration/users/" + id);
+        model.addAttribute("current_action_title", "Profile");
         return "Profile";
     }
 }

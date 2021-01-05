@@ -17,14 +17,14 @@ public class PlansController {
     @Autowired
     PlanService planService;
 
-    @RequestMapping(value = "/Plans")
+    @RequestMapping(value = "/plans")
     public String getPlans(ModelMap model) {
         List<PlanPO> plans = planService.getAll();
         model.addAttribute("Plans", plans);
         return "Plans";
     }
 
-    @RequestMapping(value = "/Plans/{id}")
+    @RequestMapping(value = "/plans/{id}")
     public String getPlan(ModelMap model, @PathVariable long id) {
         try {
             PlanPO plan = planService.get(id).get();
@@ -37,7 +37,7 @@ public class PlansController {
         return "Plan";
     }
 
-    @RequestMapping(value = "/administration/Tariffs")
+    @RequestMapping(value = "/administration/tariffs")
     public String getUsers(ModelMap model,
                            @RequestParam(value = "currentPage", required = false) Integer currentPage
     ) {

@@ -11,7 +11,7 @@ public class HomeController {
         return "index";
     }
 
-    @RequestMapping(value = "/About")
+    @RequestMapping(value = "/about")
     public String getAbout() {
         return "About";
     }
