@@ -34,19 +34,13 @@ public class UserController {
     @RequestMapping(value="/SignUp", method = RequestMethod.GET)
     public String getSignUp() {
         System.out.println("Im here one!");
-        return "SignUp";
+        return "Profile";
     }
 
     @RequestMapping(value="/SignUp", method = RequestMethod.POST)
     public String submitSignUp() {
         System.out.println("Im here!");
-        return "SignUpFinish";
-    }
-
-    @RequestMapping(value="/SignUpFinish")
-    public String getSignUpFinish() {
-        System.out.println("At last here");
-        return "SignUpFinish";
+        return "Profile";
     }
 
     @RequestMapping(value="/Profile")
