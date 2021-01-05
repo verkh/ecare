@@ -1,15 +1,19 @@
 package com.ecare.controllers;
 
+import com.ecare.models.PlanPO;
 import com.ecare.models.UserPO;
 import com.ecare.services.AuthService;
 import com.ecare.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.sql.Date;
 
 @Controller
 public class UserController {
@@ -19,6 +23,9 @@ public class UserController {
 
     @Autowired
     AuthService authService;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @RequestMapping(value="/auth", method = RequestMethod.GET)
     public String getSignIn(ModelMap model,
@@ -32,17 +39,50 @@ public class UserController {
     }
 
     @RequestMapping(value="/register", method = RequestMethod.GET)
-    public String getSignUp(ModelMap model) {
+    public String getSignUp(ModelMap model,
+                            @RequestParam(value = "error", required = false) String error) {
         model.addAttribute("current_action", "register");
         model.addAttribute("current_action_title", "Registration");
+        if (error != null) {
+            model.addAttribute("error", "Invalid username or password!" + error);
+        }
         return "Profile";
     }
 
     @RequestMapping(value="/register", method = RequestMethod.POST)
-    public String submitSignUp(ModelMap model) {
+    public String submitSignUp(ModelMap model,
+                               @RequestParam(value = "firstName", required = true) String name,
+                               @RequestParam(value = "lastName", required = true) String lastName,
+                               @RequestParam(value = "email", required = true) String email,
+                               @RequestParam(value = "phoneNumber", required = false) String phoneNumber,
+                               @RequestParam(value = "password1", required = true) String password1,
+                               @RequestParam(value = "password2", required = true) String password2,
+                               @RequestParam(value = "passport", required = true) String passport,
+                               @RequestParam(value = "address", required = true) String address,
+                               @RequestParam(value = "birthDate", required = true) String birthDate
+    ) {
         model.addAttribute("current_action", "register");
         model.addAttribute("current_action_title", "Registration");
-        return "Profile";
+
+        UserPO newUser = new UserPO();
+        try {
+            newUser.setName(name);
+            newUser.setLastName(lastName);
+            newUser.setEmail(email);
+            if (!password1.equals(password2))
+                throw new Exception("Passwords not match");
+            newUser.setPassport(passwordEncoder.encode(password1));
+            newUser.setPassport(passport);
+            newUser.setAddress(address);
+            newUser.setDate(Date.valueOf(birthDate));
+            userService.save(newUser);
+        } catch (Exception e){
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("user", newUser);
+            return "Profile";
+        }
+
+        return "/";
     }
 
     @RequestMapping(value="/profile")

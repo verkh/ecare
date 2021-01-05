@@ -69,13 +69,13 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label for="inputPassword">Password</label>
-                                    <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password">
+                                    <input type="password" name="password1" class="form-control" id="inputPassword" placeholder="Password">
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="form-group">
                                     <label for="inputPasswordConfirm">Password again</label>
-                                    <input type="password" name="password" class="form-control" id="inputPasswordConfirm" placeholder="Password again">
+                                    <input type="password" name="password2" class="form-control" id="inputPasswordConfirm" placeholder="Password again">
                                 </div>
                             </div>
                         </div>
