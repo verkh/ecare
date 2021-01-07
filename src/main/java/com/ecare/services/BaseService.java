@@ -21,13 +21,13 @@ public class BaseService<DAOType extends Dao, POJOType> implements BaseData<POJO
     public List<POJOType> getAll() { return dao.getAll(); }
 
     @Override
-    public void save(POJOType value) {
-        dao.save(value);
+    public POJOType save(POJOType value) {
+        return (POJOType) dao.save(value);
     }
 
     @Override
-    public void update(POJOType value) {
-        dao.update(value);
+    public POJOType update(POJOType value) {
+        return (POJOType) dao.update(value);
     }
 
     @Override

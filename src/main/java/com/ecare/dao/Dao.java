@@ -1,15 +1,14 @@
 package com.ecare.dao;
 
 import com.ecare.base.BaseData;
-import com.ecare.models.ContractPO;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 /**
  * DAO is an interface that represents common manipulation methods for data objects;
@@ -19,70 +18,62 @@ public class Dao<T> implements BaseData<T> {
 
     protected final Class<T> type;
 
-    @PersistenceContext
-    protected EntityManager entityManager;
+    @Autowired
+    protected SessionFactory sessionFactory;
 
     public Dao(Class<T> type) {
         this.type = type;
     }
 
+    protected Session getCurrentSession() {
+        return sessionFactory.getCurrentSession();
+    }
+
     @Override
     public Optional<T> get(long id) {
-        return Optional.ofNullable(entityManager.find(type, id));
+        return Optional.ofNullable((T) getCurrentSession().get(type, id));
     }
 
     public List<T> get(int from, int number) {
-        Query q = entityManager.createQuery(String.format("SELECT e FROM %s e", type.getSimpleName()));
+        Query q = sessionFactory.getCurrentSession().createQuery(String.format("SELECT e FROM %s e", type.getSimpleName()));
         q.setFirstResult(from);
         q.setMaxResults(number);
-        return q.getResultList();
+        return q.list();
     }
 
     @Override
     public List<T> getAll() {
-        Query q = entityManager.createQuery(String.format("SELECT e FROM %s e", type.getSimpleName()));
-        return q.getResultList();
+        Query q = getCurrentSession().createQuery(String.format("SELECT e FROM %s e", type.getSimpleName()));
+        return q.list();
     }
 
     @Override
-    public void save(T value) {
-        execute(entityManager -> entityManager.persist(value));
+    public T save(T value) {
+        getCurrentSession().saveOrUpdate(value);
+        return value;
     }
 
     @Override
-    public void update(T value) {
-        execute(entityManager -> entityManager.merge(value));
+    public T update(T value) {
+        getCurrentSession().merge(value);
+        return value;
     }
 
     @Override
     public void delete(T value) {
-        execute(entityManager -> entityManager.remove(value));
+        getCurrentSession().delete(value);
     }
 
     @Override
     public long count() {
-        Query q = entityManager.createQuery(String.format("SELECT count(e) FROM %s e", type.getSimpleName()));
-        Object res = q.getSingleResult();
+        Query q = getCurrentSession().createQuery(String.format("SELECT count(e) FROM %s e", type.getSimpleName()));
+        Object res = q.uniqueResult();
         return res == null ? null : (Long)res;
-    }
-
-    private void execute(Consumer<EntityManager> action) {
-
-        EntityTransaction tx = entityManager.getTransaction();
-        try {
-            tx.begin();
-            action.accept(entityManager);
-            tx.commit();
-        }
-        catch (RuntimeException e){
-            tx.rollback();
-        }
     }
 
     protected T findBy(String value, String column) {
         String sql = String.format("SELECT e FROM %s e WHERE e.%s = '%s'", type.getSimpleName(), column, value);
-        Query q = entityManager.createQuery(sql);
-        List<T> data = q.getResultList();
-        return data.isEmpty() ? null : data.get(0); // FIXME: is this ok?
+        Query q = getCurrentSession().createQuery(sql);
+        return (T) q.uniqueResult();
     }
 }

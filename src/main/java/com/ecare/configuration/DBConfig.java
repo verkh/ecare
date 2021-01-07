@@ -1,76 +1,58 @@
 package com.ecare.configuration;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.hibernate5.HibernateTransactionManager;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
+@Configuration
+@EnableTransactionManagement
 public class DBConfig {
 
     @Bean
-    public HikariConfig hikariConfig(
+    public DataSource getDataSource(
             @Value("${spring.datasource.driver-class-name}") String driverClassName,
             @Value("${spring.datasource.url}") String dataSourceUrl,
             @Value("${spring.datasource.username}") String userName,
             @Value("${spring.datasource.password}") String password
     )
     {
-        HikariConfig config = new HikariConfig();
-        config.setDriverClassName(driverClassName);
-        config.setJdbcUrl(dataSourceUrl);
-        config.setUsername(userName);
-        config.setPassword(password);
-
-        config.setMaximumPoolSize(2);
-        config.setConnectionTestQuery("select 1");
-
-        return config;
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName(driverClassName);
+        dataSource.setUrl(dataSourceUrl);
+        dataSource.setUsername(userName);
+        dataSource.setPassword(password);
+        return dataSource;
     }
 
     @Bean
-    public DataSource getDataSource(HikariConfig hikariConfig) { return new HikariDataSource(hikariConfig); }
+    public LocalSessionFactoryBean sessionFactory(DataSource dataSource, @Value("${hibernate.dialect}") String dialect) {
+        final LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+        sessionFactory.setDataSource(dataSource);
+        sessionFactory.setPackagesToScan(new String[] { "com.ecare" });
+        sessionFactory.setHibernateProperties(additionalProperties(dialect));
+
+        return sessionFactory;
+    }
 
     @Bean
-    public EntityManagerFactory getEntityManagerFactory(
-            DataSource dataSource,
-            @Value("${spring.datasource.driver-class-name}") String driverClassName,
-            @Value("${spring.datasource.url}") String dataSourceUrl,
-            @Value("${spring.datasource.username}") String userName,
-            @Value("${spring.datasource.password}") String password,
-            @Value("${hibernate.dialect}") String dialect)
-    {
-        try {
-            LocalContainerEntityManagerFactoryBean lef = new LocalContainerEntityManagerFactoryBean();
-            lef.setDataSource(dataSource);
-            lef.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-            lef.setPackagesToScan("*.models*");
+    public PlatformTransactionManager transactionManager(LocalSessionFactoryBean sessionFactory) {
+        final HibernateTransactionManager transactionManager = new HibernateTransactionManager();
+        transactionManager.setSessionFactory(sessionFactory.getObject());
+        return transactionManager;
+    }
 
-            Properties props = new Properties();
-            props.put("javax.persistence.jdbc.url", dataSourceUrl);
-            props.put("javax.persistence.jdbc.user", userName);
-            props.put("javax.persistence.jdbc.password", password);
-            props.put("javax.persistence.jdbc.driver", driverClassName);
-            props.put("hibernate.show_sql", true);
-            props.put("hibernate.format_sql", true);
-            props.put("hibernate.dialect", dialect);
+    Properties additionalProperties(String dialect) {
+        Properties properties = new Properties();
+        properties.setProperty("hibernate.dialect", dialect);
 
-            lef.setJpaProperties(props);
-
-            lef.afterPropertiesSet();
-            return lef.getObject();
-        }
-        catch (Exception e)
-        {
-            String s = e.toString();
-            String a = e.getMessage();
-            System.out.println(e.toString() + ": " + e.getMessage());
-        }
-        return null;
+        return properties;
     }
 }

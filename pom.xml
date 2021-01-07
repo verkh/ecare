@@ -77,9 +77,10 @@
         </dependency>
 
         <dependency>
-            <groupId>javax.servlet.jsp.jstl</groupId>
+            <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
             <version>1.2</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
@@ -144,18 +145,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-            <version>3.4.5</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-core</artifactId>
-            <version>${liquibase.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-hikaricp</artifactId>
             <version>5.2.6.Final</version>
@@ -164,7 +153,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
-            <version>3.1.0.RELEASE</version>
+            <version>${spring.version}</version>
         </dependency>
 
     </dependencies>
@@ -178,8 +167,7 @@
 
         <mysql-connector.version>5.1.36</mysql-connector.version>
 
-        <hibernate.version>4.3.11.Final</hibernate.version>
-        <hibernate.version>4.3.11.Final</hibernate.version>
+        <hibernate.version>5.3.7.Final</hibernate.version>
         <hibernate-validator.version>5.2.1.Final</hibernate-validator.version>
 
         <spring.version>5.1.2.RELEASE</spring.version>

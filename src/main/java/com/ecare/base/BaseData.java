@@ -11,9 +11,9 @@ public interface BaseData<T> {
 
     public List<T> getAll();
 
-    public void save(T value);
+    public T save(T value);
 
-    public void update(T value);
+    public T update(T value);
 
     public void delete(T value);
 
