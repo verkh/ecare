@@ -43,6 +43,8 @@ public class UserController {
                             @RequestParam(value = "error", required = false) String error) {
         model.addAttribute("current_action", "register");
         model.addAttribute("current_action_title", "Registration");
+        model.addAttribute("defaultAuthority", UserPO.Authority.defaultAuthority);
+        model.addAttribute("availableAuthorities", UserPO.Authority.stringMap);
         if (error != null) {
             model.addAttribute("error", "Invalid username or password!" + error);
         }
@@ -59,10 +61,13 @@ public class UserController {
                                @RequestParam(value = "password2", required = true) String password2,
                                @RequestParam(value = "passport", required = true) String passport,
                                @RequestParam(value = "address", required = true) String address,
-                               @RequestParam(value = "birthDate", required = true) String birthDate
+                               @RequestParam(value = "birthDate", required = true) String birthDate,
+                               @RequestParam(value = "authority", required = true) UserPO.Authority authority
     ) {
         model.addAttribute("current_action", "register");
         model.addAttribute("current_action_title", "Registration");
+        model.addAttribute("defaultAuthority", UserPO.Authority.defaultAuthority);
+        model.addAttribute("availableAuthorities", UserPO.Authority.stringMap);
 
         UserPO newUser = new UserPO();
         try {
@@ -71,10 +76,11 @@ public class UserController {
             newUser.setEmail(email);
             if (!password1.equals(password2))
                 throw new Exception("Passwords not match");
-            newUser.setPassport(passwordEncoder.encode(password1));
+            newUser.setPasswordHash(passwordEncoder.encode(password1));
             newUser.setPassport(passport);
             newUser.setAddress(address);
             newUser.setDate(Date.valueOf(birthDate));
+            newUser.setAuthority(authority);
             userService.save(newUser);
         } catch (Exception e){
             model.addAttribute("error", e.getMessage());
@@ -82,7 +88,7 @@ public class UserController {
             return "Profile";
         }
 
-        return "/";
+        return "";
     }
 
     @RequestMapping(value="/profile")
@@ -91,6 +97,9 @@ public class UserController {
         model.addAttribute("user", currentUser);
         model.addAttribute("current_action", "profile");
         model.addAttribute("current_action_title", "Profile");
+        model.addAttribute("defaultAuthority", UserPO.Authority.defaultAuthority);
+        model.addAttribute("availableAuthorities", UserPO.Authority.stringMap);
+
         return "Profile";
     }
 
@@ -108,6 +117,9 @@ public class UserController {
         model.addAttribute("user", user);
         model.addAttribute("current_action", "/administration/users/" + id);
         model.addAttribute("current_action_title", "Profile");
+        model.addAttribute("defaultAuthority", UserPO.Authority.defaultAuthority);
+        model.addAttribute("availableAuthorities", UserPO.Authority.stringMap);
+
         return "Profile";
     }
 }

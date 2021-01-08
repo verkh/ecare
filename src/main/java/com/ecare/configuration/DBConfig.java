@@ -1,5 +1,6 @@
 package com.ecare.configuration;
 
+import com.ecare.dao.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -54,5 +55,18 @@ public class DBConfig {
         properties.setProperty("hibernate.dialect", dialect);
 
         return properties;
+    }
+
+    @Bean
+    public IUserDAO getUserDAO() {
+        return new UserDAO();
+    }
+    @Bean
+    public IContractDAO getContractDAO() {
+        return new ContractDAO();
+    }
+    @Bean
+    public IPlanDAO getPlanDAO() {
+        return new PlanDAO();
     }
 }

@@ -28,4 +28,5 @@ public class PlanPO extends AbstractNamedPO {
     )
     @OneToMany(fetch = FetchType.EAGER)
     private List<OptionPO> options = new ArrayList<>();
+
 }

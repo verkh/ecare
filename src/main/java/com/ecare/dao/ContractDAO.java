@@ -1,12 +1,10 @@
 package com.ecare.dao;
 
 import com.ecare.models.ContractPO;
-import org.springframework.stereotype.Repository;
 
-@Repository("ContractDAO")
-public class ContractDAO extends Dao<ContractPO> {
+public class ContractDAO extends Dao<ContractPO> implements IContractDAO {
 
-    ContractDAO() {
+    public ContractDAO() {
         super(ContractPO.class);
     }
 

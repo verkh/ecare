@@ -1,6 +1,8 @@
 package com.ecare.services;
 
 import com.ecare.dao.ContractDAO;
+import com.ecare.dao.IContractDAO;
+import com.ecare.dao.IUserDAO;
 import com.ecare.dao.UserDAO;
 import com.ecare.models.ContractPO;
 import com.ecare.models.UserPO;
@@ -24,10 +26,10 @@ import java.util.List;
 public class AuthServiceImpl implements AuthService {
 
     @Autowired
-    protected UserDAO userDAO;
+    protected IUserDAO userDAO;
 
     @Autowired
-    protected ContractDAO contractDAO;
+    protected IContractDAO contractDAO;
 
     @Getter
     public class Role implements GrantedAuthority {
@@ -53,7 +55,7 @@ public class AuthServiceImpl implements AuthService {
             this.username = subscriber.getEmail();
             this.password = subscriber.getPasswordHash();
             this.enabled = subscriber.isEnabled();
-            this.authorities = Arrays.asList(new Role(subscriber.getAuthority()));
+            this.authorities = Arrays.asList(new Role(subscriber.getAuthority().toString()));
         }
     }
 

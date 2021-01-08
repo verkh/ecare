@@ -8,7 +8,9 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * SubscriberPO describes a client of eCare system and contains all information
@@ -22,6 +24,34 @@ import java.util.List;
 @NoArgsConstructor
 public class UserPO extends AbstractNamedPO {
 
+    @Getter
+    public enum Authority {
+        ROLE_USER("User"),
+        ROLE_DICTATOR("Dictator"),
+        ROLE_ADMIN("Admin");
+
+        private String humanReadableValue;
+        private Authority(String value) {
+            this.humanReadableValue = value;
+        }
+
+        public static Authority fromHumanReadableName(String value) {
+            if(!stringMap.containsKey(value)) {
+                throw new IllegalArgumentException("Unknown Authority string value: " + value);
+            }
+            return stringMap.get(value);
+        }
+
+        public static final Authority defaultAuthority = Authority.ROLE_USER;
+        public static final Map<String, Authority> stringMap;
+        static {
+            stringMap = new HashMap<>();
+            for(final Authority en : Authority.values()) {
+                stringMap.put(en.getHumanReadableValue(), en);
+            }
+        }
+
+    }
     @Column(name = "last_name")
     private String lastName;
 
@@ -44,7 +74,8 @@ public class UserPO extends AbstractNamedPO {
     private boolean enabled;
 
     @Column(name = "authority")
-    private String authority;
+    @Enumerated(EnumType.STRING)
+    private Authority authority;
 
     @JoinTable(
             name="user_contracts",

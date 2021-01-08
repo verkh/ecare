@@ -14,6 +14,7 @@ import java.util.Optional;
  * DAO is an interface that represents common manipulation methods for data objects;
  * @param <T> Template parameter describes handled data
  */
+@Transactional
 public class Dao<T> implements BaseData<T> {
 
     protected final Class<T> type;

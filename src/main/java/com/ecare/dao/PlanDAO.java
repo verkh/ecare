@@ -1,12 +1,10 @@
 package com.ecare.dao;
 
 import com.ecare.models.PlanPO;
-import org.springframework.stereotype.Repository;
 
-@Repository("PlanDAO")
-public class PlanDAO extends Dao<PlanPO> {
+public class PlanDAO extends Dao<PlanPO> implements IPlanDAO {
 
-    PlanDAO() {
+    public PlanDAO() {
         super(PlanPO.class);
     }
 }

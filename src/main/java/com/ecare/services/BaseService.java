@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import java.util.Optional;
 
-public class BaseService<DAOType extends Dao, POJOType> implements BaseData<POJOType> {
+public class BaseService<DAOType extends BaseData, POJOType> implements BaseData<POJOType> {
     @Autowired
     protected DAOType dao;
 
