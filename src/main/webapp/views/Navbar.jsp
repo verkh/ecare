@@ -38,6 +38,7 @@
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="${pageContext.request.contextPath}/register">Register subscriber</a>
                                 <a class="dropdown-item" href="${pageContext.request.contextPath}/administration/tariffs">Manage plans</a>
+                                <a class="dropdown-item" href="${pageContext.request.contextPath}/administration/options">Manage options</a>
                             </div>
                         </li>
                     </security:authorize>

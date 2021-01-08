@@ -10,7 +10,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>eCare Tariffs</title>
+    <title>eCare Options</title>
     <link rel="icon" href="<spring:url value='/images/eCareIcon.png'/>">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -39,19 +39,23 @@
             <th scope="col">Id</th>
             <th scope="col">Name</th>
             <th scope="col">Price</th>
+            <th scope="col">Turn on Price</th>
+            <th scope="col">Description</th>
             <th scope="col"></th>
             <th scope="col"></th>
         </tr>
-        <c:forEach items="${tariffs}" var="tariff">
+        <c:forEach items="${options}" var="option">
             <tr>
-                <td>${tariff.getId()}</td>
-                <td>${tariff.getName()}</td>
-                <td>${tariff.getPrice()}</td>
+                <td>${option.id}</td>
+                <td>${option.name}</td>
+                <td>${option.price}</td>
+                <td>${option.turnOnPrice}</td>
+                <td>${option.description}</td>
                 <td>
-                    <a href="${pageContext.request.contextPath}/administration/tariffs/${tariff.getId()}" type="button" class="btn btn-secondary btn-sm">View</a>
+                    <a href="${pageContext.request.contextPath}/administration/options/${option.getId()}" type="button" class="btn btn-secondary btn-sm">View</a>
                 </td>
                 <td>
-                    <a href="${pageContext.request.contextPath}/administration/tariffs/${tariff.getId()}?block=true" type="button" class="btn btn-secondary btn-sm">Delete</a>
+                    <a href="${pageContext.request.contextPath}/administration/options/${option.getId()}?block=true" type="button" class="btn btn-secondary btn-sm">Delete</a>
                 </td>
             </tr>
         </c:forEach>

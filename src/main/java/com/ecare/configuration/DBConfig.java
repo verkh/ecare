@@ -69,4 +69,6 @@ public class DBConfig {
     public IPlanDAO getPlanDAO() {
         return new PlanDAO();
     }
+    @Bean
+    public IOptionDAO getOptionDAO() { return new OptionDAO(); }
 }
