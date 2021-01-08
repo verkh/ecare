@@ -31,5 +31,5 @@ VALUES
        (3, "Maria", "Mmmmm", "1941-09-11", "342 123122", "moscow street 11", "maria@gmail.com", "$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a", 1, "ROLE_USER"),
        (4, "Anna", "Aaaaa", "1985-09-11", "65443 123122", "dom 12", "anna@gmail.com", "$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a", 1, "ROLE_USER"),
        (5, "Peasant", "Peasantov", "1999-09-11", "23553 123122", "some box", "peasant@gmail.com", "$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a", 1, "ROLE_USER"),
-       (6, "Exile", "Exilov", "1999-09-11", "23553 123122", "swamp", "exile@gmail.com", "$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a", 1, "ROLE_EXILE"),
+       (6, "Exile", "Exilov", "1999-09-11", "23553 123122", "swamp", "exile@gmail.com", "$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a", 1, "ROLE_USER"),
        (7, "Admin", "Adminov", "1999-09-11", "23553 123122", "swamp", "admin@gmail.com", "$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a", 1, "ROLE_ADMIN");
