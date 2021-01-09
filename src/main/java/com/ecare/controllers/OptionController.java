@@ -6,9 +6,7 @@ import com.ecare.services.OptionsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class OptionController {
@@ -29,6 +27,17 @@ public class OptionController {
         try {
             OptionPO option = optionsService.get(id).get();
             model.addAttribute("option", option);
+        } catch (Exception e) {
+            model.addAttribute("error", e.toString());
+            model.addAttribute("errorStack", e.getStackTrace().toString());
+        }
+        return "administration/Option";
+    }
+
+    @RequestMapping(value="/administration/options/{id}", method = RequestMethod.POST)
+    public String getOption(ModelMap model, @PathVariable long id, @ModelAttribute("option") OptionPO option) {
+        try {
+            optionsService.update(option);
         } catch (Exception e) {
             model.addAttribute("error", e.toString());
             model.addAttribute("errorStack", e.getStackTrace().toString());

@@ -1,4 +1,5 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -9,9 +10,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta path="viewport" content="width=device-width, initial-scale=1">
 
-    <title>${option.name}</title>
+    <title>${name}</title>
     <link rel="icon" href="<spring:url value='/images/eCareIcon.png'/>">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -28,7 +29,7 @@
 <br/>
 <div id=wrapper class="container">
     <div class="d-flex justify-content-center">
-        <form action="${current_action}" method="POST" style="min-width: 600px;">
+        <form:form action="${current_action}" method="POST" style="min-width: 600px;" modelAttribute="option">
             <div class="form card p-3 bg-dark">
                 <div class="text-center mb-4">
                     <img class="mb-4" src="<spring:url value='/images/eCareIcon.png'/>" alt="" width="100"
@@ -38,14 +39,14 @@
 
                 <div class="form-group">
                     <label for="nameInput">Name</label>
-                    <input value="${option.name}" type="text" name="firstName" class="form-control"
-                           id="nameInput" aria-describedby="nameHelp" placeholder="Enter name">
+                    <form:input type="text" path="name" class="form-control"
+                                id="nameInput" aria-describedby="nameHelp" placeholder="Enter name"></form:input>
                 </div>
 
                 <label for="priceInput">Price</label>
                 <div class="input-group">
-                    <input value="${option.price}" type="text" name="lastName" class="form-control"
-                           id="priceInput" placeholder="Enter last name">
+                    <form:input type="text" path="price" class="form-control"
+                                id="priceInput" placeholder="Enter last name"></form:input>
                     <div class="input-group-append">
                         <span class="input-group-text">$</span>
                     </div>
@@ -53,8 +54,8 @@
 
                 <label for="turnOnPriceInput">Turn on price</label>
                 <div class="input-group">
-                    <input value="${option.turnOnPrice}" type="text" name="lastName" class="form-control"
-                           id="turnOnPriceInput" placeholder="Enter last name">
+                    <form:input type="text" path="turnOnPrice" class="form-control"
+                                id="turnOnPriceInput" placeholder="Enter last name"></form:input>
                     <div class="input-group-append">
                         <span class="input-group-text">$</span>
                     </div>
@@ -63,12 +64,13 @@
                 <br/>
                 <div class="form-group">
                     <label for="descriptionInput">Description</label>
-                    <textarea type="text" name="description" class="form-control" id="descriptionInput"
+                    <form:textarea type="text" path="description" class="form-control" id="descriptionInput"
                               placeholder="Enter description"
-                              style="min-height: 200px;">${option.description}</textarea>
+                              style="min-height: 200px;"></form:textarea>
                 </div>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Save</button>
             </div>
-        </form>
+        </form:form>
     </div>
 </div>
 
