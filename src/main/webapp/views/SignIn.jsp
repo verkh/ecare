@@ -47,7 +47,7 @@
                name="${_csrf.parameterName}"
                value="${_csrf.token}"/>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-        <a type="button" class="btn" href="${pageContext.request.contextPath}/SignUp">Don't have an account?</a>
+        <a type="button" class="btn" href="${pageContext.request.contextPath}/register">Don't have an account?</a>
         <p class="mt-5 mb-3 text-muted text-center">&copy; 2020 - Until death do us part</p>
     </form>
 </main>
