@@ -23,8 +23,8 @@ public class BaseUserController {
     @Getter
     public enum Type {
         Profile("Profile", "profile"),
-        Registration("Registration", "registration"),
-        AdminRegistration("Registration", "/administration/users/");
+        Registration("Registration", "register"),
+        AdminRegistration("Registration", "");
 
         String title;
         String action;

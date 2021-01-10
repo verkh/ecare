@@ -35,22 +35,14 @@ public class UserPO extends AbstractNamedPO {
             this.humanReadableValue = value;
         }
 
-        public static Authority fromHumanReadableName(String value) {
-            if(!stringMap.containsKey(value)) {
-                throw new IllegalArgumentException("Unknown Authority string value: " + value);
-            }
-            return stringMap.get(value);
-        }
-
         public static final Authority defaultAuthority = Authority.ROLE_USER;
-        public static final Map<String, Authority> stringMap;
+        public static final Map<Authority, String> stringMap;
         static {
             stringMap = new HashMap<>();
             for(final Authority en : Authority.values()) {
-                stringMap.put(en.getHumanReadableValue(), en);
+                stringMap.put(en, en.getHumanReadableValue());
             }
         }
-
     }
     @Column(name = "last_name")
     private String lastName;
@@ -77,11 +69,7 @@ public class UserPO extends AbstractNamedPO {
     @Enumerated(EnumType.STRING)
     private Authority authority;
 
-    @JoinTable(
-            name="user_contracts",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "contract_id")
-    )
-    @OneToMany
-    private List<ContractPO> contracts = new ArrayList<>();
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private ContractPO contract;
 }

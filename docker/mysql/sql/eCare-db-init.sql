@@ -46,18 +46,12 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 CREATE TABLE IF NOT EXISTS `contracts` (
     id INT unsigned NOT NULL AUTO_INCREMENT,
-    phone_nubmer BIGINT unsigned NOT NULL,
+    phone_number VARCHAR(255) NOT NULL,
+    user_id INT unsigned NOT NULL,
     plan_id INT unsigned NOT NULL,
     PRIMARY KEY(id),
-    FOREIGN KEY(plan_id) REFERENCES plans(id)
-);
-
-CREATE TABLE IF NOT EXISTS `user_contracts` (
-    user_id INT unsigned NOT NULL,
-    contract_id INT unsigned NOT NULL,
-    PRIMARY KEY(user_id, contract_id),
     FOREIGN KEY(user_id) REFERENCES users(id),
-    FOREIGN KEY(contract_id) REFERENCES contracts(id)
+    FOREIGN KEY(plan_id) REFERENCES plans(id)
 );
 
 CREATE TABLE IF NOT EXISTS `contract_options` (

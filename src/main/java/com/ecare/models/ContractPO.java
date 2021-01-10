@@ -1,6 +1,6 @@
 package com.ecare.models;
 
-import com.ecare.models.base.AbstractNamedPO;
+import com.ecare.models.base.AbstractPO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,7 +16,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ContractPO extends AbstractNamedPO {
+public class ContractPO extends AbstractPO {
     @Column(name = "phone_number")
     private String phoneNumber;
 
@@ -24,11 +24,7 @@ public class ContractPO extends AbstractNamedPO {
     @JoinColumn(name = "plan_id", referencedColumnName = "id")
     private PlanPO plan;
 
-    @JoinTable(
-            name="user_contracts",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "contract_id")
-    )
-    @ManyToOne(fetch=FetchType.LAZY)
+    @OneToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserPO user;
 }

@@ -1,15 +1,16 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-         pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta path="viewport" content="width=device-width, initial-scale=1">
 
     <title>Registration</title>
     <link rel="icon" href="<spring:url value='/images/eCareIcon.png'/>">
@@ -28,7 +29,7 @@
 <br/>
 <div id=wrapper class="container">
     <div class="d-flex justify-content-center">
-        <form action="${current_action}" method="POST">
+        <form:form action="${current_action}" method="POST" modelAttribute="user">
             <div class="row">
                 <div class="col col-sm-auto"
                      style="padding-right: 3px; padding-left:3px; margin-right:3px; margin-left:3px">
@@ -41,18 +42,17 @@
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">
-                                    <label for="nameInput">Name</label>
-                                    <input value="${user.name}" type="text" name="firstName" class="form-control"
-                                           id="nameInput" aria-describedby="nameHelp" placeholder="Enter name">
-                                    <small id="nameHelp" class="form-text text-muted">Fake information leads to
-                                        jail</small>
+                                    <label for="pathInput">Name</label>
+                                    <form:input path="name" type="text" class="form-control"
+                                                id="pathInput" aria-describedby="pathHelp" placeholder="Enter name"></form:input>
+                                    <small id="pathHelp" class="form-text text-muted">Fake information leads to jail</small>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="form-group">
-                                    <label for="lastNameInput">Last Name</label>
-                                    <input value="${user.lastName}" type="text" name="lastName" class="form-control"
-                                           id="lastNameInput" placeholder="Enter last name">
+                                    <label for="lastpathInput">Last path</label>
+                                    <form:input path="lastName" type="text" class="form-control"
+                                                id="lastpathInput" placeholder="Enter last name"></form:input>
                                 </div>
                             </div>
                         </div>
@@ -60,34 +60,29 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Email address</label>
-                                    <input value="${user.email}" type="email" name="email" class="form-control"
+                                    <form:input value="" type="email" path="email" class="form-control"
                                            id="exampleInputEmail1" aria-describedby="emailHelp"
-                                           placeholder="Enter email">
+                                                placeholder="Enter email"></form:input>
                                     <small id="emailHelp" class="form-text text-muted">You're email would be used for
                                         Dictator's notifications</small>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="form-group">
-                                <label for="phoneNumber">Phone Number</label>
-                                <input type="tel" name="phoneNumber" class="form-control" id="phoneNumber"
-                                       placeholder="Enter phone number">
+                        <c:if test="${empty user.id}">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label for="phoneNumber">Phone Number</label>
+                                    <form:input type="tel" path="contract.phoneNumber" class="form-control" id="phoneNumber"
+                                                placeholder="Enter phone number"></form:input>
+                                </div>
                             </div>
-                        </div>
+                        </c:if>
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">
                                     <label for="inputPassword">Password</label>
-                                    <input type="password" name="password1" class="form-control" id="inputPassword"
-                                           placeholder="Password">
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="form-group">
-                                    <label for="inputPasswordConfirm">Password again</label>
-                                    <input type="password" name="password2" class="form-control"
-                                           id="inputPasswordConfirm" placeholder="Password again">
+                                    <form:input type="password" path="passwordHash" class="form-control" id="inputPassword"
+                                                placeholder="Password"></form:input>
                                 </div>
                             </div>
                         </div>
@@ -101,21 +96,9 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <label for="roleSelect">User role</label>
-                                        <select class="custom-select" id="roleSelect" name="authority">
-                                            <c:forEach items="${availableAuthorities}" var="role">
-                                                <c:choose>
-                                                    <c:when test="${empty user.authority && role.value == defaultAuthority}">
-                                                        <option selected value="${role.value}">${role.key}</option>
-                                                    </c:when>
-                                                    <c:when test="${role.value != user.authority}">
-                                                        <option value="${role.value}">${role.key}</option>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <option selected value="${user.authority}">${user.authority.humanReadableValue}</option>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </c:forEach>
-                                        </select>
+                                        <form:select class="custom-select" id="roleSelect" path="authority">
+                                            <form:options items="${avaliableAuthorities}" itemLabel="humanReadableValue"></form:options>
+                                        </form:select>
                                     </div>
                                 </div>
                             </div>
@@ -124,8 +107,8 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label for="birthDate">Birth Date</label>
-                                    <input value="${user.date}" type="date" name="birthDate" class="form-control"
-                                           id="birthDate">
+                                    <form:input value="${user.date}" type="date" path="date" class="form-control"
+                                                id="birthDate"></form:input>
                                 </div>
                             </div>
                         </div>
@@ -133,16 +116,16 @@
                         <div class="row">
                             <div class="form-group">
                                 <label for="passport">Passport</label>
-                                <textarea type="text" name="passport" class="form-control" id="passport"
-                                          placeholder="Enter passport">${user.passport}</textarea>
+                                <form:textarea type="text" path="passport" class="form-control" id="passport"
+                                          placeholder="Enter passport"></form:textarea>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="form-group">
                                 <label for="address">Address</label>
-                                <textarea type="text" name="address" class="form-control" id="address"
-                                          placeholder="Enter address">${user.address}</textarea>
+                                <form:textarea type="text" path="address" class="form-control" id="address"
+                                          placeholder="Enter address"></form:textarea>
                             </div>
                         </div>
 
@@ -156,7 +139,7 @@
                     </div>
                 </div>
             </div>
-        </form>
+        </form:form>
     </div>
 </div>
 

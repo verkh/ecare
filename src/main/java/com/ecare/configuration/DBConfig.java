@@ -53,6 +53,8 @@ public class DBConfig {
     Properties additionalProperties(String dialect) {
         Properties properties = new Properties();
         properties.setProperty("hibernate.dialect", dialect);
+        properties.setProperty("hibernate.show_sql", "true");
+        properties.setProperty("hibernate.format_sql", "true");
 
         return properties;
     }

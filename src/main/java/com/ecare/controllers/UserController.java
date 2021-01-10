@@ -1,5 +1,6 @@
 package com.ecare.controllers;
 
+import com.ecare.models.OptionPO;
 import com.ecare.models.PlanPO;
 import com.ecare.models.UserPO;
 import com.ecare.services.AuthService;
@@ -8,11 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
+@SessionAttributes("user")
 public class UserController extends BaseUserController {
 
     /**
@@ -20,8 +21,19 @@ public class UserController extends BaseUserController {
      * @param model - current page model
      * @return the name of JSP
      */
-    @RequestMapping(value="/profile")
-    public String getProfile(ModelMap model) { return profilePrepare(model, Type.Registration); }
+    @RequestMapping(value="/profile", method = RequestMethod.GET)
+    public String getProfile(ModelMap model) {
+        return profilePrepare(model, Type.Profile, authService.getCurrentUser(), null);
+    }
+
+    @RequestMapping(value= {"/profile","/administration/users/{id}"}, method = RequestMethod.POST)
+    public String saveProfile(ModelMap model, @ModelAttribute("user") UserPO user, BindingResult result) {
+        userService.update(user);
+        if(result.hasErrors()) {
+
+        }
+        return "Profile";
+    }
 
     /**
      * Show
@@ -29,8 +41,10 @@ public class UserController extends BaseUserController {
      * @param id
      * @return
      */
-    @RequestMapping(value="/administration/users/{id}")
-    public String getUser(ModelMap model, @PathVariable long id) { return profilePrepare(model, Type.AdminRegistration); }
+    @RequestMapping(value="/administration/users/{id}", method = RequestMethod.GET)
+    public String getUser(ModelMap model, @PathVariable long id) {
+        return profilePrepare(model, Type.AdminRegistration, userService.get(id).get(), id);
+    }
 
     /**
      * Show users tables with pagination
@@ -52,10 +66,13 @@ public class UserController extends BaseUserController {
      * @param type - which type of profile is used
      * @return the name of JSP
      */
-    private String profilePrepare(ModelMap model, Type type) {
-        UserPO currentUser = authService.getCurrentUser();
+    private String profilePrepare(ModelMap model, Type type, UserPO currentUser, Long id) {
         model.addAttribute("user", currentUser);
-        prepare(model, type);
+        if (id == null) {
+            prepare(model, type);
+        } else {
+            prepare(model, type, id);
+        }
         return "Profile";
     }
 }
