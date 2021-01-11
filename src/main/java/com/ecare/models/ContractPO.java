@@ -24,7 +24,7 @@ public class ContractPO extends AbstractPO {
     @JoinColumn(name = "plan_id", referencedColumnName = "id")
     private PlanPO plan;
 
-    @OneToOne(fetch=FetchType.LAZY)
+    @OneToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserPO user;
 }

@@ -10,7 +10,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta path="viewport" content="width=device-width, initial-scale=1">
+    <meta path="user.viewport" content="width=device-width, initial-scale=1">
 
     <title>Registration</title>
     <link rel="icon" href="<spring:url value='/images/eCareIcon.png'/>">
@@ -29,7 +29,7 @@
 <br/>
 <div id=wrapper class="container">
     <div class="d-flex justify-content-center">
-        <form:form action="${current_action}" method="POST" modelAttribute="user">
+        <form:form action="${current_action}" method="POST" modelAttribute="contract">
             <div class="row">
                 <div class="col col-sm-auto"
                      style="padding-right: 3px; padding-left:3px; margin-right:3px; margin-left:3px">
@@ -38,21 +38,26 @@
                             <img class="mb-4" src="<spring:url value='/images/eCareIcon.png'/>" alt="" width="100"
                                  height="100">
                             <h1 class="h3 mb-3 font-weight-normal">${current_action_title}</h1>
+                            <c:if test="${not empty success}">
+                                <div class="alert-success text-sm-center" role="alert">Done! ${success}</div>
+                            </c:if>
                         </div>
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">
                                     <label for="pathInput">Name</label>
-                                    <form:input path="name" type="text" class="form-control"
+                                    <form:input path="user.name" type="text" class="form-control"
                                                 id="pathInput" aria-describedby="pathHelp" placeholder="Enter name"></form:input>
+                                    <form:errors class="text-danger" path="user.name"/>
                                     <small id="pathHelp" class="form-text text-muted">Fake information leads to jail</small>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="form-group">
                                     <label for="lastpathInput">Last path</label>
-                                    <form:input path="lastName" type="text" class="form-control"
+                                    <form:input path="user.lastName" type="text" class="form-control"
                                                 id="lastpathInput" placeholder="Enter last name"></form:input>
+                                    <form:errors class="text-danger" path="user.lastName"/>
                                 </div>
                             </div>
                         </div>
@@ -60,20 +65,32 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Email address</label>
-                                    <form:input value="" type="email" path="email" class="form-control"
+                                    <form:input type="email" path="user.email" class="form-control"
                                            id="exampleInputEmail1" aria-describedby="emailHelp"
                                                 placeholder="Enter email"></form:input>
+                                    <form:errors class="text-danger" path="user.email"/>
                                     <small id="emailHelp" class="form-text text-muted">You're email would be used for
                                         Dictator's notifications</small>
                                 </div>
                             </div>
                         </div>
-                        <c:if test="${empty user.id}">
+                        <c:if test="${empty contract.user.id}">
                             <div class="row">
                                 <div class="form-group">
-                                    <label for="phoneNumber">Phone Number</label>
-                                    <form:input type="tel" path="contract.phoneNumber" class="form-control" id="phoneNumber"
-                                                placeholder="Enter phone number"></form:input>
+                                    <div class="row">
+                                        <div class="col">
+                                            <label for="phoneNumber">Phone Number</label>
+                                            <form:input type="tel" path="phoneNumber" class="form-control" id="phoneNumber"
+                                                        placeholder="Enter phone number"></form:input>
+                                            <form:errors class="text-danger" path="phoneNumber"/>
+                                        </div>
+                                        <div class="col">
+                                            <label for="planSelect">Plan</label>
+                                            <form:select class="form-select" id="planSelect" path="plan.id">
+                                                <form:options items="${availablePlans}" itemValue="id" itemLabel="name"></form:options>
+                                            </form:select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </c:if>
@@ -81,8 +98,9 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label for="inputPassword">Password</label>
-                                    <form:input type="password" path="passwordHash" class="form-control" id="inputPassword"
+                                    <form:input type="password" path="user.rawPassword" class="form-control" id="inputPassword"
                                                 placeholder="Password"></form:input>
+                                    <form:errors class="text-danger" path="user.passwordHash"/>
                                 </div>
                             </div>
                         </div>
@@ -96,7 +114,7 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <label for="roleSelect">User role</label>
-                                        <form:select class="custom-select" id="roleSelect" path="authority">
+                                        <form:select class="custom-select" id="roleSelect" path="user.authority">
                                             <form:options items="${avaliableAuthorities}" itemLabel="humanReadableValue"></form:options>
                                         </form:select>
                                     </div>
@@ -107,8 +125,9 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label for="birthDate">Birth Date</label>
-                                    <form:input value="${user.date}" type="date" path="date" class="form-control"
+                                    <form:input value="${user.date}" type="date" path="user.date" class="form-control"
                                                 id="birthDate"></form:input>
+                                    <form:errors class="text-danger" path="user.date"/>
                                 </div>
                             </div>
                         </div>
@@ -116,22 +135,21 @@
                         <div class="row">
                             <div class="form-group">
                                 <label for="passport">Passport</label>
-                                <form:textarea type="text" path="passport" class="form-control" id="passport"
+                                <form:textarea type="text" path="user.passport" class="form-control" id="passport"
                                           placeholder="Enter passport"></form:textarea>
+                                <form:errors class="text-danger" path="user.passport"/>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="form-group">
                                 <label for="address">Address</label>
-                                <form:textarea type="text" path="address" class="form-control" id="address"
+                                <form:textarea type="text" path="user.address" class="form-control" id="address"
                                           placeholder="Enter address"></form:textarea>
+                                <form:errors class="text-danger" path="user.address"/>
                             </div>
                         </div>
 
-                        <c:if test="${not empty error}">
-                            <div class="text-danger text-sm-center" role="alert">${error}</div>
-                        </c:if>
                         <input type="hidden"
                                name="${_csrf.parameterName}"
                                value="${_csrf.token}"/>

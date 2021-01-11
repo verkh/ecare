@@ -1,20 +1,20 @@
 package com.ecare.controllers;
 
-import com.ecare.models.OptionPO;
-import com.ecare.models.PlanPO;
+import com.ecare.models.ContractPO;
 import com.ecare.models.UserPO;
-import com.ecare.services.AuthService;
-import com.ecare.services.UserService;
+import com.ecare.validators.ContractValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@SessionAttributes("user")
+@SessionAttributes(names="contract", types = ContractPO.class)
 public class UserController extends BaseUserController {
+
+    @Autowired
+    ContractValidator contractValidator;
 
     /**
      * Show user's profile
@@ -26,11 +26,17 @@ public class UserController extends BaseUserController {
         return profilePrepare(model, Type.Profile, authService.getCurrentUser(), null);
     }
 
-    @RequestMapping(value= {"/profile","/administration/users/{id}"}, method = RequestMethod.POST)
-    public String saveProfile(ModelMap model, @ModelAttribute("user") UserPO user, BindingResult result) {
-        userService.update(user);
-        if(result.hasErrors()) {
-
+    @RequestMapping(value= {"/profile","/administration/users/{user_id}"}, method = RequestMethod.POST)
+    public String saveProfile(ModelMap model, @ModelAttribute(value="contract") ContractPO contract,
+                              BindingResult result)
+    {
+        contractValidator.validate(contract, result);
+        if(!result.hasErrors()) {
+            String password = contract.getUser().getRawPassword();
+            if(!password.isEmpty())
+                contract.getUser().setPasswordHash(passwordEncoder.encode(password));
+            contractService.update(contract);
+            setSuccess(model, "Successfully updated!");
         }
         return "Profile";
     }
@@ -38,12 +44,12 @@ public class UserController extends BaseUserController {
     /**
      * Show
      * @param model
-     * @param id
+     * @param user_id
      * @return
      */
-    @RequestMapping(value="/administration/users/{id}", method = RequestMethod.GET)
-    public String getUser(ModelMap model, @PathVariable long id) {
-        return profilePrepare(model, Type.AdminRegistration, userService.get(id).get(), id);
+    @RequestMapping(value="/administration/users/{user_id}", method = RequestMethod.GET)
+    public String getUser(ModelMap model, @PathVariable long user_id) {
+        return profilePrepare(model, Type.AdminRegistration, userService.get(user_id).get(), user_id);
     }
 
     /**
@@ -67,7 +73,7 @@ public class UserController extends BaseUserController {
      * @return the name of JSP
      */
     private String profilePrepare(ModelMap model, Type type, UserPO currentUser, Long id) {
-        model.addAttribute("user", currentUser);
+        model.addAttribute("contract", currentUser.getContract());
         if (id == null) {
             prepare(model, type);
         } else {

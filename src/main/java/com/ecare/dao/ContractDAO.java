@@ -9,6 +9,6 @@ public class ContractDAO extends Dao<ContractPO> implements IContractDAO {
     }
 
     public ContractPO findByPhone(String phone) {
-        return findBy(phone, "phone_number");
+        return findBy(phone, "phoneNumber");
     }
 }

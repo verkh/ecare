@@ -6,11 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.sql.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * SubscriberPO describes a client of eCare system and contains all information
@@ -21,7 +18,6 @@ import java.util.Map;
 @Table(name = "users")
 @Getter
 @Setter
-@NoArgsConstructor
 public class UserPO extends AbstractNamedPO {
 
     @Getter
@@ -44,6 +40,12 @@ public class UserPO extends AbstractNamedPO {
             }
         }
     }
+
+    public UserPO() {
+        this.authority = Authority.ROLE_USER;
+        this.date = new Date(Calendar.getInstance().getTime().getTime());
+    }
+
     @Column(name = "last_name")
     private String lastName;
 
@@ -62,6 +64,9 @@ public class UserPO extends AbstractNamedPO {
     @Column(name = "password")
     private String passwordHash;
 
+    @Transient
+    private String rawPassword;
+
     @Column(name = "enabled")
     private boolean enabled;
 
@@ -69,7 +74,7 @@ public class UserPO extends AbstractNamedPO {
     @Enumerated(EnumType.STRING)
     private Authority authority;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(fetch=FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private ContractPO contract;
 }

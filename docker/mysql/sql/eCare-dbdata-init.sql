@@ -33,3 +33,13 @@ VALUES
        (5, "Peasant", "Peasantov", "1999-09-11", "23553 123122", "some box", "peasant@gmail.com", "$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a", 1, "ROLE_USER"),
        (6, "Exile", "Exilov", "1999-09-11", "23553 123122", "swamp", "exile@gmail.com", "$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a", 1, "ROLE_USER"),
        (7, "Admin", "Adminov", "1999-09-11", "23553 123122", "swamp", "admin@gmail.com", "$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a", 1, "ROLE_ADMIN");
+
+INSERT INTO contracts(id, phone_number, user_id, plan_id)
+VALUES
+       (11, "9650358599", 1, 1),
+       (12, "9650358598", 2, 2),
+       (13, "9650358597", 3, 2),
+       (14, "9650358596", 4, 2),
+       (15, "9650358595", 5, 2),
+       (16, "9650358594", 6, 3),
+       (17, "9650358593", 7, 1);
