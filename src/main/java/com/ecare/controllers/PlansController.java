@@ -1,6 +1,9 @@
 package com.ecare.controllers;
 
+import com.ecare.models.ContractPO;
 import com.ecare.models.PlanPO;
+import com.ecare.services.AuthService;
+import com.ecare.services.ContractService;
 import com.ecare.services.PlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
@@ -16,6 +19,12 @@ public class PlansController {
 
     @Autowired
     PlanService planService;
+
+    @Autowired
+    ContractService contractService;
+
+    @Autowired
+    protected AuthService authService;
 
     @RequestMapping(value = "/plans")
     public String getPlans(ModelMap model) {
@@ -45,4 +54,16 @@ public class PlansController {
         return "administration/Tariffs";
     }
 
+    @RequestMapping(value = "/plans/plan")
+    public String applyPlan(ModelMap model,
+                           @RequestParam(value = "apply", required = false) Long id
+    ) {
+        PlanPO plan = planService.get(id).get();
+        ContractPO contract = authService.getCurrentUser().getContract();
+        contract.setPlan(plan);
+
+        contractService.save(contract);
+
+        return "redirect:/profile";
+    }
 }

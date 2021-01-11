@@ -34,7 +34,7 @@
         </div>
         <div class="col-md-auto">
             <h4 class="text-center">${Plan.price}$/month</h4>
-            <a href="#" type="button" class="w-100 btn btn-sm btn-primary">Apply</a>
+            <a href="plan?apply=${Plan.id}" type="button" class="w-100 btn btn-sm btn-primary">Apply</a>
         </div>
     </div>
 </div>
