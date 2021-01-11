@@ -55,6 +55,6 @@ public class AuthController extends BaseUserController {
         contractService.save(newContract);
         setSuccess(model, "You've been successfully registered!");
 
-        return "Profile";
+        return "redirect:/auth";
     }
 }
