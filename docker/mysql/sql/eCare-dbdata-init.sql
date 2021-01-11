@@ -24,15 +24,15 @@ VALUES
        (2,3),
        (3,5);
 
-INSERT INTO users(id, name, last_name, birth_date, passport, address, email, password, enabled, authority)
+INSERT INTO users(id, name, last_name, birth_date, passport, address, email, password, blocked, authority)
 VALUES
-       (1, "Denis", "Verkhovskii", "1991-09-11", "1232 123122", "spb street 11", "verkh@gmail.com", "$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a", 1, "ROLE_DICTATOR"),
-       (2, "Oleg", "Oooo", "1992-09-11", "42332 123122", "lo street 11", "oleg@gmail.com", "$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a", 1, "ROLE_USER"),
-       (3, "Maria", "Mmmmm", "1941-09-11", "342 123122", "moscow street 11", "maria@gmail.com", "$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a", 1, "ROLE_USER"),
+       (1, "Denis", "Verkhovskii", "1991-09-11", "1232 123122", "spb street 11", "verkh@gmail.com", "$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a", 0, "ROLE_DICTATOR"),
+       (2, "Oleg", "Oooo", "1992-09-11", "42332 123122", "lo street 11", "oleg@gmail.com", "$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a", 0, "ROLE_USER"),
+       (3, "Maria", "Mmmmm", "1941-09-11", "342 123122", "moscow street 11", "maria@gmail.com", "$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a", 0, "ROLE_USER"),
        (4, "Anna", "Aaaaa", "1985-09-11", "65443 123122", "dom 12", "anna@gmail.com", "$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a", 1, "ROLE_USER"),
-       (5, "Peasant", "Peasantov", "1999-09-11", "23553 123122", "some box", "peasant@gmail.com", "$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a", 1, "ROLE_USER"),
-       (6, "Exile", "Exilov", "1999-09-11", "23553 123122", "swamp", "exile@gmail.com", "$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a", 1, "ROLE_USER"),
-       (7, "Admin", "Adminov", "1999-09-11", "23553 123122", "swamp", "admin@gmail.com", "$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a", 1, "ROLE_ADMIN");
+       (5, "Peasant", "Peasantov", "1999-09-11", "23553 123122", "some box", "peasant@gmail.com", "$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a", 0, "ROLE_USER"),
+       (6, "Exile", "Exilov", "1999-09-11", "23553 123122", "swamp", "exile@gmail.com", "$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a", 0, "ROLE_USER"),
+       (7, "Admin", "Adminov", "1999-09-11", "23553 123122", "swamp", "admin@gmail.com", "$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a", 0, "ROLE_ADMIN");
 
 INSERT INTO contracts(id, phone_number, user_id, plan_id)
 VALUES

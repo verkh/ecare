@@ -39,8 +39,10 @@ CREATE TABLE IF NOT EXISTS `users` (
     address VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
-    enabled TINYINT NOT NULL DEFAULT 1,
+    blocked TINYINT NOT NULL DEFAULT 1,
+    disabled_by INT unsigned DEFAULT NULL REFERENCES users,
     authority VARCHAR(50) NOT NULL,
+
     PRIMARY KEY(id)
 );
 

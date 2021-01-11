@@ -44,7 +44,7 @@ public class AuthServiceImpl implements AuthService {
         private String password;
         private String username;
         private List<Role> authorities;
-        private boolean enabled;
+        private boolean enabled = true;
         private boolean accountNonExpired = true;
         private boolean accountNonLocked = true;
         private boolean credentialsNonExpired = true;
@@ -53,7 +53,6 @@ public class AuthServiceImpl implements AuthService {
             this.id = subscriber.getId();
             this.username = subscriber.getEmail();
             this.password = subscriber.getPasswordHash();
-            this.enabled = subscriber.isEnabled();
             this.authorities = Arrays.asList(new Role(subscriber.getAuthority().toString()));
         }
     }
@@ -77,6 +76,9 @@ public class AuthServiceImpl implements AuthService {
 
     public UserPO getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Object authPrincipal = auth.getPrincipal();
+        if(authPrincipal == null)
+            return null;
         UserPrincipal principal = (UserPrincipal) auth.getPrincipal();
         return userDAO.get(principal.getId()).orElse(null);
     }

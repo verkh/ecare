@@ -46,6 +46,8 @@ public class UserPO extends AbstractNamedPO {
         this.date = new Date(Calendar.getInstance().getTime().getTime());
     }
 
+    public boolean isAdmin() { return authority == Authority.ROLE_ADMIN; }
+
     @Column(name = "last_name")
     private String lastName;
 
@@ -67,8 +69,8 @@ public class UserPO extends AbstractNamedPO {
     @Transient
     private String rawPassword;
 
-    @Column(name = "enabled")
-    private boolean enabled;
+    @Column(name = "blocked")
+    private boolean blocked;
 
     @Column(name = "authority")
     @Enumerated(EnumType.STRING)
@@ -77,4 +79,7 @@ public class UserPO extends AbstractNamedPO {
     @OneToOne(fetch=FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private ContractPO contract;
+
+    @Column(name = "disabled_by")
+    private Long disabledBy;
 }

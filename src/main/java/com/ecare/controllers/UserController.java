@@ -22,8 +22,10 @@ public class UserController extends BaseUserController {
      * @return the name of JSP
      */
     @RequestMapping(value="/profile", method = RequestMethod.GET)
-    public String getProfile(ModelMap model) {
-        return profilePrepare(model, Type.Profile, authService.getCurrentUser(), null);
+    public String getProfile(ModelMap model,
+                             @RequestParam(value = "block", required = false) Boolean block
+    ){
+        return profilePrepare(model, Type.Profile, authService.getCurrentUser(), block, null);
     }
 
     @RequestMapping(value= {"/profile","/administration/users/{user_id}"}, method = RequestMethod.POST)
@@ -38,6 +40,7 @@ public class UserController extends BaseUserController {
             contractService.update(contract);
             setSuccess(model, "Successfully updated!");
         }
+        checkBlockStatus(model, contract.getUser());
         return "Profile";
     }
 
@@ -48,8 +51,11 @@ public class UserController extends BaseUserController {
      * @return
      */
     @RequestMapping(value="/administration/users/{user_id}", method = RequestMethod.GET)
-    public String getUser(ModelMap model, @PathVariable long user_id) {
-        return profilePrepare(model, Type.AdminRegistration, userService.get(user_id).get(), user_id);
+    public String getUser(ModelMap model,
+                          @PathVariable long user_id,
+                          @RequestParam(value = "block", required = false) Boolean block
+    ) {
+        return profilePrepare(model, Type.AdminRegistration, userService.get(user_id).get(), block, user_id);
     }
 
     /**
@@ -72,13 +78,39 @@ public class UserController extends BaseUserController {
      * @param type - which type of profile is used
      * @return the name of JSP
      */
-    private String profilePrepare(ModelMap model, Type type, UserPO currentUser, Long id) {
+    private String profilePrepare(ModelMap model, Type type, UserPO currentUser, Boolean block, Long id) {
         model.addAttribute("contract", currentUser.getContract());
         if (id == null) {
             prepare(model, type);
         } else {
             prepare(model, type, id);
         }
+
+        if(block != null && currentUser.getContract() != null)
+            blockProcess(block, currentUser.getContract());
+
+        checkBlockStatus(model, currentUser);
+
         return "Profile";
+    }
+
+    private void blockProcess(boolean block, ContractPO contract){
+        if(block || (!block && canUnblock(contract.getUser()))) {
+            UserPO user = contract.getUser();
+            user.setBlocked(block);
+            user.setDisabledBy(block ? authService.getCurrentUser().getId() : null);
+        }
+    }
+
+    private void checkBlockStatus(ModelMap model, UserPO currentUser) {
+        if(currentUser.isBlocked()) {
+            model.addAttribute("blocked", true);
+            if(canUnblock(currentUser))
+                model.addAttribute("couldBeUnblocked", true);
+        }
+    }
+
+    private boolean canUnblock(UserPO currentUser) {
+        return currentUser.getDisabledBy() == currentUser.getId() || authService.getCurrentUser().isAdmin();
     }
 }

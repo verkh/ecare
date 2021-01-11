@@ -60,7 +60,14 @@
                     <a href="${pageContext.request.contextPath}/administration/users/${user.getId()}" type="button" class="btn btn-secondary btn-sm">View</a>
                 </td>
                 <td>
-                    <a href="${pageContext.request.contextPath}/administration/users/${user.getId()}?block=true" type="button" class="btn btn-secondary btn-sm">Block</a>
+                    <c:choose>
+                        <c:when test="${user.blocked==false}">
+                            <a href="${pageContext.request.contextPath}/administration/users/${user.getId()}?block=1" type="button" class="btn btn-danger btn-sm">Block</a>
+                        </c:when>
+                        <c:otherwise>
+                            <a href="${pageContext.request.contextPath}/administration/users/${user.getId()}?block=0" type="button" class="btn btn-success btn-sm">Unblock</a>
+                        </c:otherwise>
+                    </c:choose>
                 </td>
             </tr>
         </c:forEach>

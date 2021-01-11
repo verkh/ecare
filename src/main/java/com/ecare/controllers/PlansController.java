@@ -2,6 +2,7 @@ package com.ecare.controllers;
 
 import com.ecare.models.ContractPO;
 import com.ecare.models.PlanPO;
+import com.ecare.models.UserPO;
 import com.ecare.services.AuthService;
 import com.ecare.services.ContractService;
 import com.ecare.services.PlanService;
@@ -58,8 +59,12 @@ public class PlansController {
     public String applyPlan(ModelMap model,
                            @RequestParam(value = "apply", required = false) Long id
     ) {
+        UserPO user = authService.getCurrentUser();
+        if(user == null)
+            return "redirect:/auth";
+
         PlanPO plan = planService.get(id).get();
-        ContractPO contract = authService.getCurrentUser().getContract();
+        ContractPO contract = user.getContract();
         contract.setPlan(plan);
 
         contractService.save(contract);
