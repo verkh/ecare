@@ -2,7 +2,9 @@ package com.ecare.dao;
 
 import com.ecare.models.UserPO;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class UserDAO extends Dao<UserPO> implements IUserDAO {
 
     public UserDAO() {

@@ -1,7 +1,9 @@
 package com.ecare.dao;
 
 import com.ecare.models.PlanPO;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class PlanDAO extends Dao<PlanPO> implements IPlanDAO {
 
     public PlanDAO() {
