@@ -76,6 +76,6 @@ public class PlansController {
 
         contractService.save(contract);
 
-        return "redirect:/profile";
+        return "redirect:/contract";
     }
 }
