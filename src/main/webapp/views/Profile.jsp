@@ -157,7 +157,6 @@
                     <input type="hidden"
                            name="${_csrf.parameterName}"
                            value="${_csrf.token}"/>
-                    <p>${blocked} + ${couldBeUnblocked}</p>
                     <div class="btn-group">
                         <input type="submit" class="btn btn-primary" value="Save"/>
                         <c:if test="${not empty contract.user.id}">

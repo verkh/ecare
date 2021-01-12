@@ -24,4 +24,7 @@ public class OptionPO extends AbstractNamedPO {
 
     @Column(name = "turn_on_price")
     private Double turnOnPrice;
+
+    @Transient
+    private boolean enabled;
 }

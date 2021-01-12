@@ -60,6 +60,7 @@
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="userProfilenavbarDropdown">
                                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/profile">Profile</a></li>
+                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/contract">Contract</a></li>
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>

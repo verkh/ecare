@@ -1,6 +1,7 @@
 package com.ecare.controllers;
 
 import com.ecare.models.ContractPO;
+import com.ecare.models.OptionPO;
 import com.ecare.models.UserPO;
 import com.ecare.validators.ContractValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,12 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
-@SessionAttributes(names="contract", types = ContractPO.class)
+@SessionAttributes(names= {"contract", "optionsContract"}, types = ContractPO.class)
 public class UserController extends BaseUserController {
 
     @Autowired
@@ -26,6 +31,48 @@ public class UserController extends BaseUserController {
                              @RequestParam(value = "block", required = false) Boolean block
     ){
         return profilePrepare(model, Type.Profile, authService.getCurrentUser(), block, null);
+    }
+
+    @RequestMapping(value="/contract", method = RequestMethod.GET)
+    public String getContract(ModelMap model)
+    {
+        List<OptionPO> userOptions = authService.getCurrentUser().getContract().getOptions();
+        List<OptionPO> planOptions = authService.getCurrentUser().getContract().getPlan().getOptions();
+        List<OptionPO> options = new ArrayList<>(userOptions);
+
+        for(OptionPO opt : options)
+            opt.setEnabled(true);
+
+        for(final OptionPO opt : planOptions) {
+            boolean found = false;
+            for(OptionPO usrOpt : userOptions) {
+                if(opt.getId() == usrOpt.getId()) {
+                    found = true;
+                    break;
+                }
+            }
+            if(!found) options.add(opt);
+        }
+
+        ContractPO optionsContract = new ContractPO();
+        optionsContract.setOptions(options);
+
+        model.addAttribute("contract", authService.getCurrentUser().getContract());
+        model.addAttribute("optionsContract", optionsContract);
+        return "Contract";
+    }
+
+    @RequestMapping(value="/contract", method = RequestMethod.POST)
+    public String saveContract(ModelMap model, @ModelAttribute(value="optionsContract") ContractPO contract) {
+        ContractPO current = authService.getCurrentUser().getContract();
+        current.getOptions().clear();
+        for(final OptionPO opt : contract.getOptions()) {
+            if(opt.isEnabled())
+                current.getOptions().add(opt);
+        }
+        contractService.update(current);
+        setSuccess(model, "Successfully updated!");
+        return "Contract";
     }
 
     @RequestMapping(value= {"/profile","/administration/users/{user_id}"}, method = RequestMethod.POST)
