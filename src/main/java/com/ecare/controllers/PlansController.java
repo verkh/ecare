@@ -48,11 +48,18 @@ public class PlansController {
     }
 
     @RequestMapping(value = "/administration/tariffs")
-    public String getUsers(ModelMap model,
+    public String getPlans(ModelMap model,
                            @RequestParam(value = "currentPage", required = false) Integer currentPage
     ) {
         Utils.pagination(planService, model, currentPage, "tariffs");
         return "administration/Tariffs";
+    }
+
+    @RequestMapping(value = "/administration/tariffs/{id}")
+    public String getTariff(ModelMap model, @PathVariable long id) {
+        PlanPO plan = planService.get(id).get();
+        model.addAttribute("Plan", plan);
+        return "administration/Tariff";
     }
 
     @RequestMapping(value = "/plans/plan")
