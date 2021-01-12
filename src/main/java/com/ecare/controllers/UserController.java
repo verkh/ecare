@@ -3,7 +3,9 @@ package com.ecare.controllers;
 import com.ecare.models.ContractPO;
 import com.ecare.models.OptionPO;
 import com.ecare.models.UserPO;
+import com.ecare.services.PlanService;
 import com.ecare.validators.ContractValidator;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -15,11 +17,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@SessionAttributes(names= {"contract", "optionsContract"}, types = ContractPO.class)
+@SessionAttributes(names= {"contract", "optionsContract", "availablePlans"}, types = ContractPO.class)
 public class UserController extends BaseUserController {
 
     @Autowired
     ContractValidator contractValidator;
+
+    @Autowired
+    PlanService planService;
 
     /**
      * Show user's profile
@@ -36,35 +41,21 @@ public class UserController extends BaseUserController {
     @RequestMapping(value="/contract", method = RequestMethod.GET)
     public String getContract(ModelMap model)
     {
-        List<OptionPO> userOptions = authService.getCurrentUser().getContract().getOptions();
-        List<OptionPO> planOptions = authService.getCurrentUser().getContract().getPlan().getOptions();
-        List<OptionPO> options = new ArrayList<>(userOptions);
-
-        for(OptionPO opt : options)
-            opt.setEnabled(true);
-
-        for(final OptionPO opt : planOptions) {
-            boolean found = false;
-            for(OptionPO usrOpt : userOptions) {
-                if(opt.getId() == usrOpt.getId()) {
-                    found = true;
-                    break;
-                }
-            }
-            if(!found) options.add(opt);
-        }
-
-        ContractPO optionsContract = new ContractPO();
-        optionsContract.setOptions(options);
-
-        model.addAttribute("contract", authService.getCurrentUser().getContract());
-        model.addAttribute("optionsContract", optionsContract);
-        return "Contract";
+        model.addAttribute("current_action", "contract");
+        return contractPrepare(model, authService.getCurrentUser().getContract());
     }
 
-    @RequestMapping(value="/contract", method = RequestMethod.POST)
-    public String saveContract(ModelMap model, @ModelAttribute(value="optionsContract") ContractPO contract) {
-        ContractPO current = authService.getCurrentUser().getContract();
+    @RequestMapping(value="/administration/contracts/{contract_id}", method = RequestMethod.GET)
+    public String getContractByID(ModelMap model, @PathVariable long contract_id)
+    {
+        model.addAttribute("current_action", contract_id);
+        return contractPrepare(model, contractService.get(contract_id).get());
+    }
+
+    @RequestMapping(value= {"/contract", "/administration/contracts/{contract_id}"}, method = RequestMethod.POST)
+    public String saveContract(ModelMap model,
+                               @ModelAttribute(value="contract") ContractPO current,
+                               @ModelAttribute(value="optionsContract") ContractPO contract) {
         current.getOptions().clear();
         for(final OptionPO opt : contract.getOptions()) {
             if(opt.isEnabled())
@@ -133,12 +124,42 @@ public class UserController extends BaseUserController {
             prepare(model, type, id);
         }
 
+        if(authService.getCurrentUser().isAdmin())
+            model.addAttribute("availablePlans", planService.getAll());
+
         if(block != null && currentUser.getContract() != null)
             blockProcess(block, currentUser.getContract());
 
         checkBlockStatus(model, currentUser);
 
         return "Profile";
+    }
+
+    private String contractPrepare(ModelMap model, ContractPO contract) {
+        List<OptionPO> userOptions = contract.getOptions();
+        List<OptionPO> planOptions = contract.getPlan().getOptions();
+        List<OptionPO> options = new ArrayList<>(userOptions);
+
+        for(OptionPO opt : options)
+            opt.setEnabled(true);
+
+        for(final OptionPO opt : planOptions) {
+            boolean found = false;
+            for(OptionPO usrOpt : userOptions) {
+                if(opt.getId() == usrOpt.getId()) {
+                    found = true;
+                    break;
+                }
+            }
+            if(!found) options.add(opt);
+        }
+
+        ContractPO optionsContract = new ContractPO();
+        optionsContract.setOptions(options);
+
+        model.addAttribute("contract", contract);
+        model.addAttribute("optionsContract", optionsContract);
+        return "Contract";
     }
 
     private void blockProcess(boolean block, ContractPO contract){

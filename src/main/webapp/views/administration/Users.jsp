@@ -46,6 +46,7 @@
             <th scope="col">Email</th>
             <th scope="col"></th>
             <th scope="col"></th>
+            <th scope="col"></th>
         </tr>
         <c:forEach items="${users}" var="user">
             <tr>
@@ -58,6 +59,9 @@
                 <td>${user.getEmail()}</td>
                 <td>
                     <a href="${pageContext.request.contextPath}/administration/users/${user.getId()}" type="button" class="btn btn-secondary btn-sm">View</a>
+                </td>
+                <td>
+                    <a href="${pageContext.request.contextPath}/administration/contracts/${user.contract.getId()}" type="button" class="btn btn-secondary btn-sm">Contract</a>
                 </td>
                 <td>
                     <c:choose>

@@ -42,7 +42,7 @@
     <br/>
 
     <h4>Available options</h4>
-    <form:form action="contract" method="POST" style="min-width: 600px;" modelAttribute="optionsContract">
+    <form:form action="${current_action}" method="POST" style="min-width: 600px;" modelAttribute="optionsContract">
         <table class="table">
             <thead class="thead-dark">
             <tr>
