@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.swing.text.html.Option;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -104,9 +105,25 @@ public class UserController extends BaseUserController {
      */
     @RequestMapping(value="/administration/users")
     public String getUsers(ModelMap model,
-        @RequestParam(value = "currentPage", required = false) Integer currentPage
+        @RequestParam(value = "currentPage", required = false) Integer currentPage,
+        @RequestParam(value = "search", required = false) String searchKey
     ) {
-        Utils.pagination(userService, model, currentPage, "users");
+        if(searchKey == null) {
+            Utils.pagination(userService, model, currentPage, "users");
+        }
+        else {
+            UserPO user = userService.findByEmail(searchKey);
+            if(user == null) {
+                ContractPO contract = contractService.findByPhoneNumber(searchKey);
+                if(contract != null) {
+                    user = userService.get(contract.getUser().getId()).orElse(null);
+                }
+            }
+            if(user != null) {
+                model.addAttribute("users", Arrays.asList(user));
+            }
+            model.addAttribute("searchText", searchKey);
+        }
         return "administration/Users";
     }
 
@@ -136,23 +153,8 @@ public class UserController extends BaseUserController {
     }
 
     private String contractPrepare(ModelMap model, ContractPO contract) {
-        List<OptionPO> userOptions = contract.getOptions();
-        List<OptionPO> planOptions = contract.getPlan().getOptions();
-        List<OptionPO> options = new ArrayList<>(userOptions);
 
-        for(OptionPO opt : options)
-            opt.setEnabled(true);
-
-        for(final OptionPO opt : planOptions) {
-            boolean found = false;
-            for(OptionPO usrOpt : userOptions) {
-                if(opt.getId() == usrOpt.getId()) {
-                    found = true;
-                    break;
-                }
-            }
-            if(!found) options.add(opt);
-        }
+        List<OptionPO> options = Utils.prepareOptions(contract.getOptions(), contract.getPlan().getOptions());
 
         ContractPO optionsContract = new ContractPO();
         optionsContract.setOptions(options);

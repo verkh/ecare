@@ -33,6 +33,8 @@
     <hr/>
     <br/>
 
+    <a href="${pageContext.request.contextPath}/administration/options/new" class="btn btn-md btn-secondary" type="submit" style="max-width: 200px;">Add new</a>
+
     <table class="table">
         <thead class="thead-dark">
         <tr>
@@ -55,7 +57,7 @@
                     <a href="${pageContext.request.contextPath}/administration/options/${option.getId()}" type="button" class="btn btn-secondary btn-sm">View</a>
                 </td>
                 <td>
-                    <a href="${pageContext.request.contextPath}/administration/options/${option.getId()}?block=true" type="button" class="btn btn-secondary btn-sm">Delete</a>
+                    <a href="${pageContext.request.contextPath}/administration/options?delete=${option.getId()}" type="button" class="btn btn-secondary btn-sm">Delete</a>
                 </td>
             </tr>
         </c:forEach>

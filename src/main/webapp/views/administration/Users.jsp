@@ -15,10 +15,12 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- eCare CSS -->
     <link href="<spring:url value='/css/common.css'/>" rel="stylesheet">
     <link href="<spring:url value='/css/form.css'/>" rel="stylesheet">
+
+    <script src="<spring:url value='/js/Users.js'/>"></script>
 </head>
 
 <body>
@@ -34,6 +36,17 @@
     <hr/>
     <br/>
 
+    <div class="input-group mb-3">
+
+        <input type="text" class="form-control" id="search" placeholder="Enter phone or email" onchange="modifyText()" value="${searchText}"></input>
+        <a href="?search" type="button" id="doSearch" class="btn btn-secondary">
+            <i class="fa fa-search"></i>
+        </a>
+        <a href="${pageContext.request.contextPath}/administration/users" id="clearSearch" type="button" class="btn btn-secondary">
+            <i class="fa fa-window-close"></i>
+        </a>
+    </div>
+
     <table class="table">
         <thead class="thead-dark">
         <tr>
@@ -44,6 +57,7 @@
             <th scope="col">Birth Date</th>
             <th scope="col">Address</th>
             <th scope="col">Email</th>
+            <th scope="col">Phone</th>
             <th scope="col"></th>
             <th scope="col"></th>
             <th scope="col"></th>
@@ -57,6 +71,7 @@
                 <td>${user.getDate()}</td>
                 <td>${user.getAddress()}</td>
                 <td>${user.getEmail()}</td>
+                <td>${user.contract.getPhoneNumber()}</td>
                 <td>
                     <a href="${pageContext.request.contextPath}/administration/users/${user.getId()}" type="button" class="btn btn-secondary btn-sm">View</a>
                 </td>

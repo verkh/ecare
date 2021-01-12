@@ -6,6 +6,7 @@ import com.ecare.dao.IUserDAO;
 import com.ecare.dao.UserDAO;
 import com.ecare.models.ContractPO;
 import com.ecare.models.UserPO;
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -75,11 +76,17 @@ public class AuthServiceImpl implements AuthService {
     }
 
     public UserPO getCurrentUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Object authPrincipal = auth.getPrincipal();
-        if(authPrincipal == null)
-            return null;
-        UserPrincipal principal = (UserPrincipal) auth.getPrincipal();
-        return userDAO.get(principal.getId()).orElse(null);
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Object authPrincipal = auth.getPrincipal();
+            if (authPrincipal == null)
+                return null;
+            UserPrincipal principal = (UserPrincipal) auth.getPrincipal();
+            return userDAO.get(principal.getId()).orElse(null);
+        }
+        catch (Exception e) {
+
+        }
+        return null;
     }
 }

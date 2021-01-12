@@ -28,7 +28,7 @@ public class ContractPO extends AbstractPO {
     @JoinColumn(name = "plan_id", referencedColumnName = "id")
     private PlanPO plan;
 
-    @OneToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserPO user;
 
@@ -37,7 +37,7 @@ public class ContractPO extends AbstractPO {
             joinColumns = @JoinColumn(name = "contract_id"),
             inverseJoinColumns = @JoinColumn(name = "option_id")
     )
-    @OneToMany()
+    @OneToMany(orphanRemoval=true)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<OptionPO> options = new ArrayList<>();
 }

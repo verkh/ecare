@@ -118,7 +118,7 @@
                                                 <form:options items="${availablePlans}" itemValue="id"
                                                               itemLabel="name"></form:options>
                                             </form:select>
-                                            <c:if test="${not empty AdminAccess}">
+                                            <c:if test="${not empty AdminAccess && not empty contract.user.id}">
                                                 <a href="${pageContext.request.contextPath}/administration/contracts/${contract.id}" type="button" class="btn btn-secondary">
                                                     <i class="fa fa-cog"></i>
                                                 </a>

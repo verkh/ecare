@@ -27,37 +27,67 @@
 <jsp:include page="/views/Navbar.jsp"/>
 <br/>
 <br/>
+
 <div id=wrapper class="container">
     <div class="d-flex justify-content-center">
-        <form:form action="${current_action}" method="POST" style="min-width: 600px;" modelAttribute="Plan">
-            <div class="form card p-3 bg-dark">
-                <div class="text-center mb-4">
-                    <img class="mb-4" src="<spring:url value='/images/eCareIcon.png'/>" alt="" width="100"
-                         height="100">
-                    <h1 class="h3 mb-3 font-weight-normal">${current_action_title}</h1>
-                </div>
-                <h2>${Plan.name}</h2>
-                <hr/>
-                <br/>
+        <form:form action="${current_action}" method="POST" modelAttribute="Plan">
+        <div class="form card p-3 bg-dark" style="min-width: 700px;">
+            <div class="text-center mb-4">
+                <img class="mb-4" src="<spring:url value='/images/eCareIcon.png'/>" alt="" width="100"
+                     height="100">
+                <h1 class="h3 mb-3 font-weight-normal">${current_action_title}</h1>
+            </div>
+            <h2>${Plan.name}</h2>
+            <hr/>
+            <br/>
 
-                <div class="form-group">
-                    <label for="nameInput">Name</label>
-                    <form:input type="text" path="name" class="form-control"
-                                id="nameInput" aria-describedby="nameHelp" placeholder="Enter name"></form:input>
-                </div>
-
-                <label for="priceInput">Price</label>
-                <div class="input-group">
-                    <form:input type="text" path="price" class="form-control"
-                                id="priceInput" placeholder="Enter last name"></form:input>
-                    <div class="input-group-append">
-                        <span class="input-group-text">$</span>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="nameInput">Name</label>
+                        <form:input type="text" path="name" class="form-control"
+                                    id="nameInput" aria-describedby="nameHelp" placeholder="Enter name"></form:input>
                     </div>
                 </div>
-
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Save</button>
+                <div class="col">
+                    <label for="priceInput">Price</label>
+                    <div class="input-group">
+                        <form:input type="text" path="price" class="form-control"
+                                    id="priceInput" placeholder="Enter last name"></form:input>
+                        <div class="input-group-append">
+                            <span class="input-group-text">$</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </form:form>
+
+            <h4>Available options</h4>
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Turn on price</th>
+                    <th scope="col"></th>
+                </tr>
+                <c:forEach items="${Plan.options}" var="option" varStatus="status">
+                    <tr>
+                        <td>${option.name}</td>
+                        <td>${option.description}</td>
+                        <td>${option.price}$</td>
+                        <td>${option.turnOnPrice}$</td>
+                        <td>
+                            <form:checkbox path="options[${status.index}].enabled"
+                                           class="form-check-input"></form:checkbox>
+                        </td>
+                    </tr>
+                </c:forEach>
+                </thead>
+            </table>
+            <button class="btn btn-md btn-primary" type="submit" style="max-width: 200px;">Save</button>
+            </form:form>
+        </div>
     </div>
 </div>
 

@@ -1,21 +1,23 @@
 package com.ecare.controllers;
 
 import com.ecare.models.ContractPO;
+import com.ecare.models.OptionPO;
 import com.ecare.models.PlanPO;
 import com.ecare.models.UserPO;
 import com.ecare.services.AuthService;
 import com.ecare.services.ContractService;
+import com.ecare.services.OptionsService;
 import com.ecare.services.PlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@SessionAttributes(names = "Plan")
 public class PlansController {
 
     @Autowired
@@ -26,6 +28,9 @@ public class PlansController {
 
     @Autowired
     protected AuthService authService;
+
+    @Autowired
+    OptionsService optionsService;
 
     @RequestMapping(value = "/plans")
     public String getPlans(ModelMap model) {
@@ -49,17 +54,55 @@ public class PlansController {
 
     @RequestMapping(value = "/administration/tariffs")
     public String getPlans(ModelMap model,
-                           @RequestParam(value = "currentPage", required = false) Integer currentPage
+                           @RequestParam(value = "currentPage", required = false) Integer currentPage,
+                           @RequestParam(value = "delete", required = false) Long deleteId
     ) {
+        if(deleteId != null)
+            planService.delete(new PlanPO(deleteId));
         Utils.pagination(planService, model, currentPage, "tariffs");
         return "administration/Tariffs";
     }
 
-    @RequestMapping(value = "/administration/tariffs/{id}")
+    @RequestMapping(value = "/administration/tariffs/{id}", method = RequestMethod.GET)
     public String getTariff(ModelMap model, @PathVariable long id) {
         PlanPO plan = planService.get(id).get();
+
+        List<OptionPO> options = Utils.prepareOptions(plan.getOptions(), optionsService.getAll());
+        plan.setOptions(options);
+        model.addAttribute("current_action", id);
         model.addAttribute("Plan", plan);
         return "administration/Tariff";
+    }
+
+    @RequestMapping(value = "/administration/tariffs/new", method = RequestMethod.GET)
+    public String getTariff(ModelMap model) {
+        PlanPO plan = new PlanPO();
+
+        List<OptionPO> options = Utils.prepareOptions(plan.getOptions(), optionsService.getAll());
+        plan.setOptions(options);
+        model.addAttribute("current_action", "new");
+        model.addAttribute("Plan", plan);
+        return "administration/Tariff";
+    }
+
+    @RequestMapping(value = {"/administration/tariffs/{id}", "/administration/tariffs/new"}, method = RequestMethod.POST)
+    public String saveTariff(ModelMap model,
+                             @ModelAttribute(value="Plan") PlanPO plan)
+    {
+        PlanPO planForSave = plan.getId() != null? planService.get(plan.getId()).get() : new PlanPO(plan);
+        planForSave.getOptions().clear();
+        for(final OptionPO opt : plan.getOptions()) {
+            if(opt.isEnabled())
+                planForSave.getOptions().add(opt);
+        }
+
+        if(plan.getId() != null)
+            planService.update(planForSave);
+        else
+            planService.save(planForSave);
+
+        model.addAttribute("Plan", plan);
+        return "redirect:/administration/tariffs";
     }
 
     @RequestMapping(value = "/plans/plan")

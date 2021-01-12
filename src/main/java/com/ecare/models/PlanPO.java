@@ -1,6 +1,7 @@
 package com.ecare.models;
 
 import com.ecare.models.base.AbstractNamedPO;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,6 +19,17 @@ import java.util.List;
 @Getter @Setter @NoArgsConstructor
 public class PlanPO extends AbstractNamedPO {
 
+    public PlanPO(PlanPO other) {
+        this.setId(other.getId());
+        this.setName(other.getName());
+        this.price = other.getPrice();
+        this.options = new ArrayList<>(other.getOptions());
+    }
+
+    public PlanPO(Long id) {
+        this.setId(id);
+    }
+
     @Column(name = "price")
     private Double price;
 
@@ -26,7 +38,7 @@ public class PlanPO extends AbstractNamedPO {
             joinColumns = @JoinColumn(name = "plan_id"),
             inverseJoinColumns = @JoinColumn(name = "option_id")
     )
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval=true)
     private List<OptionPO> options = new ArrayList<>();
 
 }

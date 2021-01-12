@@ -26,8 +26,8 @@ CREATE TABLE IF NOT EXISTS `plan_options` (
     plan_id INT unsigned NOT NULL,
     option_id INT unsigned NOT NULL,
     PRIMARY KEY(plan_id, option_id),
-    FOREIGN KEY (plan_id) REFERENCES plans (id),
-    FOREIGN KEY (option_id) REFERENCES options (id)
+    FOREIGN KEY (plan_id) REFERENCES plans (id) ON DELETE CASCADE,
+    FOREIGN KEY (option_id) REFERENCES options (id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `users` (
@@ -60,6 +60,6 @@ CREATE TABLE IF NOT EXISTS `contract_options` (
     contract_id INT unsigned NOT NULL,
     option_id INT unsigned NOT NULL,
     PRIMARY KEY(contract_id, option_id),
-    FOREIGN KEY (contract_id) REFERENCES contracts (id),
-    FOREIGN KEY (option_id) REFERENCES options (id)
+    FOREIGN KEY (contract_id) REFERENCES contracts (id) ON DELETE CASCADE,
+    FOREIGN KEY (option_id) REFERENCES options (id) ON DELETE CASCADE
 );

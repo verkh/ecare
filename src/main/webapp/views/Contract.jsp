@@ -48,6 +48,7 @@
 <div class="container horizontal-card card p-3 bg-dark">
 
     <h2>eCare ${contract.plan.name}</h2>
+    <h6>for ${contract.user.name}. That's right, dude!</h6>
     <hr/>
     <br/>
     <h4><b>Number:</b> ${contract.phoneNumber}</h4>

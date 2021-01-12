@@ -1,6 +1,7 @@
 package com.ecare.controllers;
 
 import com.ecare.models.ContractPO;
+import com.ecare.models.PlanPO;
 import com.ecare.models.UserPO;
 import com.ecare.services.PlanService;
 import com.ecare.validators.NewContractValidator;
@@ -52,8 +53,16 @@ public class AuthController extends BaseUserController {
         if(result.hasErrors())
             return "Profile";
 
+        PlanPO plan = planService.get(newContract.getPlan().getId()).get();
+        newContract.setPlan(plan);
+        newContract.setOptions(plan.getOptions());
+
         contractService.save(newContract);
         setSuccess(model, "You've been successfully registered!");
+
+        UserPO currentUser = authService.getCurrentUser();
+        if(currentUser != null && currentUser.isAdmin())
+            return "redirect:/administration/contracts/" + newContract.getId();
 
         return "redirect:/auth";
     }
