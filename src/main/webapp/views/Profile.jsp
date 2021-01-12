@@ -21,6 +21,8 @@
     <!-- eCare CSS -->
     <link href="<spring:url value='/css/common.css'/>" rel="stylesheet">
     <link href="<spring:url value='/css/form.css'/>" rel="stylesheet">
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
 </head>
 <body>
 
@@ -28,6 +30,21 @@
 <jsp:include page="/views/Navbar.jsp"/>
 <br/>
 <br/>
+<c:if test="${not empty success}">
+    <div class="toast" data-autohide="false" style="position: absolute; top: 80px; left: 0px;">
+        <div class="toast-header text-success">
+            <strong class="mr-auto">Done!</strong>
+        </div>
+        <div class="toast-body">
+                ${success}
+        </div>
+    </div>
+    <script>
+        $(document).ready(function(){
+            $('.toast').toast('show');
+        });
+    </script>
+</c:if>
 <div id=wrapper class="container">
     <div class="d-flex justify-content-center">
         <form:form action="${current_action}" method="POST" modelAttribute="contract">
@@ -39,9 +56,6 @@
                         <img class="mb-4" src="<spring:url value='/images/eCareIcon.png'/>" alt="" width="100"
                              height="100">
                         <h1 class="h3 mb-3 font-weight-normal">${current_action_title}</h1>
-                        <c:if test="${not empty success}">
-                            <div class="alert-success text-sm-center" role="alert">Done! ${success}</div>
-                        </c:if>
                     </div>
                     <div class="row">
                         <div class="col">
@@ -105,7 +119,7 @@
                                                               itemLabel="name"></form:options>
                                             </form:select>
                                             <c:if test="${not empty AdminAccess}">
-                                                <a href="${pageContext.request.contextPath}/contracts/${contract.id}" type="button" class="btn btn-secondary">
+                                                <a href="${pageContext.request.contextPath}/administration/contracts/${contract.id}" type="button" class="btn btn-secondary">
                                                     <i class="fa fa-cog"></i>
                                                 </a>
                                             </c:if>

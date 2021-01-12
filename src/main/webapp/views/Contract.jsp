@@ -29,15 +29,28 @@
 <br>
 <br>
 
+<c:if test="${not empty success}">
+    <div class="toast" data-autohide="false" style="position: absolute; top: 80px; left: 0px;">
+        <div class="toast-header text-success">
+            <strong class="mr-auto">Done!</strong>
+        </div>
+        <div class="toast-body">
+                ${success}
+        </div>
+    </div>
+    <script>
+        $(document).ready(function(){
+            $('.toast').toast('show');
+        });
+    </script>
+</c:if>
+
 <div class="container horizontal-card card p-3 bg-dark">
 
     <h2>eCare ${contract.plan.name}</h2>
     <hr/>
     <br/>
-    <h4><b>Your number:</b> ${contract.phoneNumber}</p>
-    <c:if test="${not empty success}">
-        <div class="alert-success text-sm-center" role="alert">Done! ${success}</div>
-    </c:if>
+    <h4><b>Number:</b> ${contract.phoneNumber}</h4>
     <br/>
     <br/>
 
@@ -70,7 +83,5 @@
     </form:form>
 </div>
 </hr>
-<!-- Footer -->
-<jsp:include page="/views/Footer.jsp"/>
 </body>
 </html>
