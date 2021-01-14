@@ -63,3 +63,13 @@ CREATE TABLE IF NOT EXISTS `contract_options` (
     FOREIGN KEY (contract_id) REFERENCES contracts (id) ON DELETE CASCADE,
     FOREIGN KEY (option_id) REFERENCES options (id) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS `option_rules` (
+    id INT unsigned NOT NULL AUTO_INCREMENT,
+    option_id1 INT unsigned NOT NULL,
+    rule VARCHAR(255) NOT NULL,
+    option_id2 INT unsigned NOT NULL,
+    PRIMARY KEY(id),
+    FOREIGN KEY (option_id1) REFERENCES options (id) ON DELETE CASCADE,
+    FOREIGN KEY (option_id2) REFERENCES options (id) ON DELETE CASCADE
+);

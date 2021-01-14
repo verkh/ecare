@@ -35,6 +35,9 @@
 
     <a href="${pageContext.request.contextPath}/administration/options/new" class="btn btn-md btn-secondary" type="submit" style="max-width: 200px;">Add new</a>
 
+    <br>
+    <br>
+
     <table class="table">
         <thead class="thead-dark">
         <tr>

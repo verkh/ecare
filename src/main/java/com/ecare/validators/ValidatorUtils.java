@@ -9,4 +9,9 @@ public class ValidatorUtils {
         for(final String field : fieldList)
             ValidationUtils.rejectIfEmpty(errors, field, "property.empty");
     }
+
+    public static void priceNotNegative(String field, Double d, Errors errors) {
+        if(d < 0)
+            errors.rejectValue(field, "price.negative");
+    }
 }

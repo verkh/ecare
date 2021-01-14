@@ -36,15 +36,6 @@ public class OptionPO extends AbstractNamedPO {
     @Transient
     private boolean enabled;
 
-    @ManyToMany(fetch=FetchType.LAZY)
-    @JoinTable(name = "plan_options",
-            joinColumns = { @JoinColumn(name = "plan_id") },
-            inverseJoinColumns = { @JoinColumn(name = "option_id") })
-    List<PlanPO> plans;
-
-    @ManyToMany(fetch=FetchType.LAZY)
-    @JoinTable(name = "contract_options",
-            joinColumns = { @JoinColumn(name = "contract_id") },
-            inverseJoinColumns = { @JoinColumn(name = "option_id") })
-    List<ContractPO> contracts;
+    @OneToMany(mappedBy="option", cascade = CascadeType.ALL, orphanRemoval=true)
+    List<OptionRestrictionPO> restrictions = new ArrayList<>();
 }

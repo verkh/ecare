@@ -43,3 +43,10 @@ VALUES
        (15, "9650358595", 5, 2),
        (16, "9650358594", 6, 3),
        (17, "9650358593", 7, 1);
+
+INSERT INTO option_rules(id, option_id1, rule, option_id2)
+VALUES
+       (1, 1, "INCOMPATIBLE", 5),
+       (2, 2, "INCOMPATIBLE", 5),
+       (3, 3, "INCOMPATIBLE", 5),
+       (4, 4, "INCOMPATIBLE", 5);
