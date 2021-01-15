@@ -79,12 +79,12 @@ public class OptionController {
             return "administration/Option";
 
         OptionPO optionForSave = option.getValue();
-        optionForSave.setRestrictions(option.getRestrictions());
-
-        if(optionForSave.getId() == null)
+        if(optionForSave.getId() == null) {
             optionsService.save(optionForSave);
-        else
-            optionsService.update(optionForSave);
+            option.setId(optionForSave.getId());
+        }
+        optionForSave.setRestrictions(option.getRestrictions());
+        optionsService.update(optionForSave);
         return "redirect:/administration/options";
     }
 }

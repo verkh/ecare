@@ -110,7 +110,7 @@
                                                      path="restrictions[${status.index}].optionId2">
                                             <form:options items="${option.allOptionNames}"></form:options>
                                         </form:select>
-                                        <form:errors class="text-danger" path="value.restrictions[${status.index}]"/>
+                                        <form:errors class="text-danger" path="restrictions[${status.index}]"/>
                                     </td>
                                     <td>
                                         <form:select class="form-select form-control-sm" id="ruleSelect"
