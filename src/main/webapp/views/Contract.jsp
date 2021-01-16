@@ -68,7 +68,10 @@
             </tr>
             <c:forEach items="${optionsContract.options}" var="option" varStatus="status">
                 <tr>
-                    <td>${option.name}</td>
+                    <td>${option.name}
+                        <p>
+                        <form:errors class="text-danger" path="options[${status.index}]"/>
+                    </p></td>
                     <td>${option.description}</td>
                     <td>${option.price}$</td>
                     <td>${option.turnOnPrice}$</td>

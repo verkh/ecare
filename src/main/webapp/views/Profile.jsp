@@ -23,6 +23,7 @@
     <link href="<spring:url value='/css/form.css'/>" rel="stylesheet">
 
     <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+    <script src="<spring:url value='/js/Validation.js'/>"></script>
 </head>
 <body>
 
@@ -63,16 +64,16 @@
                                 <label for="pathInput">Name</label>
                                 <form:input path="user.name" type="text" class="form-control"
                                             id="pathInput" aria-describedby="pathHelp"
-                                            placeholder="Enter name"></form:input>
+                                            placeholder="Enter name" onkeypress="return validateLetters(event)"></form:input>
                                 <form:errors class="text-danger" path="user.name"/>
                                 <small id="pathHelp" class="form-text text-muted">Fake information leads to jail</small>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-group">
-                                <label for="lastpathInput">Last path</label>
+                                <label for="lastpathInput">Last name</label>
                                 <form:input path="user.lastName" type="text" class="form-control"
-                                            id="lastpathInput" placeholder="Enter last name"></form:input>
+                                            id="lastpathInput" placeholder="Enter last name" onkeypress="return validateLetters(event)"></form:input>
                                 <form:errors class="text-danger" path="user.lastName"/>
                             </div>
                         </div>
@@ -102,11 +103,11 @@
                                         <c:choose>
                                             <c:when test="${empty contract.user.id}">
                                                 <form:input type="tel" path="phoneNumber" class="form-control" id="phoneNumber"
-                                                        placeholder="Enter phone number"></form:input>
+                                                            placeholder="+7 (___)-___-__-__" data-slots="_" ></form:input>
                                             </c:when>
                                             <c:otherwise>
                                                 <form:input type="tel" path="phoneNumber" class="form-control" id="phoneNumber"
-                                                            placeholder="Enter phone number" disabled="true"></form:input>
+                                                            placeholder="+7 (___)-___-__-__" data-slots="_"  disabled="true" data-inputmask="'mask': '8(999)-999-99-'"></form:input>
                                             </c:otherwise>
                                         </c:choose>
                                         <form:errors class="text-danger" path="phoneNumber"/>

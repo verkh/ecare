@@ -8,6 +8,7 @@ import com.ecare.validators.ContractValidator;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -52,11 +53,14 @@ public class UserController extends BaseUserController {
         model.addAttribute("current_action", contract_id);
         return contractPrepare(model, contractService.get(contract_id).get());
     }
-
+    
     @RequestMapping(value= {"/contract", "/administration/contracts/{contract_id}"}, method = RequestMethod.POST)
     public String saveContract(ModelMap model,
                                @ModelAttribute(value="contract") ContractPO current,
-                               @ModelAttribute(value="optionsContract") ContractPO contract) {
+                               @ModelAttribute(value="optionsContract") ContractPO contract,
+                               BindingResult result
+    ) {
+        contractValidator.validate(contract, result);
         current.getOptions().clear();
         for(final OptionPO opt : contract.getOptions()) {
             if(opt.isEnabled())
@@ -69,8 +73,8 @@ public class UserController extends BaseUserController {
 
     @RequestMapping(value= {"/profile","/administration/users/{user_id}"}, method = RequestMethod.POST)
     public String saveProfile(ModelMap model, @ModelAttribute(value="contract") ContractPO contract,
-                              BindingResult result)
-    {
+                              BindingResult result
+    ){
         contractValidator.validate(contract, result);
         if(!result.hasErrors()) {
             String password = contract.getUser().getRawPassword();

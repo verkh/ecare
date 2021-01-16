@@ -37,7 +37,7 @@ public class ContractPO extends AbstractPO {
             joinColumns = @JoinColumn(name = "contract_id"),
             inverseJoinColumns = @JoinColumn(name = "option_id")
     )
-    @OneToMany(orphanRemoval=true)
+    @OneToMany()
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<OptionPO> options = new ArrayList<>();
 }

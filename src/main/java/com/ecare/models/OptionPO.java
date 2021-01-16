@@ -36,6 +36,6 @@ public class OptionPO extends AbstractNamedPO {
     @Transient
     private boolean enabled;
 
-    @OneToMany(mappedBy="option", cascade = CascadeType.ALL, orphanRemoval=true)
+    @OneToMany(mappedBy="option", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     List<OptionRestrictionPO> restrictions = new ArrayList<>();
 }

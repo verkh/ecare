@@ -47,13 +47,15 @@
                         <label for="nameInput">Name</label>
                         <form:input type="text" path="name" class="form-control"
                                     id="nameInput" aria-describedby="nameHelp" placeholder="Enter name"></form:input>
+                        <form:errors class="text-danger" path="name"/>
                     </div>
                 </div>
                 <div class="col">
                     <label for="priceInput">Price</label>
                     <div class="input-group">
-                        <form:input type="text" path="price" class="form-control"
+                        <form:input type="number" min="0.1" step="0.1" path="price" class="form-control"
                                     id="priceInput" placeholder="Enter last name"></form:input>
+                        <form:errors class="text-danger" path="price"/>
                         <div class="input-group-append">
                             <span class="input-group-text">$</span>
                         </div>
@@ -73,7 +75,12 @@
                 </tr>
                 <c:forEach items="${Plan.options}" var="option" varStatus="status">
                     <tr>
-                        <td>${option.name}</td>
+                        <td>
+                                ${option.name}
+                            <p>
+                            <form:errors class="text-danger" path="options[${status.index}]"/>
+                            </p>
+                        </td>
                         <td>${option.description}</td>
                         <td>${option.price}$</td>
                         <td>${option.turnOnPrice}$</td>
@@ -85,6 +92,7 @@
                 </c:forEach>
                 </thead>
             </table>
+            <form:errors class="text-danger" path="options"/>
             <button class="btn btn-md btn-primary" type="submit" style="max-width: 200px;">Save</button>
             </form:form>
         </div>

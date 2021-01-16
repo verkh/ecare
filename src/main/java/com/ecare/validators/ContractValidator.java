@@ -59,5 +59,7 @@ public class ContractValidator implements Validator {
 
         if (Calendar.getInstance().get(Calendar.YEAR) - calendar.get(Calendar.YEAR) < 18)
             errors.rejectValue("user.date", "user.date.tooYoung");
+
+        ValidatorUtils.checkOptions(contract.getOptions(), errors);
     }
 }

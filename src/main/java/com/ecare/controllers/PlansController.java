@@ -8,9 +8,12 @@ import com.ecare.services.AuthService;
 import com.ecare.services.ContractService;
 import com.ecare.services.OptionsService;
 import com.ecare.services.PlanService;
+import com.ecare.validators.PlanValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -31,6 +34,9 @@ public class PlansController {
 
     @Autowired
     OptionsService optionsService;
+
+    @Autowired
+    PlanValidator planValidator;
 
     @RequestMapping(value = "/plans")
     public String getPlans(ModelMap model) {
@@ -85,10 +91,15 @@ public class PlansController {
         return "administration/Tariff";
     }
 
+
     @RequestMapping(value = {"/administration/tariffs/{id}", "/administration/tariffs/new"}, method = RequestMethod.POST)
     public String saveTariff(ModelMap model,
-                             @ModelAttribute(value="Plan") PlanPO plan)
-    {
+                             @ModelAttribute(value="Plan") PlanPO plan, BindingResult result
+    ){
+        planValidator.validate(plan, result); // validation should be done before filtering of disabled options
+        if(result.hasErrors())
+            return "administration/Tariff";
+
         PlanPO planForSave = plan.getId() != null? planService.get(plan.getId()).get() : new PlanPO(plan);
         planForSave.getOptions().clear();
         for(final OptionPO opt : plan.getOptions()) {
@@ -116,6 +127,7 @@ public class PlansController {
         PlanPO plan = planService.get(id).get();
         ContractPO contract = user.getContract();
         contract.setPlan(plan);
+        contract.setOptions(plan.getOptions());
 
         contractService.save(contract);
 
