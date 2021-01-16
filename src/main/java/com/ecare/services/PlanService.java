@@ -7,4 +7,5 @@ import org.springframework.stereotype.Service;
 @Service
 public class PlanService extends BaseService<IPlanDAO, PlanPO> {
 
+    public PlanPO findByName(String planName) { return dao.findByName(planName); }
 }

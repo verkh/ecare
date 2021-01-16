@@ -33,10 +33,14 @@
 
         <div class="carousel-inner">
             <div class="carousel-item active" data-bs-interval="10000">
-                <img src="<spring:url value='/images/dictator.png' />" class="carousel-img" alt="Dictator plan">
+                <a href="${pageContext.request.contextPath}/plans/${Dictator.id}">
+                    <img src="<spring:url value='/images/dictator.png' />" class="carousel-img" alt="Dictator plan">
+                </a>
             </div>
             <div class="carousel-item" data-bs-interval="2000">
-                <img src="<spring:url value='/images/exile.png' />" class="carousel-img" alt="Exile plan">
+                <a href="${pageContext.request.contextPath}/plans/${Exile.id}">
+                    <img src="<spring:url value='/images/exile.png' />" class="carousel-img" alt="Exile plan">
+                </a>
             </div>
         </div>
         <a class="carousel-control-prev" href="#carouselExampleDark" role="button" data-bs-slide="prev">
@@ -70,7 +74,7 @@
                             <br/>
                             <p class="card-text">Imagine your ruler expresses their feeling with you every morning!</p>
                             <br/>
-                            <h1 class="card-title pricing-card-title">$1000 <small class="text-muted">/ mo</small></h1>
+                            <h1 class="card-title pricing-card-title">$${Dictator.price}<small class="text-muted">/mo</small></h1>
                             <br/>
                             <p class="card-text">Imagine your ruler expresses their feeling with you every morning!</p>
                         </div>
@@ -104,14 +108,14 @@
                     <h4 class="my-0 fw-normal">Exile</h4>
                 </div>
                 <div class="card-body">
-                    <h1 class="card-title pricing-card-title">$50 <small class="text-muted">/ mo</small></h1>
+                    <h1 class="card-title pricing-card-title">$${Exile.price} <small class="text-muted">/ mo</small></h1>
                     <ul class="list-unstyled mt-3 mb-4">
                         <li>Call nobody</li>
                         <li>No internet</li>
                         <li>Infinite suffer</li>
                         <li>Infinite spam</li>
                     </ul>
-                    <button type="button" class="w-100 btn btn-lg btn-primary">Get started</button>
+                    <a href="${pageContext.request.contextPath}/plans/${Exile.id}" type="button" class="w-100 btn btn-lg btn-primary">Get started</a>
                 </div>
             </div>
         </div>
@@ -121,14 +125,14 @@
                     <h4 class="my-0 fw-normal">Peasant</h4>
                 </div>
                 <div class="card-body">
-                    <h1 class="card-title pricing-card-title">$2 <small class="text-muted">/ mo</small></h1>
+                    <h1 class="card-title pricing-card-title">$${Peasant.price} <small class="text-muted">/ mo</small></h1>
                     <ul class="list-unstyled mt-3 mb-4">
                         <li>30 minutes</li>
                         <li>1 GB</li>
                         <li>Unlimited access to propaganda</li>
                         <li>Morning greetings from Dictator</li>
                     </ul>
-                    <button type="button" class="w-100 btn btn-lg btn-primary">Get started</button>
+                    <a href="${pageContext.request.contextPath}/plans/${Peasant.id}" type="button" class="w-100 btn btn-lg btn-primary">Get started</a>
                 </div>
             </div>
         </div>
@@ -138,14 +142,14 @@
                     <h4 class="my-0 fw-normal">Dictator</h4>
                 </div>
                 <div class="card-body">
-                    <h1 class="card-title pricing-card-title">$1000 <small class="text-muted">/ mo</small></h1>
+                    <h1 class="card-title pricing-card-title">$${Dictator.price} <small class="text-muted">/ mo</small></h1>
                     <ul class="list-unstyled mt-3 mb-4">
                         <li>Unlimited calls and Internet</li>
                         <li>15 GB of storage</li>
                         <li>Spy on everyone</li>
                         <li>Anytime block  all communication Country</li>
                     </ul>
-                    <button type="button" class="w-100 btn btn-lg btn-primary">Get started</button>
+                    <a href="${pageContext.request.contextPath}/plans/${Dictator.id}" type="button" class="w-100 btn btn-lg btn-primary">Get started</a>
                 </div>
             </div>
         </div>
@@ -155,7 +159,7 @@
     </div>
 
     <!-- Footer -->
-    <jsp:include page="views/Footer.jsp"/>
+    <jsp:include page="/views/Footer.jsp"/>
 
 </div>
 </body>
