@@ -6,5 +6,9 @@ import com.ecare.models.OptionRestrictionPO;
 
 import java.util.List;
 
+/**
+ * Interface of DAO handles logic related to options table
+ * @see BaseData
+ */
 public interface IOptionDAO extends BaseData<OptionPO> {
 }

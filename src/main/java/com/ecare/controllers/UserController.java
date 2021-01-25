@@ -5,21 +5,20 @@ import com.ecare.models.OptionPO;
 import com.ecare.models.UserPO;
 import com.ecare.services.PlanService;
 import com.ecare.validators.ContractValidator;
-import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Handles buisness logic of user management
+ */
 @Controller
 @SessionAttributes(names= {"contract", "optionsContract", "availablePlans"}, types = ContractPO.class)
 public class UserController extends BaseUserController {
@@ -34,8 +33,8 @@ public class UserController extends BaseUserController {
 
     /**
      * Show user's profile
-     * @param model - current page model
-     * @return the name of JSP
+     * @param model model for JSP page
+     * @return the name of JSP file
      */
     @RequestMapping(value="/profile", method = RequestMethod.GET)
     public String getProfile(ModelMap model,
@@ -45,6 +44,11 @@ public class UserController extends BaseUserController {
         return profilePrepare(model, Type.Profile, authService.getCurrentUser(), block, null);
     }
 
+    /**
+     * Configures contract page of currenct authenticated user
+     * @param model model for JSP page
+     * @return the name of JSP file
+     */
     @RequestMapping(value="/contract", method = RequestMethod.GET)
     public String getContract(ModelMap model)
     {
@@ -53,6 +57,12 @@ public class UserController extends BaseUserController {
         return contractPrepare(model, authService.getCurrentUser().getContract());
     }
 
+    /**
+     * Configures contract page that is seen by administrator
+     * @param model model for JSP page
+     * @param contract_id id of contract
+     * @return the name of JSP file
+     */
     @RequestMapping(value="/administration/contracts/{contract_id}", method = RequestMethod.GET)
     public String getContractByID(ModelMap model, @PathVariable long contract_id)
     {
@@ -60,7 +70,15 @@ public class UserController extends BaseUserController {
         model.addAttribute("current_action", contract_id);
         return contractPrepare(model, contractService.get(contract_id).get());
     }
-    
+
+    /**
+     * Attempts to save contract changes
+     * @param model model for JSP page
+     * @param current current contract settings
+     * @param contract new contract settings
+     * @param result validation errors container
+     * @return the name of JSP file
+     */
     @RequestMapping(value= {"/contract", "/administration/contracts/{contract_id}"}, method = RequestMethod.POST)
     public String saveContract(ModelMap model,
                                @ModelAttribute(value="contract") ContractPO current,
@@ -83,6 +101,13 @@ public class UserController extends BaseUserController {
         return "Contract";
     }
 
+    /**
+     * Attempts to save profile of user
+     * @param model model for JSP page
+     * @param contract current contract of user
+     * @param result validation errors container
+     * @return the name of JSP file
+     */
     @RequestMapping(value= {"/profile","/administration/users/{user_id}"}, method = RequestMethod.POST)
     public String saveProfile(ModelMap model, @ModelAttribute(value="contract") ContractPO contract,
                               BindingResult result
@@ -102,24 +127,24 @@ public class UserController extends BaseUserController {
     }
 
     /**
-     * Show
-     * @param model
-     * @param user_id
-     * @return
+     * Configures profile page of selected user (administration)
+     * @param model model for JSP page
+     * @param user_id id of user
+     * @return the name of JSP file
      */
     @RequestMapping(value="/administration/users/{user_id}", method = RequestMethod.GET)
     public String getUser(ModelMap model,
                           @PathVariable long user_id,
                           @RequestParam(value = "block", required = false) Boolean block
     ) {
-        return profilePrepare(model, Type.AdminRegistration, userService.get(user_id).get(), block, user_id);
+        return profilePrepare(model, Type.AdminProfileView, userService.get(user_id).get(), block, user_id);
     }
 
     /**
      * Show users tables with pagination
      * @param model - current page model
      * @param currentPage - page number
-     * @return the name of JSP
+     * @return the name of JSP file
      */
     @RequestMapping(value="/administration/users")
     public String getUsers(ModelMap model,
@@ -170,6 +195,12 @@ public class UserController extends BaseUserController {
         return "Profile";
     }
 
+    /**
+     * Common method for configuring page of contract
+     * @param model model for JSP page
+     * @param contract contract of selected user
+     * @return the name of JSP file
+     */
     private String contractPrepare(ModelMap model, ContractPO contract) {
 
         List<OptionPO> options = Utils.prepareOptions(contract.getOptions(), contract.getPlan().getOptions());
@@ -182,6 +213,11 @@ public class UserController extends BaseUserController {
         return "Contract";
     }
 
+    /**
+     * Handles block business logic.
+     * User can block and unblock themself only if user was not blocked in the first place by administrator
+     * @param contract current contract of user
+     */
     private void blockProcess(boolean block, ContractPO contract){
         if(block || (!block && canUnblock(contract.getUser()))) {
             UserPO user = contract.getUser();
@@ -190,6 +226,11 @@ public class UserController extends BaseUserController {
         }
     }
 
+    /**
+     * Checks whether user is blocked or not
+     * @param model model for JSP page
+     * @param currentUser current selected user
+     */
     private void checkBlockStatus(ModelMap model, UserPO currentUser) {
         if(currentUser.isBlocked()) {
             model.addAttribute("blocked", true);
@@ -198,6 +239,11 @@ public class UserController extends BaseUserController {
         }
     }
 
+    /**
+     * Checks whether user can be unblocked (by themself or other user)
+     * @param currentUser current selected user
+     * @return true if user can be unblock
+     */
     private boolean canUnblock(UserPO currentUser) {
         return currentUser.getDisabledBy() == currentUser.getId() || authService.getCurrentUser().isAdmin();
     }

@@ -9,6 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+/**
+ * Validator of new contracts
+ * @see NewContractValidator
+ */
 @Component
 public class NewContractValidator extends ContractValidator implements Validator {
 

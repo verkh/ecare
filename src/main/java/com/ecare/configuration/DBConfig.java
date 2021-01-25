@@ -13,10 +13,22 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 import java.util.Properties;
 
+/**
+ * Database configurator
+ * Provides needed beens to use DAO
+ */
 @Configuration
 @EnableTransactionManagement
 public class DBConfig {
 
+    /**
+     * Configures from application.properties file
+     * @param driverClassName the driver that will be used for connection to database
+     * @param dataSourceUrl an url which used for connection
+     * @param userName login of user which has access
+     * @param password user's password obviously
+     * @return the DataSource which allows to configure Hibernate
+     */
     @Bean
     public DataSource getDataSource(
             @Value("${spring.datasource.driver-class-name}") String driverClassName,
@@ -33,6 +45,12 @@ public class DBConfig {
         return dataSource;
     }
 
+    /**
+     * Creates session factory for DAO classes
+     * @param dataSource the source which allows to establish connection
+     * @param dialect dialect
+     * @return The Bean of session factory
+     */
     @Bean
     public LocalSessionFactoryBean sessionFactory(DataSource dataSource,
                                                   @Value("${hibernate.dialect}") String dialect,
@@ -53,6 +71,11 @@ public class DBConfig {
         return sessionFactory;
     }
 
+    /**
+     * Creates a transaction manager for automated transaction handling
+     * @param sessionFactory the session factory
+     * @return a transaction manager
+     */
     @Bean
     public PlatformTransactionManager transactionManager(LocalSessionFactoryBean sessionFactory) {
         final HibernateTransactionManager transactionManager = new HibernateTransactionManager();
@@ -67,14 +90,26 @@ public class DBConfig {
     public IUserDAO getUserDAO() {
         return new UserDAO();
     }
+
+    /**
+     * @return DAO class which allows to manipulate data contracts's data
+     */
     @Bean
     public IContractDAO getContractDAO() {
         return new ContractDAO();
     }
+
+    /**
+     * @return DAO class which allows to manipulate data plans's data
+     */
     @Bean
     public IPlanDAO getPlanDAO() {
         return new PlanDAO();
     }
+
+    /**
+     * @return DAO class which allows to manipulate data options's data
+     */
     @Bean
     public IOptionDAO getOptionDAO() { return new OptionDAO(); }
 }

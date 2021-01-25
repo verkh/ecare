@@ -7,6 +7,9 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
+/**
+ * Root config that loads properties
+ */
 @Configuration
 @PropertySource(value={"classpath:application.properties"})
 public class RootConfig {

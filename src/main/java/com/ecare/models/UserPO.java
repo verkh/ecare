@@ -20,6 +20,9 @@ import java.sql.Date;
 @Setter
 public class UserPO extends AbstractNamedPO {
 
+    /**
+     * The user role which describes authorities and rights of user
+     */
     @Getter
     public enum Authority {
         ROLE_USER("User"),

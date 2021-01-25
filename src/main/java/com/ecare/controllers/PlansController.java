@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Handles buisness logic of plans management which includes also user's choice of new plan
+ */
 @Controller
 @SessionAttributes(names = "Plan")
 public class PlansController {
@@ -42,6 +45,11 @@ public class PlansController {
     @Autowired
     PlanValidator planValidator;
 
+    /**
+     * Configures plans page for normal users
+     * @param model model for JSP page
+     * @return the name of JSP file
+     */
     @RequestMapping(value = "/plans")
     public String getPlans(ModelMap model) {
         logger.trace("Configuring plans page...");
@@ -50,6 +58,12 @@ public class PlansController {
         return "Plans";
     }
 
+    /**
+     * Configures plan page
+     * @param model model for JSP page
+     * @param id id of needed plan
+     * @return the name of JSP file
+     */
     @RequestMapping(value = "/plans/{id}")
     public String getPlan(ModelMap model, @PathVariable long id) {
         logger.trace("Configuring plan page with id=" + id);
@@ -59,6 +73,13 @@ public class PlansController {
         return "Plan";
     }
 
+    /**
+     * Configures plans page with pagination for administrators
+     * @param model model for JSP page
+     * @param currentPage
+     * @param deleteId
+     * @return the name of JSP file
+     */
     @RequestMapping(value = "/administration/tariffs")
     public String getPlans(ModelMap model,
                            @RequestParam(value = "currentPage", required = false) Integer currentPage,
@@ -71,6 +92,12 @@ public class PlansController {
         return "administration/Tariffs";
     }
 
+    /**
+     * Configures plan page for administrator
+     * @param model model for JSP page
+     * @param id id of the needed plan
+     * @return the name of JSP file
+     */
     @RequestMapping(value = "/administration/tariffs/{id}", method = RequestMethod.GET)
     public String getTariff(ModelMap model, @PathVariable long id) {
         logger.trace("Configuring plan page for administrators with id=" + id);
@@ -83,6 +110,11 @@ public class PlansController {
         return "administration/Tariff";
     }
 
+    /**
+     * Configures page for a new plan for administrator
+     * @param model model for JSP page
+     * @return the name of JSP file
+     */
     @RequestMapping(value = "/administration/tariffs/new", method = RequestMethod.GET)
     public String getTariff(ModelMap model) {
         logger.trace("Configuring new plan page for administrators...");
@@ -96,6 +128,13 @@ public class PlansController {
     }
 
 
+    /**
+     * Attempts to save new plan
+     * @param model model for JSP page
+     * @param plan filled new plan
+     * @param result validation errors container
+     * @return the name of JSP file
+     */
     @RequestMapping(value = {"/administration/tariffs/{id}", "/administration/tariffs/new"}, method = RequestMethod.POST)
     public String saveTariff(ModelMap model,
                              @ModelAttribute(value="Plan") PlanPO plan, BindingResult result
@@ -123,6 +162,12 @@ public class PlansController {
         return "redirect:/administration/tariffs";
     }
 
+    /**
+     * Applies plan for authenticated user
+     * @param model model for JSP page
+     * @param id id of new plan
+     * @return the name of JSP file
+     */
     @RequestMapping(value = "/plans/plan")
     public String applyPlan(ModelMap model,
                            @RequestParam(value = "apply", required = false) Long id

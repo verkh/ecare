@@ -15,6 +15,9 @@ import org.springframework.validation.Validator;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+/**
+ * Validator of contracts
+ */
 @Component
 public class ContractValidator implements Validator {
 

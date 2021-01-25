@@ -10,10 +10,16 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+/**
+ * Configures mapping of JSFs for application
+ */
 @Configuration
 @EnableWebMvc
 @ComponentScan("com.ecare")
 public class WebConfig extends WebMvcConfigurerAdapter {
+    /**
+     * @return the resolver for JSPs
+     */
     @Bean
     public InternalResourceViewResolver resolver() {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
@@ -22,6 +28,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return resolver;
     }
 
+    /**
+     * Configures resources mapping
+     * @param registry
+     */
     // Static Resource Config
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/css/**").addResourceLocations("/css/");
@@ -30,6 +40,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/js/**").addResourceLocations("/js/");
     }
 
+    /**
+     * Configures default auth page
+     * @param registry
+     */
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/auth").setViewName("SingIn");

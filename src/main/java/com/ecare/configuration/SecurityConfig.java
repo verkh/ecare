@@ -20,11 +20,19 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
 
+/**
+ * Security config handles configuration of Authentication and authorities
+ */
 @EnableWebSecurity(debug = true)
 @EnableGlobalMethodSecurity
 @ComponentScan("com.ecare")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    /**
+     * Configures security policies
+     * @param http namespace security configuration
+     * @throws Exception
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -49,6 +57,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .invalidateHttpSession(true);
     }
 
+    /**
+     * Setups roles hiearchy in application
+     * @return
+     */
     @Bean
     public RoleHierarchy roleHierarchy() {
         RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
@@ -58,9 +70,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return hierarchy;
     }
 
+    /**
+     * @return default encoder for the application
+     */
     @Bean
     public PasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(); }
 
+    /**
+     * @return custom application service
+     */
     @Bean
     public AuthService authService(){
         return new AuthServiceImpl();
@@ -72,12 +90,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private AuthService authService;
 
+    /**
+     * Setups service and password encoder for security
+     * @param auth authentication manger builder
+     * @throws Exception
+     */
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         //auth.jdbcAuthentication().passwordEncoder(passwordEncoder()).dataSource(dataSource);
         auth.userDetailsService(authService).passwordEncoder(passwordEncoder());
     }
 
+    /**
+     * @return CSRF token for JSP pages
+     */
     private CsrfTokenRepository csrfTokenRepository()
     {
         HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();

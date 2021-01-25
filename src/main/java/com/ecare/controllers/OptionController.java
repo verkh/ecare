@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Controller handles buisness logic of plan options management
+ */
 @Controller
 @SessionAttributes("option")
 public class OptionController {
@@ -28,6 +31,13 @@ public class OptionController {
     @Autowired
     private OptionsService optionsService;
 
+    /**
+     * Configuring options JSP page
+     * @param model model for JSP page
+     * @param currentPage current page number (pagination)
+     * @param deleteId if action is "delete" then it's an id of option to be deleterd
+     * @return the name of JSP file
+     */
     @RequestMapping(value = "/administration/options")
     public String getOptions(ModelMap model,
                              @RequestParam(value = "currentPage", required = false) Integer currentPage,
@@ -42,6 +52,12 @@ public class OptionController {
         return "administration/Options";
     }
 
+    /**
+     * Configuring JSP page for specific option
+     * @param model model for JSP page
+     * @param id an id of needed option
+     * @return the name of JSP file
+     */
     @RequestMapping(value = "/administration/options/{id}", method = RequestMethod.GET)
     @Transactional
     public String getOption(ModelMap model, @PathVariable long id) {
@@ -52,6 +68,11 @@ public class OptionController {
         return "administration/Option";
     }
 
+    /**
+     * Configuring JSP page for creation of new option
+     * @param model model for JSP page
+     * @return the name of JSP file
+     */
     @RequestMapping(value = "/administration/options/new", method = RequestMethod.GET)
     @Transactional
     public String getNewOption(ModelMap model) {
@@ -60,6 +81,13 @@ public class OptionController {
         return "administration/Option";
     }
 
+    /**
+     * Deletes rule from option restrictions list
+     * @param model model for JSP page
+     * @param option current processing option
+     * @param index index of rule in the list
+     * @return the name of JSP file
+     */
     @RequestMapping(params = "remove_rule", value = {"/administration/options/{id}", "/administration/options/new"}, method = RequestMethod.POST)
     public String deleteRule(ModelMap model, @ModelAttribute("option") Option option,
                              @RequestParam(value = "remove_rule", required = false) Long index
@@ -72,6 +100,12 @@ public class OptionController {
         return "administration/Option";
     }
 
+    /**
+     * Adding rule into option restrictions list
+     * @param model model for JSP page
+     * @param option current option
+     * @return the name of JSP file
+     */
     @RequestMapping(params = "add_rule", value = {"/administration/options/{id}", "/administration/options/new"}, method = RequestMethod.POST)
     public String addRule(ModelMap model, @ModelAttribute("option") Option option) {
         logger.debug(String.format("Adding new rule for option %s with id=%d", option.getValue(), option.getValue().getId()));
@@ -79,10 +113,14 @@ public class OptionController {
         return "administration/Option";
     }
 
+    /**
+     * Saves new option into database
+     * @param option current option
+     * @param result validation error container
+     * @return the name of JSP file
+     */
     @RequestMapping(value = {"/administration/options/{id}", "/administration/options/new"}, method = RequestMethod.POST)
-    public String saveNewOption(HttpServletRequest request,
-                                ModelMap model,
-                                @ModelAttribute("option") Option option,
+    public String saveNewOption(@ModelAttribute("option") Option option,
                                 BindingResult result
     ) {
         logger.trace(String.format("Saving new option %s with id=%d", option.getValue(), option.getValue().getId()));

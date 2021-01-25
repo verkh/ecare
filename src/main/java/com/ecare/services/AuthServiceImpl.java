@@ -25,6 +25,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Custom UserDeatilsService which support authentication by email or phone number of user
+ */
 @Service
 public class AuthServiceImpl implements AuthService {
 
@@ -36,6 +39,10 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     protected IContractDAO contractDAO;
 
+    /**
+     * Custom role holder
+     * @see GrantedAuthority
+     */
     @Getter
     public class Role implements GrantedAuthority {
         private String authority;
@@ -44,6 +51,11 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
+    /**
+     * Custom UserDetails implementation which is constructured from UserPO
+     * @see UserPO
+     * @see UserDetails
+     */
     @Getter
     public class UserPrincipal implements UserDetails {
         private long id;
@@ -55,6 +67,10 @@ public class AuthServiceImpl implements AuthService {
         private boolean accountNonLocked = true;
         private boolean credentialsNonExpired = true;
 
+        /**
+         * Constructs from UserPO data
+         * @param subscriber found user
+         */
         UserPrincipal(UserPO subscriber) {
             this.id = subscriber.getId();
             this.username = subscriber.getEmail();
@@ -63,6 +79,12 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
+    /**
+     * Seeks user info by username which could be email or phonme number
+     * @param username email of phone number
+     * @return Object of UserDetails
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -87,6 +109,9 @@ public class AuthServiceImpl implements AuthService {
         return new UserPrincipal(user);
     }
 
+    /**
+     * @return Current user or null
+     */
     public UserPO getCurrentUser() {
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();

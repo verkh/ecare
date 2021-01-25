@@ -14,6 +14,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * AuthContoller handles authentication buisness loginc such as authentication and registration
+ */
 @Controller
 @SessionAttributes("availablePlans")
 public class AuthController extends BaseUserController {
@@ -26,6 +29,12 @@ public class AuthController extends BaseUserController {
     @Autowired
     private PlanService planService;
 
+    /**
+     * Configures sign in JSP page
+     * @param model model for JSP
+     * @param error the placeholder for validation error
+     * @return the name of JSP page
+     */
     @RequestMapping(value = "/auth", method = RequestMethod.GET)
     public String getSignIn(ModelMap model,
                             @RequestParam(value = "error", required = false) String error)
@@ -38,6 +47,12 @@ public class AuthController extends BaseUserController {
         return "SignIn";
     }
 
+    /**
+     * Configures sign up JSP page for new user
+     * @param model model for JSP
+     * @param error placeholder for error if occured
+     * @return the name of JSP file
+     */
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String getSignUp(ModelMap model,
                             @RequestParam(value = "error", required = false) String error)
@@ -49,6 +64,13 @@ public class AuthController extends BaseUserController {
         return "Profile";
     }
 
+    /**
+     * Tries to register new user, validates an input
+     * @param model model for JSP page
+     * @param newContract filled new contract
+     * @param result the errors container
+     * @return the name of JSP file
+     */
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String submitSignUp(ModelMap model,
                                @ModelAttribute(value="contract") ContractPO newContract,

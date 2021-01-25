@@ -9,6 +9,9 @@ import org.springframework.validation.Validator;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Validator of options
+ */
 @Component
 public class OptionValidator  implements Validator {
     @Override
