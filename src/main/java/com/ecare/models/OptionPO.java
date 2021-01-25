@@ -19,7 +19,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class OptionPO extends AbstractNamedPO {
-
+// FIXME: add equals method
     public OptionPO(Long id) {
         this.setId(id);
     }

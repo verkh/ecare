@@ -1,5 +1,6 @@
 package com.ecare.services;
 
+import com.ecare.controllers.HomeController;
 import com.ecare.dao.ContractDAO;
 import com.ecare.dao.IContractDAO;
 import com.ecare.dao.IUserDAO;
@@ -8,6 +9,8 @@ import com.ecare.models.ContractPO;
 import com.ecare.models.UserPO;
 import com.sun.org.apache.bcel.internal.generic.RETURN;
 import lombok.Getter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.Authentication;
@@ -24,6 +27,8 @@ import java.util.List;
 
 @Service
 public class AuthServiceImpl implements AuthService {
+
+    private static Logger logger = LogManager.getLogger(AuthServiceImpl.class);
 
     @Autowired
     protected IUserDAO userDAO;
@@ -60,6 +65,8 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        logger.debug("Looking for a user with login: " + username);
         UserPO user = null;
 
         if(username.contains("@")) {
@@ -69,8 +76,13 @@ public class AuthServiceImpl implements AuthService {
             if(contract != null)
                 user = contract.getUser();
         }
-        if(user == null)
+        if(user == null) {
+            logger.debug("User hasn't been found");
             throw new UsernameNotFoundException(username);
+        }
+
+        logger.debug(String.format("User is found. Name=%s, Lastname=%s, email=%s, phoneNumber=%s",
+                user.getName(), user.getLastName(), user.getEmail(), user.getContract().getPhoneNumber()));
 
         return new UserPrincipal(user);
     }
@@ -85,7 +97,7 @@ public class AuthServiceImpl implements AuthService {
             return userDAO.get(principal.getId()).orElse(null);
         }
         catch (Exception e) {
-
+            logger.error(e.getMessage());
         }
         return null;
     }

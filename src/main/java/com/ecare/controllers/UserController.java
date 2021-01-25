@@ -6,6 +6,8 @@ import com.ecare.models.UserPO;
 import com.ecare.services.PlanService;
 import com.ecare.validators.ContractValidator;
 import lombok.Getter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +24,8 @@ import java.util.List;
 @SessionAttributes(names= {"contract", "optionsContract", "availablePlans"}, types = ContractPO.class)
 public class UserController extends BaseUserController {
 
+    private static Logger logger = LogManager.getLogger(UserController.class);
+
     @Autowired
     ContractValidator contractValidator;
 
@@ -37,12 +41,14 @@ public class UserController extends BaseUserController {
     public String getProfile(ModelMap model,
                              @RequestParam(value = "block", required = false) Boolean block
     ){
+        logger.trace("Configuring profile page for user with id=" + authService.getCurrentUser().getId());
         return profilePrepare(model, Type.Profile, authService.getCurrentUser(), block, null);
     }
 
     @RequestMapping(value="/contract", method = RequestMethod.GET)
     public String getContract(ModelMap model)
     {
+        logger.trace("Configuring contract page of user with id=" + authService.getCurrentUser().getId());
         model.addAttribute("current_action", "contract");
         return contractPrepare(model, authService.getCurrentUser().getContract());
     }
@@ -50,6 +56,7 @@ public class UserController extends BaseUserController {
     @RequestMapping(value="/administration/contracts/{contract_id}", method = RequestMethod.GET)
     public String getContractByID(ModelMap model, @PathVariable long contract_id)
     {
+        logger.trace("Configuring contracts page of user with id=" + contract_id);
         model.addAttribute("current_action", contract_id);
         return contractPrepare(model, contractService.get(contract_id).get());
     }
@@ -60,6 +67,9 @@ public class UserController extends BaseUserController {
                                @ModelAttribute(value="optionsContract") ContractPO contract,
                                BindingResult result
     ) {
+        logger.trace(String.format("Saving contract of user with id=%d and contract id=%d",
+                current.getUser().getId(), current.getId()));
+
         contractValidator.validate(contract, result);
         current.getOptions().clear();
         for(final OptionPO opt : contract.getOptions()) {
@@ -67,6 +77,8 @@ public class UserController extends BaseUserController {
                 current.getOptions().add(opt);
         }
         contractService.update(current);
+        logger.trace(String.format("Saved contract of user with id=%d and contract id=%d",
+                current.getUser().getId(), current.getId()));
         setSuccess(model, "Successfully updated!");
         return "Contract";
     }
@@ -75,6 +87,7 @@ public class UserController extends BaseUserController {
     public String saveProfile(ModelMap model, @ModelAttribute(value="contract") ContractPO contract,
                               BindingResult result
     ){
+        logger.trace(String.format("Saving profile settings of user with id=%d", contract.getUser().getId()));
         contractValidator.validate(contract, result);
         if(!result.hasErrors()) {
             String password = contract.getUser().getRawPassword();
@@ -83,6 +96,7 @@ public class UserController extends BaseUserController {
             contractService.update(contract);
             setSuccess(model, "Successfully updated!");
         }
+        logger.trace(String.format("Saving profile settings of user with id=%d", contract.getUser().getId()));
         checkBlockStatus(model, contract.getUser());
         return "Profile";
     }
