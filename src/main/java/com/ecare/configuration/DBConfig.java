@@ -34,11 +34,21 @@ public class DBConfig {
     }
 
     @Bean
-    public LocalSessionFactoryBean sessionFactory(DataSource dataSource, @Value("${hibernate.dialect}") String dialect) {
+    public LocalSessionFactoryBean sessionFactory(DataSource dataSource,
+                                                  @Value("${hibernate.dialect}") String dialect,
+                                                  @Value("${hibernate.showSql}") String showSql,
+                                                  @Value("${hibernate.formatSql}") String formatSql,
+    ) {
+        // fill additional properties for Hibernate
+        Properties properties = new Properties();
+        properties.setProperty("hibernate.dialect", dialect);
+        properties.setProperty("hibernate.show_sql", showSql);
+        properties.setProperty("hibernate.format_sql", formatSql);
+
         final LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource);
         sessionFactory.setPackagesToScan(new String[] { "com.ecare" });
-        sessionFactory.setHibernateProperties(additionalProperties(dialect));
+        sessionFactory.setHibernateProperties(properties);
 
         return sessionFactory;
     }
@@ -50,15 +60,9 @@ public class DBConfig {
         return transactionManager;
     }
 
-    Properties additionalProperties(String dialect) {
-        Properties properties = new Properties();
-        properties.setProperty("hibernate.dialect", dialect);
-        properties.setProperty("hibernate.show_sql", "true");
-        properties.setProperty("hibernate.format_sql", "true");
-
-        return properties;
-    }
-
+    /**
+     * @return DAO class which allows to manipulate data user's data
+     */
     @Bean
     public IUserDAO getUserDAO() {
         return new UserDAO();
