@@ -35,10 +35,12 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="adminNavbarDropdownItem">
                                 <a class="dropdown-item" href="${pageContext.request.contextPath}/administration/users">Users</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="${pageContext.request.contextPath}/register">Register subscriber</a>
-                                <a class="dropdown-item" href="${pageContext.request.contextPath}/administration/tariffs">Manage plans</a>
-                                <a class="dropdown-item" href="${pageContext.request.contextPath}/administration/options">Manage options</a>
+                                <security:authorize access="hasRole('ADMIN')">
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="${pageContext.request.contextPath}/register">Register subscriber</a>
+                                    <a class="dropdown-item" href="${pageContext.request.contextPath}/administration/tariffs">Manage plans</a>
+                                    <a class="dropdown-item" href="${pageContext.request.contextPath}/administration/options">Manage options</a>
+                                </security:authorize>
                             </div>
                         </li>
                     </security:authorize>
