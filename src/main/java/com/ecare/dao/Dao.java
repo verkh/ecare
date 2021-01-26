@@ -52,7 +52,7 @@ public class Dao<T extends AbstractPO> implements BaseData<T> {
 
     @Override
     public List<T> getAll() {
-        logger.debug(String.format("Looking for all '%s'"));
+        logger.debug(String.format("Looking for all '%s'", type.getSimpleName()));
         Query q = getCurrentSession().createQuery(String.format("SELECT e FROM %s e", type.getSimpleName()));
         return q.list();
     }
