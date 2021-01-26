@@ -28,7 +28,8 @@ public class ErrorPageController {
 
         ModelAndView errorPage = new ModelAndView("Error");
         HttpStatus httpErrorCode = HttpStatus.valueOf(getErrorCode(httpRequest));
-        errorPage.getModelMap().addAttribute("errorMsg", httpErrorCode.getReasonPhrase());
+        errorPage.getModelMap().addAttribute("errorMsg",
+                String.format("Error %s: %s", httpErrorCode.value(), httpErrorCode.getReasonPhrase()));
         return errorPage;
     }
 

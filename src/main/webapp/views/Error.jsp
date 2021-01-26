@@ -31,11 +31,9 @@
     <br/>
     <h3>Police are onto you</h3>
     <hr/>
-
-    <h2>We're helping dictator to rule!</h2>
+    <p>${errorMsg}</p>
 
     <img src="<spring:url value='/images/about2.jpeg' />" class="carousel-img" alt="about1">
-    <p>What you did wrong: ${errorMsg}</p>
 
     </div>
     <hr/>
