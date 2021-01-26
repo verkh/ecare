@@ -55,7 +55,7 @@ public class DBConfig {
     public LocalSessionFactoryBean sessionFactory(DataSource dataSource,
                                                   @Value("${hibernate.dialect}") String dialect,
                                                   @Value("${hibernate.showSql}") String showSql,
-                                                  @Value("${hibernate.formatSql}") String formatSql,
+                                                  @Value("${hibernate.formatSql}") String formatSql
     ) {
         // fill additional properties for Hibernate
         Properties properties = new Properties();
