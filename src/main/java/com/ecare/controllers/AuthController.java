@@ -14,6 +14,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+
 /**
  * AuthContoller handles authentication buisness loginc such as authentication and registration
  */
@@ -87,6 +89,11 @@ public class AuthController extends BaseUserController {
         prepare(model, Type.Registration);
         UserPO newUser = newContract.getUser();
         newUser.setPasswordHash(passwordEncoder.encode(newUser.getRawPassword()));
+
+        PlanPO plan = planService.get(newContract.getPlan().getId()).get();
+        newContract.setPlan(plan);
+        newContract.setOptions(new ArrayList<>(plan.getOptions()));
+
         newContractValidator.validate(newContract, result);
 
         if(result.hasErrors()) {
@@ -95,10 +102,6 @@ public class AuthController extends BaseUserController {
                             f.getField(), f.getDefaultMessage())));
             return "Profile";
         }
-
-        PlanPO plan = planService.get(newContract.getPlan().getId()).get();
-        newContract.setPlan(plan);
-        newContract.setOptions(plan.getOptions());
 
         contractService.save(newContract);
         setSuccess(model, "You've been successfully registered!");
