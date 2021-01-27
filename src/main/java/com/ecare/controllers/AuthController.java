@@ -57,6 +57,10 @@ public class AuthController extends BaseUserController {
     public String getSignUp(ModelMap model,
                             @RequestParam(value = "error", required = false) String error)
     {
+        UserPO curLoggedUser = authService.getCurrentUser();
+        if(curLoggedUser != null && !curLoggedUser.isAdmin())
+            return "redirect:/profile";
+
         logger.trace("Configuring register page...");
         model.addAttribute("contract", new ContractPO());
         model.addAttribute("availablePlans", planService.getAll());
