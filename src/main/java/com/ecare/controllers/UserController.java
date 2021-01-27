@@ -148,13 +148,23 @@ public class UserController extends BaseUserController {
      */
     @RequestMapping(value="/administration/users")
     public String getUsers(ModelMap model,
-        @RequestParam(value = "currentPage", required = false) Integer currentPage,
-        @RequestParam(value = "search", required = false) String searchKey
+                           @RequestParam(value = "currentPage", required = false) Integer currentPage,
+                           @RequestParam(value = "search", required = false) String searchKey,
+                           @RequestParam(value = "block", required = false) Boolean block,
+                           @RequestParam(value = "user_id", required = false) Long userId
     ) {
+        //processing of block algo
+        if(block != null && userId != null) {
+            UserPO user = userService.get(userId).orElse(null);
+            blockProcess(block, user);
+            userService.update(user);
+        }
+
+        //process of search
         if(searchKey == null) {
             Utils.pagination(userService, model, currentPage, "users");
         }
-        else {
+        else { // simple pagination processing
             UserPO user = userService.findByEmail(searchKey);
             if(user == null) {
                 ContractPO contract = contractService.findByPhoneNumber(searchKey);
@@ -168,6 +178,54 @@ public class UserController extends BaseUserController {
             model.addAttribute("searchText", searchKey);
         }
         return "administration/Users";
+    }
+
+    /**
+     * @param model
+     * @param currentPage
+     * @param searchKey
+     * @param block
+     * @param userId
+     * @return
+     */
+    @RequestMapping(params = "unblock_all", value = "/administration/users", method = RequestMethod.POST)
+    public String unblockAllUsers(ModelMap model,
+                                  @RequestParam(value = "currentPage", required = false) Integer currentPage,
+                                  @RequestParam(value = "search", required = false) String searchKey,
+                                  @RequestParam(value = "block", required = false) Boolean block,
+                                  @RequestParam(value = "user_id", required = false) Long userId)
+    {
+        List<UserPO> allUsers = userService.getAll();
+        for(UserPO user : allUsers) {
+            blockProcess(false, user);
+            userService.save(user);
+        }
+        return getUsers(model, currentPage, searchKey, block, userId);
+    }
+
+    /**
+     * @param model
+     * @param currentPage
+     * @param searchKey
+     * @param block
+     * @param userId
+     * @return
+     */
+    @RequestMapping(params = "block_all", value = "/administration/users", method = RequestMethod.POST)
+    public String blockAllUsers(ModelMap model,
+                             @RequestParam(value = "currentPage", required = false) Integer currentPage,
+                             @RequestParam(value = "search", required = false) String searchKey,
+                             @RequestParam(value = "block", required = false) Boolean block,
+                             @RequestParam(value = "user_id", required = false) Long userId)
+    {
+        List<UserPO> allUsers = userService.getAll();
+        for(UserPO user : allUsers) {
+            if(!user.isAdmin() && !user.isDictator()) {
+                blockProcess(true, user);
+                userService.save(user);
+            }
+        }
+        return getUsers(model, currentPage, searchKey, block, userId);
     }
 
     /**
@@ -188,7 +246,7 @@ public class UserController extends BaseUserController {
             model.addAttribute("availablePlans", planService.getAll());
 
         if(block != null && currentUser.getContract() != null)
-            blockProcess(block, currentUser.getContract());
+            blockProcess(block, currentUser);
 
         checkBlockStatus(model, currentUser);
 
@@ -216,11 +274,10 @@ public class UserController extends BaseUserController {
     /**
      * Handles block business logic.
      * User can block and unblock themself only if user was not blocked in the first place by administrator
-     * @param contract current contract of user
+     * @param user current managed user
      */
-    private void blockProcess(boolean block, ContractPO contract){
-        if(block || (!block && canUnblock(contract.getUser()))) {
-            UserPO user = contract.getUser();
+    private void blockProcess(boolean block, UserPO user){
+        if(block || (!block && canUnblock(user))) {
             user.setBlocked(block);
             user.setDisabledBy(block ? authService.getCurrentUser().getId() : null);
         }
@@ -245,6 +302,9 @@ public class UserController extends BaseUserController {
      * @return true if user can be unblock
      */
     private boolean canUnblock(UserPO currentUser) {
-        return currentUser.getDisabledBy() == currentUser.getId() || authService.getCurrentUser().isAdmin();
+        UserPO curLoggedUser = authService.getCurrentUser();
+        return currentUser.getDisabledBy() == currentUser.getId() ||
+                curLoggedUser.isAdmin() ||
+                curLoggedUser.isDictator();
     }
 }

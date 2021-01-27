@@ -50,6 +50,7 @@ public class UserPO extends AbstractNamedPO {
     }
 
     public boolean isAdmin() { return authority == Authority.ROLE_ADMIN; }
+    public boolean isDictator() { return authority == Authority.ROLE_DICTATOR; }
 
     @Column(name = "last_name")
     private String lastName;

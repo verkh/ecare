@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html lang="en">
@@ -31,8 +32,10 @@
 <br>
 
 <div class="container horizontal-card card p-3 bg-dark">
-
+    <form:form action="${current_action}" method="POST">
     <h2>eCare Users</h2>
+        <button class="btn btn-secondary" type="submit" name="block_all" title="Blocks everyone except admins and dictators" style="max-width: 100px;">Block all</button>
+        <button class="btn btn-secondary" type="submit" name="unblock_all" title="Unblock everyone" style="max-width: 100px;">Unblock all</button>
     <hr/>
     <br/>
 
@@ -81,10 +84,10 @@
                 <td>
                     <c:choose>
                         <c:when test="${user.blocked==false}">
-                            <a href="${pageContext.request.contextPath}/administration/users/${user.getId()}?block=1" type="button" class="btn btn-danger btn-sm">Block</a>
+                                      <a href="${pageContext.request.contextPath}/administration/users?block=1&user_id=${user.getId()}" type="button" class="btn btn-danger btn-sm">Block</a>
                         </c:when>
                         <c:otherwise>
-                            <a href="${pageContext.request.contextPath}/administration/users/${user.getId()}?block=0" type="button" class="btn btn-success btn-sm">Unblock</a>
+                            <a href="${pageContext.request.contextPath}/administration/users?block=0&user_id=${user.getId()}" type="button" class="btn btn-success btn-sm">Unblock</a>
                         </c:otherwise>
                     </c:choose>
                 </td>
@@ -123,6 +126,7 @@
             </c:if>
         </ul>
     </nav>
+    </form:form>
 </div>
 </hr>
 <!-- Footer -->
