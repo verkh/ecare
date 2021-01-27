@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @SessionAttributes("availablePlans")
 public class AuthController extends BaseUserController {
 
-    private static Logger logger = LogManager.getLogger(Dao.class);
+    private static Logger logger = LogManager.getLogger(AuthController.class);
 
     @Autowired
     private NewContractValidator newContractValidator;
