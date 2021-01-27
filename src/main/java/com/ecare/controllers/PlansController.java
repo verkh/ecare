@@ -180,7 +180,7 @@ public class PlansController {
         PlanPO plan = planService.get(id).get();
         ContractPO contract = user.getContract();
         contract.setPlan(plan);
-        contract.setOptions(plan.getOptions());
+        contract.setOptions(new ArrayList<OptionPO>(plan.getOptions()));
 
         logger.trace(String.format("Apply plan %s with id=%d", plan.getName(), plan.getId()));
         contractService.save(contract);

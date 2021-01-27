@@ -1,5 +1,6 @@
 package com.ecare.controllers;
 
+import com.ecare.dto.Option;
 import com.ecare.models.ContractPO;
 import com.ecare.models.OptionPO;
 import com.ecare.models.UserPO;
@@ -88,7 +89,6 @@ public class UserController extends BaseUserController {
         logger.trace(String.format("Saving contract of user with id=%d and contract id=%d",
                 current.getUser().getId(), current.getId()));
 
-        contractValidator.validate(contract, result);
         current.getOptions().clear();
         for(final OptionPO opt : contract.getOptions()) {
             if(opt.isEnabled())
