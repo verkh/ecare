@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
@@ -35,17 +36,19 @@ public class OptionController {
      * Configuring options JSP page
      * @param model model for JSP page
      * @param currentPage current page number (pagination)
-     * @param deleteId if action is "delete" then it's an id of option to be deleterd
+     * @param deprecated set flag
+     * @param id if action is "delete" then it's an id of option to be deleterd
      * @return the name of JSP file
      */
     @RequestMapping(value = "/administration/options")
     public String getOptions(ModelMap model,
                              @RequestParam(value = "currentPage", required = false) Integer currentPage,
-                             @RequestParam(value = "delete", required = false) Long deleteId
+                             @RequestParam(value = "deprecated", required = false) Boolean deprecated,
+                             @RequestParam(value = "id", required = false) Long id
     ) {
         logger.trace("Configuring options page...");
-        if (deleteId != null) {
-            optionsService.delete(new Option(deleteId));
+        if (deprecated != null && id != null) {
+            optionsService.setDeprecated(id, deprecated);
             return "redirect:/administration/options";
         }
         Utils.pagination(optionsService, model, currentPage, "options");
@@ -137,5 +140,17 @@ public class OptionController {
         optionsService.update(optionForSave);
         logger.trace(String.format("Option saved %s with id=%d", option.getValue(), option.getValue().getId()));
         return "redirect:/administration/options";
+    }
+
+    /**
+     * Checks options in database that marked with "deprecated flag" every 30 seconds.
+     * If options is also not related to any contract it would be deleted from database.
+     * @return number of deleted options
+     */
+    @Scheduled(fixedRate = 1000*30) // every 30 seconds
+    public void deleteUnusedDeprecatedOptions() {
+        logger.trace("Running check of deprecated options...");
+        int deletedN = optionsService.deleteUnusedDeprecatedOptions();
+        logger.trace(String.format("Removed %d unused deprecated options", deletedN));
     }
 }

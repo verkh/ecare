@@ -60,7 +60,14 @@
                     <a href="${pageContext.request.contextPath}/administration/options/${option.getId()}" type="button" class="btn btn-secondary btn-sm">View</a>
                 </td>
                 <td>
-                    <a href="${pageContext.request.contextPath}/administration/options?delete=${option.getId()}" type="button" class="btn btn-secondary btn-sm">Delete</a>
+                    <c:choose>
+                        <c:when test="${option.deprecated==false}">
+                            <a href="${pageContext.request.contextPath}/administration/options?deprecated=1&id=${option.getId()}" type="button" class="btn btn-danger btn-sm">Deprecate</a>
+                        </c:when>
+                        <c:otherwise>
+                            <a href="${pageContext.request.contextPath}/administration/options?deprecated=0&id=${option.getId()}" type="button" class="btn btn-success btn-sm">Undeprecate</a>
+                        </c:otherwise>
+                    </c:choose>
                 </td>
             </tr>
         </c:forEach>
@@ -71,7 +78,7 @@
         <ul class="pagination">
             <c:if test="${currentPage != 1}">
                 <li class="page-item"><a class="page-link"
-                                         href="tariffs?recordsPerPage=${recordsPerPage}&currentPage=${currentPage-1}">Previous</a>
+                                         href="options?recordsPerPage=${recordsPerPage}&currentPage=${currentPage-1}">Previous</a>
                 </li>
             </c:if>
 
@@ -84,7 +91,7 @@
                     </c:when>
                     <c:otherwise>
                         <li class="page-item"><a class="page-link"
-                                                 href="tariffs?recordsPerPage=${recordsPerPage}&currentPage=${i}">${i}</a>
+                                                 href="options?recordsPerPage=${recordsPerPage}&currentPage=${i}">${i}</a>
                         </li>
                     </c:otherwise>
                 </c:choose>
@@ -92,7 +99,7 @@
 
             <c:if test="${currentPage lt noOfPages}">
                 <li class="page-item"><a class="page-link"
-                                         href="tariffs?recordsPerPage=${recordsPerPage}&currentPage=${currentPage+1}">Next</a>
+                                         href="options?recordsPerPage=${recordsPerPage}&currentPage=${currentPage+1}">Next</a>
                 </li>
             </c:if>
         </ul>
