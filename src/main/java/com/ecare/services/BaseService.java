@@ -12,7 +12,8 @@ import java.util.Optional;
  * @param <DAOType> type of need DAO which handles POJOType
  * @param <POJOType> type of handled data
  */
-public class BaseService<DAOType extends BaseData, POJOType> implements BaseData<POJOType> {
+//public class BaseService<DAOType extends BaseData, POJOType> implements BaseData<POJOType> {
+public abstract class BaseService<DAOType extends BaseData, POJOType, DTOType> {
     @Autowired
     protected DAOType dao;
 
@@ -21,8 +22,8 @@ public class BaseService<DAOType extends BaseData, POJOType> implements BaseData
      * @param id id of object
      * @return object or empty
      */
-    @Override
-    public Optional<POJOType> get(long id) { return dao.get(id); }
+    //@Override
+    abstract public Optional<DTOType> get(long id); // { return dao.get(id); }
 
     /**
      * Seeks N object in table. Used for pagination
@@ -30,45 +31,40 @@ public class BaseService<DAOType extends BaseData, POJOType> implements BaseData
      * @param number number of records to load
      * @return list of objects
      */
-    @Override
-    public List<POJOType> get(int from, int number) { return dao.get(from, number); }
+//    @Override
+    abstract public List<DTOType> get(int from, int number); //{ return dao.get(from, number); }
 
     /**
      * @return all objects from table
      */
-    @Override
-    public List<POJOType> getAll() { return dao.getAll(); }
+//    @Override
+    abstract public List<DTOType> getAll(); //{ return dao.getAll(); }
 
     /**
      * Saves objects into database
      * @param value object for saving
      * @return updated object
      */
-    @Override
-    public POJOType save(POJOType value) {
-        return (POJOType) dao.save(value);
-    }
+//    @Override
+    abstract public DTOType save(DTOType value); // { return (POJOType) dao.save(value); }
 
     /**
      * Saves objects into database
      * @param value object for saving
      * @return updated object
      */
-    @Override
-    public POJOType update(POJOType value) {
-        return (POJOType) dao.update(value);
-    }
+//    @Override
+    abstract public DTOType update(DTOType value); //{ return (POJOType) dao.update(value); }
 
     /**
      * Deletes object from database
      * @param value object to delete
      */
-    @Override
-    public void delete(POJOType value) { dao.delete(value); }
+//    @Override
+    abstract public void delete(DTOType value); //{ dao.delete(value); }
 
     /**
      * @return number of records in database
      */
-    @Override
     public long count() { return dao.count(); }
 }

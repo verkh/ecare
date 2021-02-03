@@ -1,9 +1,8 @@
 package com.ecare.controllers;
 
-import com.ecare.dao.Dao;
-import com.ecare.models.ContractPO;
-import com.ecare.models.PlanPO;
-import com.ecare.models.UserPO;
+import com.ecare.dto.Contract;
+import com.ecare.dto.Plan;
+import com.ecare.dto.User;
 import com.ecare.services.PlanService;
 import com.ecare.validators.NewContractValidator;
 import org.apache.logging.log4j.LogManager;
@@ -59,12 +58,12 @@ public class AuthController extends BaseUserController {
     public String getSignUp(ModelMap model,
                             @RequestParam(value = "error", required = false) String error)
     {
-        UserPO curLoggedUser = authService.getCurrentUser();
-        if(curLoggedUser != null && !curLoggedUser.isAdmin())
+        Contract curLoggedUser = authService.getCurrentUser();
+        if(curLoggedUser != null && !curLoggedUser.getUser().isAdmin())
             return "redirect:/profile";
 
         logger.trace("Configuring register page...");
-        model.addAttribute("contract", new ContractPO());
+        model.addAttribute("contract", new Contract());
         model.addAttribute("availablePlans", planService.getAll());
         prepare(model, Type.Registration);
         return "Profile";
@@ -79,7 +78,7 @@ public class AuthController extends BaseUserController {
      */
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String submitSignUp(ModelMap model,
-                               @ModelAttribute(value="contract") ContractPO newContract,
+                               @ModelAttribute(value="contract") Contract newContract,
                                BindingResult result
     ) {
         logger.trace(String.format("Submit register is received for new user with name: %s %s",
@@ -87,10 +86,10 @@ public class AuthController extends BaseUserController {
                 newContract.getUser().getLastName()));
 
         prepare(model, Type.Registration);
-        UserPO newUser = newContract.getUser();
+        User newUser = newContract.getUser();
         newUser.setPasswordHash(passwordEncoder.encode(newUser.getRawPassword()));
 
-        PlanPO plan = planService.get(newContract.getPlan().getId()).get();
+        Plan plan = planService.get(newContract.getPlan().getId()).get();
         newContract.setPlan(plan);
         newContract.setOptions(new ArrayList<>(plan.getOptions()));
 
@@ -108,8 +107,8 @@ public class AuthController extends BaseUserController {
 
         logger.trace(String.format("New user '%s' is successfully registered", newUser.getEmail()));
 
-        UserPO currentUser = authService.getCurrentUser();
-        if(currentUser != null && currentUser.isAdmin())
+        Contract currentContract = authService.getCurrentUser();
+        if(currentContract != null && currentContract.getUser().isAdmin())
             return "redirect:/administration/contracts/" + newContract.getId();
 
         return "redirect:/auth";

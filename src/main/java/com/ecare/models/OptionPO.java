@@ -20,9 +20,6 @@ import java.util.List;
 @NoArgsConstructor
 public class OptionPO extends AbstractNamedPO {
 // FIXME: add equals method
-    public OptionPO(Long id) {
-        this.setId(id);
-    }
 
     @Column(name = "price")
     private Double price;
@@ -33,9 +30,9 @@ public class OptionPO extends AbstractNamedPO {
     @Column(name = "turn_on_price")
     private Double turnOnPrice;
 
-    @Transient
-    private boolean enabled;
+    @Column(name = "deprecated")
+    private boolean deprecated;
 
     @OneToMany(mappedBy="option", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    List<OptionRestrictionPO> restrictions = new ArrayList<>();
+    private List<OptionRestrictionPO> restrictions = new ArrayList<>();
 }

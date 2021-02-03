@@ -19,13 +19,16 @@ CREATE TABLE IF NOT EXISTS `options` (
     price DOUBLE NOT NULL,
     turn_on_price DOUBLE NOT NULL,
     description VARCHAR(1000),
+    deprecated TINYINT NOT NULL DEFAULT 0,
     PRIMARY KEY(id)
 );
 
 CREATE TABLE IF NOT EXISTS `plan_options` (
+    id INT unsigned NOT NULL AUTO_INCREMENT,
     plan_id INT unsigned NOT NULL,
     option_id INT unsigned NOT NULL,
-    PRIMARY KEY(plan_id, option_id),
+    undisablable TINYINT NOT NULL DEFAULT 0,
+    PRIMARY KEY(id, plan_id, option_id),
     FOREIGN KEY (plan_id) REFERENCES plans (id) ON DELETE CASCADE,
     FOREIGN KEY (option_id) REFERENCES options (id) ON DELETE CASCADE
 );
@@ -57,9 +60,11 @@ CREATE TABLE IF NOT EXISTS `contracts` (
 );
 
 CREATE TABLE IF NOT EXISTS `contract_options` (
+    id INT unsigned NOT NULL AUTO_INCREMENT,
     contract_id INT unsigned NOT NULL,
     option_id INT unsigned NOT NULL,
-    PRIMARY KEY(contract_id, option_id),
+    undisablable TINYINT NOT NULL DEFAULT 0,
+    PRIMARY KEY(id, contract_id, option_id),
     FOREIGN KEY (contract_id) REFERENCES contracts (id) ON DELETE CASCADE,
     FOREIGN KEY (option_id) REFERENCES options (id) ON DELETE CASCADE
 );

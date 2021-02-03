@@ -1,8 +1,11 @@
 package com.ecare.dao;
 
+import com.ecare.models.ContractPO;
 import com.ecare.models.UserPO;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * DAO handles logic related to users table
@@ -24,4 +27,12 @@ public class UserDAO extends Dao<UserPO> implements IUserDAO {
     public UserPO findByEmail(String email) {
         return findBy(email, "email");
     }
+
+    /**
+     * Search contacts that have number alike
+     * @param email partial of full number
+     * @return list of matched contracts
+     */
+    @Override
+    public List<UserPO> findAlikeByEmail(String email) { return findAlikeBy(email, "email"); }
 }

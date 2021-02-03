@@ -1,9 +1,9 @@
 package com.ecare.controllers;
 
-import com.ecare.models.ContractPO;
-import com.ecare.models.OptionPO;
-import com.ecare.models.PlanPO;
-import com.ecare.models.UserPO;
+import com.ecare.dto.Contract;
+import com.ecare.dto.Option;
+import com.ecare.dto.Plan;
+import com.ecare.dto.User;
 import com.ecare.services.AuthService;
 import com.ecare.services.ContractService;
 import com.ecare.services.OptionsService;
@@ -12,13 +12,11 @@ import com.ecare.validators.PlanValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -53,7 +51,7 @@ public class PlansController {
     @RequestMapping(value = "/plans")
     public String getPlans(ModelMap model) {
         logger.trace("Configuring plans page...");
-        List<PlanPO> plans = planService.getAll();
+        List<Plan> plans = planService.getAll();
         model.addAttribute("Plans", plans);
         return "Plans";
     }
@@ -67,7 +65,7 @@ public class PlansController {
     @RequestMapping(value = "/plans/{id}")
     public String getPlan(ModelMap model, @PathVariable long id) {
         logger.trace("Configuring plan page with id=" + id);
-        PlanPO plan = planService.get(id).get();
+        Plan plan = planService.get(id).get();
         System.out.println(plan.getId() + " " + plan.getName() + " " + plan.getOptions().size());
         model.addAttribute("Plan", plan);
         return "Plan";
@@ -87,7 +85,7 @@ public class PlansController {
     ) {
         logger.trace("Configuring plans page for administrators...");
         if(deleteId != null)
-            planService.delete(new PlanPO(deleteId));
+            planService.delete(new Plan(deleteId));
         Utils.pagination(planService, model, currentPage, "tariffs");
         return "administration/Tariffs";
     }
@@ -101,9 +99,9 @@ public class PlansController {
     @RequestMapping(value = "/administration/tariffs/{id}", method = RequestMethod.GET)
     public String getTariff(ModelMap model, @PathVariable long id) {
         logger.trace("Configuring plan page for administrators with id=" + id);
-        PlanPO plan = planService.get(id).get();
+        Plan plan = planService.get(id).get();
 
-        List<OptionPO> options = Utils.prepareOptions(plan.getOptions(), optionsService.getAll());
+        List<Option> options = Utils.prepareOptions(plan.getOptions(), optionsService.getAll());
         plan.setOptions(options);
         model.addAttribute("current_action", id);
         model.addAttribute("Plan", plan);
@@ -118,9 +116,9 @@ public class PlansController {
     @RequestMapping(value = "/administration/tariffs/new", method = RequestMethod.GET)
     public String getTariff(ModelMap model) {
         logger.trace("Configuring new plan page for administrators...");
-        PlanPO plan = new PlanPO();
+        Plan plan = new Plan();
 
-        List<OptionPO> options = Utils.prepareOptions(plan.getOptions(), optionsService.getAll());
+        List<Option> options = Utils.prepareOptions(plan.getOptions(), optionsService.getAll());
         plan.setOptions(options);
         model.addAttribute("current_action", "new");
         model.addAttribute("Plan", plan);
@@ -137,7 +135,7 @@ public class PlansController {
      */
     @RequestMapping(value = {"/administration/tariffs/{id}", "/administration/tariffs/new"}, method = RequestMethod.POST)
     public String saveTariff(ModelMap model,
-                             @ModelAttribute(value="Plan") PlanPO plan, BindingResult result
+                             @ModelAttribute(value="Plan") Plan plan, BindingResult result
     ){
         logger.trace(String.format("Saving plan %s with id=%d", plan.getName(), plan.getId()));
         planValidator.validate(plan, result); // validation should be done before filtering of disabled options
@@ -146,9 +144,9 @@ public class PlansController {
             return "administration/Tariff";
         }
 
-        PlanPO planForSave = plan.getId() != null? planService.get(plan.getId()).get() : new PlanPO(plan);
+        Plan planForSave = plan.getId() != null? planService.get(plan.getId()).get() : plan;
         planForSave.getOptions().clear();
-        for(final OptionPO opt : plan.getOptions()) {
+        for(final Option opt : plan.getOptions()) {
             if(opt.isEnabled())
                 planForSave.getOptions().add(opt);
         }
@@ -172,15 +170,14 @@ public class PlansController {
     public String applyPlan(ModelMap model,
                            @RequestParam(value = "apply", required = false) Long id
     ) {
-        UserPO user = authService.getCurrentUser();
-        if(user == null) {
+        Contract contract = authService.getCurrentUser();
+        if(contract == null) {
             return "redirect:/auth";
         }
 
-        PlanPO plan = planService.get(id).get();
-        ContractPO contract = user.getContract();
+        Plan plan = planService.get(id).get();
         contract.setPlan(plan);
-        contract.setOptions(new ArrayList<OptionPO>(plan.getOptions()));
+        contract.setOptions(plan.getOptions());
 
         logger.trace(String.format("Apply plan %s with id=%d", plan.getName(), plan.getId()));
         contractService.save(contract);

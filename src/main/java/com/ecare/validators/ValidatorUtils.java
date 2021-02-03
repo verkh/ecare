@@ -1,5 +1,7 @@
 package com.ecare.validators;
 
+import com.ecare.dto.Option;
+import com.ecare.dto.OptionRestriction;
 import com.ecare.models.OptionPO;
 import com.ecare.models.OptionRestrictionPO;
 import org.springframework.validation.Errors;
@@ -39,7 +41,7 @@ public class ValidatorUtils {
      * @param options selected options
      * @param errors container of errors
      */
-    public static void checkOptions(List<OptionPO> options, Errors errors) {
+    public static void checkOptions(List<Option> options, Errors errors) {
 
         if(options.isEmpty()) {
             errors.rejectValue("options", "plan.noOptions");
@@ -49,21 +51,21 @@ public class ValidatorUtils {
         final String optionsField = "options[%d]";
 
         for(int i = 0; i < options.size(); i++) {
-            final OptionPO option = options.get(i);
+            final Option option = options.get(i);
 
-            for (final OptionRestrictionPO rule : option.getRestrictions()) {
+            for (final OptionRestriction rule : option.getRestrictions()) {
 
                 if(!option.isEnabled()) continue;
 
                 for(int j = 0; j < options.size(); j++){
-                    OptionPO secondOpt = options.get(j);
+                    Option secondOpt = options.get(j);
                     if(secondOpt.getId() == rule.getOptionId2()) {
-                        if(secondOpt != null && secondOpt.isEnabled() && rule.getRule() == OptionRestrictionPO.Type.INCOMPATIBLE) {
+                        if(secondOpt != null && secondOpt.isEnabled() && rule.getType() == OptionRestrictionPO.Type.INCOMPATIBLE) {
                             errors.rejectValue(String.format(optionsField, i), "options.incompatible");
                             errors.rejectValue(String.format(optionsField, j), "options.incompatible");
                             return;
                         }
-                        else if(secondOpt == null && rule.getRule() == OptionRestrictionPO.Type.REQUIRES) {
+                        else if(secondOpt == null && rule.getType() == OptionRestrictionPO.Type.REQUIRES) {
                             errors.rejectValue(String.format(optionsField, i), "options.requires");
                             errors.rejectValue(String.format(optionsField, j), "options.requires");
                             return;

@@ -71,7 +71,8 @@
                     <th scope="col">Description</th>
                     <th scope="col">Price</th>
                     <th scope="col">Turn on price</th>
-                    <th scope="col"></th>
+                    <th scope="col">Included in plan</th>
+                    <th scope="col">Undisablable</th>
                 </tr>
                 <c:forEach items="${Plan.options}" var="option" varStatus="status">
                     <tr>
@@ -85,7 +86,11 @@
                         <td>${option.price}$</td>
                         <td>${option.turnOnPrice}$</td>
                         <td>
-                            <form:checkbox path="options[${status.index}].enabled"
+                            <form:checkbox id="option_included_${status.index}" path="options[${status.index}].enabled"
+                                           class="form-check-input" onchange="onIncluded(this);"></form:checkbox>
+                        </td>
+                        <td>
+                            <form:checkbox id="option_undisablable_${status.index}" path="options[${status.index}].undisablable"
                                            class="form-check-input"></form:checkbox>
                         </td>
                     </tr>
@@ -95,6 +100,27 @@
             <form:errors class="text-danger" path="options"/>
             <button class="btn btn-md btn-primary" type="submit" style="max-width: 200px;">Save</button>
             </form:form>
+            <script>
+                $(document).ready(function() {
+                    let elements = document.querySelectorAll("[id*=option_included_]");
+                    for (var i = 0, length = elements.length; i < length; i++) {
+                        child = elements[i];
+                        onIncluded(child);
+                    }
+                });
+
+                function onIncluded(e) {
+                    let template = "option_included_"; // FIXME: not so good
+                    let checkbox = e;
+                    let index = checkbox.id.substring(template.length);
+                    if (checkbox.checked)
+                    {
+                        document.getElementById('option_undisablable_'+index).disabled = false;
+                    } else {
+                        document.getElementById('option_undisablable_'+index).disabled = true;
+                    }
+                }
+            </script>
         </div>
     </div>
 </div>

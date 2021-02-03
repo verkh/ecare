@@ -5,6 +5,8 @@ import com.ecare.dao.ContractDAO;
 import com.ecare.dao.IContractDAO;
 import com.ecare.dao.IUserDAO;
 import com.ecare.dao.UserDAO;
+import com.ecare.dto.Contract;
+import com.ecare.dto.User;
 import com.ecare.models.ContractPO;
 import com.ecare.models.UserPO;
 import com.sun.org.apache.bcel.internal.generic.RETURN;
@@ -52,7 +54,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     /**
-     * Custom UserDetails implementation which is constructured from UserPO
+     * Custom UserDetails implementation which is constructured from User
      * @see UserPO
      * @see UserDetails
      */
@@ -112,14 +114,16 @@ public class AuthServiceImpl implements AuthService {
     /**
      * @return Current user or null
      */
-    public UserPO getCurrentUser() {
+    @Override
+    public Contract getCurrentUser() {
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Object authPrincipal = auth.getPrincipal();
             if (authPrincipal == null)
                 return null;
             UserPrincipal principal = (UserPrincipal) auth.getPrincipal();
-            return userDAO.get(principal.getId()).orElse(null);
+            UserPO user = userDAO.get(principal.getId()).orElse(null);
+            return user != null ? new Contract(user.getContract()) : null;
         }
         catch (Exception e) {
             logger.error(e.getMessage());

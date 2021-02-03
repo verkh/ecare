@@ -18,6 +18,7 @@
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
     <!-- eCare CSS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <link href="<spring:url value='/css/common.css'/>" rel="stylesheet">
     <link href="<spring:url value='/css/form.css'/>" rel="stylesheet">
 </head>
@@ -76,7 +77,14 @@
                     <td>${option.price}$</td>
                     <td>${option.turnOnPrice}$</td>
                     <td>
-                        <form:checkbox path="options[${status.index}].enabled" class="form-check-input"></form:checkbox>
+                        <c:choose>
+                            <c:when test="${option.undisablable}">
+                                <form:checkbox id="disabled_checkbox_${status.index}" path="options[${status.index}].enabled" class="form-check-input" disabled="true" style="pointer-events: none;"></form:checkbox>
+                            </c:when>
+                            <c:otherwise>
+                                <form:checkbox path="options[${status.index}].enabled" class="form-check-input"></form:checkbox>
+                            </c:otherwise>
+                        </c:choose>
                     </td>
                 </tr>
             </c:forEach>

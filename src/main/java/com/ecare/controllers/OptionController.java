@@ -1,7 +1,7 @@
 package com.ecare.controllers;
 
 import com.ecare.dto.Option;
-import com.ecare.models.OptionPO;
+import com.ecare.dto.OptionRulesConfigurer;
 import com.ecare.services.OptionsService;
 import com.ecare.validators.OptionValidator;
 import org.apache.logging.log4j.LogManager;
@@ -45,7 +45,7 @@ public class OptionController {
     ) {
         logger.trace("Configuring options page...");
         if (deleteId != null) {
-            optionsService.delete(new OptionPO(deleteId));
+            optionsService.delete(new Option(deleteId));
             return "redirect:/administration/options";
         }
         Utils.pagination(optionsService, model, currentPage, "options");
@@ -62,8 +62,8 @@ public class OptionController {
     @Transactional
     public String getOption(ModelMap model, @PathVariable long id) {
         logger.trace("Configuring options page with option id=" + id);
-        OptionPO currentOption = optionsService.get(id).get();
-        Option option = new Option(currentOption, optionsService.getAll());
+        Option currentOption = optionsService.get(id).get();
+        OptionRulesConfigurer option = new OptionRulesConfigurer(currentOption, optionsService.getAll());
         model.addAttribute("option", option);
         return "administration/Option";
     }
@@ -77,7 +77,7 @@ public class OptionController {
     @Transactional
     public String getNewOption(ModelMap model) {
         logger.trace("Configuring new option page...");
-        model.addAttribute("option", new Option(new OptionPO(), optionsService.getAll()));
+        model.addAttribute("option", new OptionRulesConfigurer(new Option(), optionsService.getAll()));
         return "administration/Option";
     }
 
@@ -89,7 +89,7 @@ public class OptionController {
      * @return the name of JSP file
      */
     @RequestMapping(params = "remove_rule", value = {"/administration/options/{id}", "/administration/options/new"}, method = RequestMethod.POST)
-    public String deleteRule(ModelMap model, @ModelAttribute("option") Option option,
+    public String deleteRule(ModelMap model, @ModelAttribute("option") OptionRulesConfigurer option,
                              @RequestParam(value = "remove_rule", required = false) Long index
     ) {
         if (index != null) {
@@ -107,7 +107,7 @@ public class OptionController {
      * @return the name of JSP file
      */
     @RequestMapping(params = "add_rule", value = {"/administration/options/{id}", "/administration/options/new"}, method = RequestMethod.POST)
-    public String addRule(ModelMap model, @ModelAttribute("option") Option option) {
+    public String addRule(ModelMap model, @ModelAttribute("option") OptionRulesConfigurer option) {
         logger.debug(String.format("Adding new rule for option %s with id=%d", option.getValue(), option.getValue().getId()));
         option.addNewRule();
         return "administration/Option";
@@ -120,7 +120,7 @@ public class OptionController {
      * @return the name of JSP file
      */
     @RequestMapping(value = {"/administration/options/{id}", "/administration/options/new"}, method = RequestMethod.POST)
-    public String saveNewOption(@ModelAttribute("option") Option option,
+    public String saveNewOption(@ModelAttribute("option") OptionRulesConfigurer option,
                                 BindingResult result
     ) {
         logger.trace(String.format("Saving new option %s with id=%d", option.getValue(), option.getValue().getId()));
@@ -128,7 +128,7 @@ public class OptionController {
         if(result.hasErrors())
             return "administration/Option";
 
-        OptionPO optionForSave = option.getValue();
+        Option optionForSave = option.getValue();
         if(optionForSave.getId() == null) {
             optionsService.save(optionForSave);
             option.setId(optionForSave.getId());

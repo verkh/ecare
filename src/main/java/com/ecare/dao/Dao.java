@@ -5,7 +5,7 @@ import com.ecare.models.base.AbstractPO;
 import com.ecare.services.AuthServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,5 +91,12 @@ public class Dao<T extends AbstractPO> implements BaseData<T> {
         String sql = String.format("SELECT e FROM %s e WHERE e.%s = '%s'", type.getSimpleName(), column, value);
         Query q = getCurrentSession().createQuery(sql);
         return (T) q.uniqueResult();
+    }
+
+    protected List<T> findAlikeBy(String value, String column) {
+        logger.debug(String.format("Looking for '%s' by column=%s with value like %s", type.getSimpleName(), column, value));
+        String sql = String.format("SELECT e FROM %s e WHERE e.%s like '%%%s%%'", type.getSimpleName(), column, value);
+        Query q = getCurrentSession().createQuery(sql);
+        return q.list();
     }
 }

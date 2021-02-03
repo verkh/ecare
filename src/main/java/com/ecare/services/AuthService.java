@@ -1,6 +1,7 @@
 package com.ecare.services;
 
-import com.ecare.models.UserPO;
+import com.ecare.dto.Contract;
+import com.ecare.dto.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,5 +24,5 @@ public interface AuthService extends UserDetailsService {
     /**
      * @return Current user or null
      */
-    public UserPO getCurrentUser();
+    public Contract getCurrentUser();
 }

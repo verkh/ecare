@@ -9,7 +9,9 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * ContractPO describes the 'contracts' table and contains information of
@@ -32,12 +34,6 @@ public class ContractPO extends AbstractPO {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserPO user;
 
-    @JoinTable(
-            name="contract_options",
-            joinColumns = @JoinColumn(name = "contract_id"),
-            inverseJoinColumns = @JoinColumn(name = "option_id")
-    )
-    @OneToMany()
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private List<OptionPO> options = new ArrayList<>();
+    @OneToMany(mappedBy="contract", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    private Set<ContractOptionPO> options = new HashSet<>();
 }

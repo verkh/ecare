@@ -49,9 +49,6 @@ public class UserPO extends AbstractNamedPO {
         this.date = new Date(Calendar.getInstance().getTime().getTime());
     }
 
-    public boolean isAdmin() { return authority == Authority.ROLE_ADMIN; }
-    public boolean isDictator() { return authority == Authority.ROLE_DICTATOR; }
-
     @Column(name = "last_name")
     private String lastName;
 
@@ -69,9 +66,6 @@ public class UserPO extends AbstractNamedPO {
 
     @Column(name = "password")
     private String passwordHash;
-
-    @Transient
-    private String rawPassword;
 
     @Column(name = "blocked")
     private boolean blocked;

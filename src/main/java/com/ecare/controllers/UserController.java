@@ -1,9 +1,8 @@
 package com.ecare.controllers;
 
 import com.ecare.dto.Option;
-import com.ecare.models.ContractPO;
-import com.ecare.models.OptionPO;
-import com.ecare.models.UserPO;
+import com.ecare.dto.User;
+import com.ecare.dto.Contract;
 import com.ecare.services.PlanService;
 import com.ecare.validators.ContractValidator;
 import org.apache.logging.log4j.LogManager;
@@ -21,7 +20,7 @@ import java.util.List;
  * Handles buisness logic of user management
  */
 @Controller
-@SessionAttributes(names= {"contract", "optionsContract", "availablePlans"}, types = ContractPO.class)
+@SessionAttributes(names= {"contract", "optionsContract", "availablePlans"}, types = Contract.class)
 public class UserController extends BaseUserController {
 
     private static Logger logger = LogManager.getLogger(UserController.class);
@@ -55,7 +54,7 @@ public class UserController extends BaseUserController {
     {
         logger.trace("Configuring contract page of user with id=" + authService.getCurrentUser().getId());
         model.addAttribute("current_action", "contract");
-        return contractPrepare(model, authService.getCurrentUser().getContract());
+        return contractPrepare(model, authService.getCurrentUser());
     }
 
     /**
@@ -82,15 +81,15 @@ public class UserController extends BaseUserController {
      */
     @RequestMapping(value= {"/contract", "/administration/contracts/{contract_id}"}, method = RequestMethod.POST)
     public String saveContract(ModelMap model,
-                               @ModelAttribute(value="contract") ContractPO current,
-                               @ModelAttribute(value="optionsContract") ContractPO contract,
+                               @ModelAttribute(value="contract") Contract current,
+                               @ModelAttribute(value="optionsContract") Contract contract,
                                BindingResult result
     ) {
         logger.trace(String.format("Saving contract of user with id=%d and contract id=%d",
                 current.getUser().getId(), current.getId()));
 
         current.getOptions().clear();
-        for(final OptionPO opt : contract.getOptions()) {
+        for(final Option opt : contract.getOptions()) {
             if(opt.isEnabled())
                 current.getOptions().add(opt);
         }
@@ -109,7 +108,7 @@ public class UserController extends BaseUserController {
      * @return the name of JSP file
      */
     @RequestMapping(value= {"/profile","/administration/users/{user_id}"}, method = RequestMethod.POST)
-    public String saveProfile(ModelMap model, @ModelAttribute(value="contract") ContractPO contract,
+    public String saveProfile(ModelMap model, @ModelAttribute(value="contract") Contract contract,
                               BindingResult result
     ){
         logger.trace(String.format("Saving profile settings of user with id=%d", contract.getUser().getId()));
@@ -129,15 +128,15 @@ public class UserController extends BaseUserController {
     /**
      * Configures profile page of selected user (administration)
      * @param model model for JSP page
-     * @param user_id id of user
+     * @param contract_id id of user
      * @return the name of JSP file
      */
-    @RequestMapping(value="/administration/users/{user_id}", method = RequestMethod.GET)
+    @RequestMapping(value="/administration/users/{contract_id}", method = RequestMethod.GET)
     public String getUser(ModelMap model,
-                          @PathVariable long user_id,
+                          @PathVariable long contract_id,
                           @RequestParam(value = "block", required = false) Boolean block
     ) {
-        return profilePrepare(model, Type.AdminProfileView, userService.get(user_id).get(), block, user_id);
+        return profilePrepare(model, Type.AdminProfileView, contractService.get(contract_id).get(), block, contract_id);
     }
 
     /**
@@ -151,30 +150,25 @@ public class UserController extends BaseUserController {
                            @RequestParam(value = "currentPage", required = false) Integer currentPage,
                            @RequestParam(value = "search", required = false) String searchKey,
                            @RequestParam(value = "block", required = false) Boolean block,
-                           @RequestParam(value = "user_id", required = false) Long userId
+                           @RequestParam(value = "contractId", required = false) Long contractId
     ) {
+        final String attiribute = "contracts";
+
         //processing of block algo
-        if(block != null && userId != null) {
-            UserPO user = userService.get(userId).orElse(null);
-            blockProcess(block, user);
-            userService.update(user);
+        if(block != null && contractId != null) {
+            Contract contract = contractService.get(contractId).orElse(null);
+            blockProcess(block, contract.getUser());
+            contractService.update(contract);
         }
 
         //process of search
         if(searchKey == null) {
-            Utils.pagination(userService, model, currentPage, "users");
+            Utils.pagination(contractService, model, currentPage, attiribute);
         }
         else { // simple pagination processing
-            UserPO user = userService.findByEmail(searchKey);
-            if(user == null) {
-                ContractPO contract = contractService.findByPhoneNumber(searchKey);
-                if(contract != null) {
-                    user = userService.get(contract.getUser().getId()).orElse(null);
-                }
-            }
-            if(user != null) {
-                model.addAttribute("users", Arrays.asList(user));
-            }
+            List<Contract> contracts = contractService.findAlikeByEmail(searchKey);
+            contracts.addAll(contractService.findAlikeByPhoneNumber(searchKey));
+            model.addAttribute(attiribute, contracts);
             model.addAttribute("searchText", searchKey);
         }
         return "administration/Users";
@@ -193,12 +187,12 @@ public class UserController extends BaseUserController {
                                   @RequestParam(value = "currentPage", required = false) Integer currentPage,
                                   @RequestParam(value = "search", required = false) String searchKey,
                                   @RequestParam(value = "block", required = false) Boolean block,
-                                  @RequestParam(value = "user_id", required = false) Long userId)
+                                  @RequestParam(value = "contractId", required = false) Long userId)
     {
-        List<UserPO> allUsers = userService.getAll();
-        for(UserPO user : allUsers) {
-            blockProcess(false, user);
-            userService.save(user);
+        List<Contract> allContracts = contractService.getAll();
+        for(Contract contract : allContracts) {
+            blockProcess(false, contract.getUser());
+            contractService.save(contract);
         }
         return getUsers(model, currentPage, searchKey, block, userId);
     }
@@ -216,13 +210,14 @@ public class UserController extends BaseUserController {
                              @RequestParam(value = "currentPage", required = false) Integer currentPage,
                              @RequestParam(value = "search", required = false) String searchKey,
                              @RequestParam(value = "block", required = false) Boolean block,
-                             @RequestParam(value = "user_id", required = false) Long userId)
+                             @RequestParam(value = "contractId", required = false) Long userId)
     {
-        List<UserPO> allUsers = userService.getAll();
-        for(UserPO user : allUsers) {
+        List<Contract> allContracts = contractService.getAll();
+        for(Contract contract : allContracts) {
+            User user = contract.getUser();
             if(!user.isAdmin() && !user.isDictator()) {
                 blockProcess(true, user);
-                userService.save(user);
+                contractService.save(contract);
             }
         }
         return getUsers(model, currentPage, searchKey, block, userId);
@@ -234,21 +229,21 @@ public class UserController extends BaseUserController {
      * @param type - which type of profile is used
      * @return the name of JSP
      */
-    private String profilePrepare(ModelMap model, Type type, UserPO currentUser, Boolean block, Long id) {
-        model.addAttribute("contract", currentUser.getContract());
+    private String profilePrepare(ModelMap model, Type type, Contract contract, Boolean block, Long id) {
+        model.addAttribute("contract", contract);
         if (id == null) {
             prepare(model, type);
         } else {
             prepare(model, type, id);
         }
 
-        if(authService.getCurrentUser().isAdmin())
+        if(authService.getCurrentUser().getUser().isAdmin())
             model.addAttribute("availablePlans", planService.getAll());
 
-        if(block != null && currentUser.getContract() != null)
-            blockProcess(block, currentUser);
+        if(block != null && contract != null)
+            blockProcess(block, contract.getUser());
 
-        checkBlockStatus(model, currentUser);
+        checkBlockStatus(model, contract.getUser());
 
         return "Profile";
     }
@@ -259,11 +254,11 @@ public class UserController extends BaseUserController {
      * @param contract contract of selected user
      * @return the name of JSP file
      */
-    private String contractPrepare(ModelMap model, ContractPO contract) {
+    private String contractPrepare(ModelMap model, Contract contract) {
 
-        List<OptionPO> options = Utils.prepareOptions(contract.getOptions(), contract.getPlan().getOptions());
+        List<Option> options = Utils.prepareOptions(contract.getOptions(), contract.getPlan().getOptions());
 
-        ContractPO optionsContract = new ContractPO();
+        Contract optionsContract = new Contract();
         optionsContract.setOptions(options);
 
         model.addAttribute("contract", contract);
@@ -276,10 +271,10 @@ public class UserController extends BaseUserController {
      * User can block and unblock themself only if user was not blocked in the first place by administrator
      * @param user current managed user
      */
-    private void blockProcess(boolean block, UserPO user){
+    private void blockProcess(boolean block, User user){
         if(block || (!block && canUnblock(user))) {
             user.setBlocked(block);
-            user.setDisabledBy(block ? authService.getCurrentUser().getId() : null);
+            user.setDisabledBy(block ? authService.getCurrentUser().getUser().getId() : null);
         }
     }
 
@@ -288,7 +283,7 @@ public class UserController extends BaseUserController {
      * @param model model for JSP page
      * @param currentUser current selected user
      */
-    private void checkBlockStatus(ModelMap model, UserPO currentUser) {
+    private void checkBlockStatus(ModelMap model, User currentUser) {
         if(currentUser.isBlocked()) {
             model.addAttribute("blocked", true);
             if(canUnblock(currentUser))
@@ -301,10 +296,10 @@ public class UserController extends BaseUserController {
      * @param currentUser current selected user
      * @return true if user can be unblock
      */
-    private boolean canUnblock(UserPO currentUser) {
-        UserPO curLoggedUser = authService.getCurrentUser();
+    private boolean canUnblock(User currentUser) {
+        Contract curLoggedUser = authService.getCurrentUser();
         return currentUser.getDisabledBy() == currentUser.getId() ||
-                curLoggedUser.isAdmin() ||
-                curLoggedUser.isDictator();
+                curLoggedUser.getUser().isAdmin() ||
+                curLoggedUser.getUser().isDictator();
     }
 }

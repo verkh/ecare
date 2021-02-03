@@ -1,14 +1,15 @@
 package com.ecare.models;
 
 import com.ecare.models.base.AbstractNamedPO;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * PlanPO describes a tariff plan represented in database, which also contains
@@ -23,22 +24,12 @@ public class PlanPO extends AbstractNamedPO {
         this.setId(other.getId());
         this.setName(other.getName());
         this.price = other.getPrice();
-        this.options = new ArrayList<>(other.getOptions());
-    }
-
-    public PlanPO(Long id) {
-        this.setId(id);
+        this.options = new HashSet<>(other.getOptions());
     }
 
     @Column(name = "price")
     private Double price;
 
-    @JoinTable(
-            name="plan_options",
-            joinColumns = @JoinColumn(name = "plan_id"),
-            inverseJoinColumns = @JoinColumn(name = "option_id")
-    )
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<OptionPO> options = new ArrayList<>();
-
+    @OneToMany(mappedBy="plan", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    private Set<PlanOptionPO> options = new HashSet<>();
 }

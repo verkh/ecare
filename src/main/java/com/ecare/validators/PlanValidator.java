@@ -1,6 +1,6 @@
 package com.ecare.validators;
 
-import com.ecare.models.PlanPO;
+import com.ecare.dto.Plan;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -12,7 +12,7 @@ import org.springframework.validation.Validator;
 public class PlanValidator implements Validator {
     @Override
     public boolean supports(Class<?> clazz) {
-        return PlanPO.class.equals(clazz);
+        return Plan.class.equals(clazz);
     }
 
     @Override
@@ -24,7 +24,7 @@ public class PlanValidator implements Validator {
 
         ValidatorUtils.checkEmptiness(fields, errors);
 
-        PlanPO plan = (PlanPO) target;
+        Plan plan = (Plan) target;
 
         ValidatorUtils.priceNotNegative("price", plan.getPrice(), errors);
 

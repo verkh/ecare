@@ -1,10 +1,12 @@
 package com.ecare.controllers;
 
-import com.ecare.models.OptionPO;
+import com.ecare.dto.Option;
 import com.ecare.services.BaseService;
 import org.springframework.ui.ModelMap;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -19,9 +21,9 @@ public class Utils {
      * @param currentPage current viewed page
      * @param attributeName name of model attribute that should be set
      * @param <Service> Type of service
-     * @param <POJOType> Type of data
+     * @param <DTOType> Type of data
      */
-    public static <Service extends BaseService, POJOType> void pagination(Service service,
+    public static <Service extends BaseService, DTOType> void pagination(Service service,
                                                                           ModelMap model,
                                                                           Integer currentPage,
                                                                           String attributeName)
@@ -38,7 +40,7 @@ public class Utils {
         if(currentPage == null)
             currentPage = 1;
 
-        List<POJOType> dataList = service.get((currentPage-1)*recordsPerPage, recordsPerPage);
+        List<DTOType> dataList = service.get((currentPage-1)*recordsPerPage, recordsPerPage);
 
         model.addAttribute(attributeName, dataList);
 
@@ -53,15 +55,15 @@ public class Utils {
      * @param allOpts all options that are available
      * @return the options list with set "true" flag for enabled options
      */
-    public static List<OptionPO> prepareOptions(List<OptionPO> existentOpts, List<OptionPO> allOpts) {
-        List<OptionPO> options = new ArrayList<>(existentOpts);
+    public static List<Option> prepareOptions(List<Option> existentOpts, List<Option> allOpts) {
+        List<Option> options = new ArrayList<>(existentOpts);
 
-        for(OptionPO opt : options)
+        for(Option opt : options)
             opt.setEnabled(true);
 
-        for(final OptionPO opt : allOpts) {
+        for(final Option opt : allOpts) {
             boolean found = false;
-            for(OptionPO usrOpt : existentOpts) {
+            for(Option usrOpt : existentOpts) {
                 if(opt.getId() == usrOpt.getId()) {
                     found = true;
                     break;
@@ -70,5 +72,9 @@ public class Utils {
             if(!found) options.add(opt);
         }
         return options;
+    }
+
+    public static void sortOptions(List<Option> options) {
+        Collections.sort(options, (a, b) -> a.getId().compareTo(b.getId()));
     }
 }

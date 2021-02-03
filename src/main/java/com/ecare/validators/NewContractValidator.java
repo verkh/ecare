@@ -1,7 +1,7 @@
 package com.ecare.validators;
 
-import com.ecare.models.ContractPO;
-import com.ecare.models.UserPO;
+import com.ecare.dto.Contract;
+import com.ecare.dto.User;
 import com.ecare.services.ContractService;
 import com.ecare.services.UserService;
 import org.springframework.stereotype.Component;
@@ -23,7 +23,7 @@ public class NewContractValidator extends ContractValidator implements Validator
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return ContractPO.class.equals(clazz);
+        return Contract.class.equals(clazz);
     }
 
     @Override
@@ -34,8 +34,8 @@ public class NewContractValidator extends ContractValidator implements Validator
 
         ValidatorUtils.checkEmptiness(fields, errors);
 
-        ContractPO contract = (ContractPO) target;
-        UserPO user = contract.getUser();
+        Contract contract = (Contract) target;
+        User user = contract.getUser();
 
         if (userService.findByEmail(user.getEmail()) != null)
             errors.rejectValue("user.email", "user.email.alreadyUsed");

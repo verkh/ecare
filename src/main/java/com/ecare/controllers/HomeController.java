@@ -1,6 +1,6 @@
 package com.ecare.controllers;
 
-import com.ecare.models.PlanPO;
+import com.ecare.dto.Plan;
 import com.ecare.services.PlanService;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +43,9 @@ public class HomeController {
 
         logger.trace("Configuring home page...");
 
-        PlanPO dictator = planService.findByName(BasicPlans.DICTATOR.getValue());
-        PlanPO peasant = planService.findByName(BasicPlans.PEASANT.getValue());
-        PlanPO exile = planService.findByName(BasicPlans.EXILE.getValue());
+        Plan dictator = planService.findByName(BasicPlans.DICTATOR.getValue());
+        Plan peasant = planService.findByName(BasicPlans.PEASANT.getValue());
+        Plan exile = planService.findByName(BasicPlans.EXILE.getValue());
 
         model.addAttribute(BasicPlans.DICTATOR.getValue(), dictator);
         model.addAttribute(BasicPlans.PEASANT.getValue(), peasant);

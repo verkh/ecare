@@ -65,29 +65,29 @@
             <th scope="col"></th>
             <th scope="col"></th>
         </tr>
-        <c:forEach items="${users}" var="user">
+        <c:forEach items="${contracts}" var="contract">
             <tr>
-                <td>${user.getId()}</td>
-                <td>${user.getName()}</td>
-                <td>${user.getLastName()}</td>
-                <td>${user.getPassport()}</td>
-                <td>${user.getDate()}</td>
-                <td>${user.getAddress()}</td>
-                <td>${user.getEmail()}</td>
-                <td>${user.contract.getPhoneNumber()}</td>
+                <td>${contract.user.getId()}</td>
+                <td>${contract.user.getName()}</td>
+                <td>${contract.user.getLastName()}</td>
+                <td>${contract.user.getPassport()}</td>
+                <td>${contract.user.getDate()}</td>
+                <td>${contract.user.getAddress()}</td>
+                <td>${contract.user.getEmail()}</td>
+                <td>${contract.getPhoneNumber()}</td>
                 <td>
-                    <a href="${pageContext.request.contextPath}/administration/users/${user.getId()}" type="button" class="btn btn-secondary btn-sm">View</a>
+                    <a href="${pageContext.request.contextPath}/administration/users/${contract.getId()}" type="button" class="btn btn-secondary btn-sm">View</a>
                 </td>
                 <td>
-                    <a href="${pageContext.request.contextPath}/administration/contracts/${user.contract.getId()}" type="button" class="btn btn-secondary btn-sm">Contract</a>
+                    <a href="${pageContext.request.contextPath}/administration/contracts/${contract.getId()}" type="button" class="btn btn-secondary btn-sm">Contract</a>
                 </td>
                 <td>
                     <c:choose>
-                        <c:when test="${user.blocked==false}">
-                                      <a href="${pageContext.request.contextPath}/administration/users?block=1&user_id=${user.getId()}" type="button" class="btn btn-danger btn-sm">Block</a>
+                        <c:when test="${contract.user.blocked==false}">
+                                      <a href="${pageContext.request.contextPath}/administration/users?block=1&contractId=${contract.getId()}" type="button" class="btn btn-danger btn-sm">Block</a>
                         </c:when>
                         <c:otherwise>
-                            <a href="${pageContext.request.contextPath}/administration/users?block=0&user_id=${user.getId()}" type="button" class="btn btn-success btn-sm">Unblock</a>
+                            <a href="${pageContext.request.contextPath}/administration/users?block=0&contractId=${contract.getId()}" type="button" class="btn btn-success btn-sm">Unblock</a>
                         </c:otherwise>
                     </c:choose>
                 </td>

@@ -12,17 +12,31 @@ VALUES
        (2, "Internet", 0, 1, "Use the magic to communicate with other people vie chats and send the catpics"),
        (3, "Calls", 0, 1, "Just take your phone and click call!"),
        (4, "Spam-suffer", 0, 1, "Use this opportunity to make your peasants suffer!"),
-       (5, "Suffer", 0, 1, "Sorry, you will suffer for eternity. That's your dictator wish");
+       (5, "Suffer", 0, 1, "Sorry, you will suffer for eternity. That's your dictator wish"),
+       (6, "News", 0, 1, "Receive news everyday"),
+       (7, "Bieber", 0, 1, "Let them suffer listening Justin Bieber"),
+       (8, "You don't pay", 0, 1, "Ley your friend pay for your call"),
+       (9, "You're on wire'", 0, 1, "All your actions would be reported to the ruler");
 
-INSERT INTO plan_options(plan_id, option_id)
+INSERT INTO plan_options(plan_id, option_id, undisablable)
 VALUES
-       (1,1),
-       (1,2),
-       (1,3),
-       (1,4),
-       (2,2),
-       (2,3),
-       (3,5);
+       (1,1, 1),
+       (1,2, 0),
+       (1,3, 0),
+       (1,4, 1),
+       (1,6, 0),
+       (1,7, 0),
+       (1,8, 0),
+
+       (2,2, 1),
+       (2,3, 0),
+       (2,6, 0),
+       (2,7, 0),
+       (2,8, 0),
+       (2,9, 1),
+
+       (3,5, 1),
+       (3,9, 1);
 
 INSERT INTO users(id, name, last_name, birth_date, passport, address, email, password, blocked, authority)
 VALUES
@@ -43,6 +57,20 @@ VALUES
        (15, "9650358595", 5, 2),
        (16, "9650358594", 6, 3),
        (17, "9650358593", 7, 1);
+
+INSERT INTO contract_options(contract_id, option_id, undisablable)
+VALUES
+        (11,1, 1),(17,1, 1),
+        (11,4, 1),(17,4, 1),
+        (11,8, 0),(17,8, 0),
+
+        (12,2, 1),(13,2, 1),(14,2, 1),(15,2, 1),
+        (12,3, 0),(13,3, 0),(14,3, 0),(15,3, 0),
+        (12,8, 0),(13,8, 0),(14,8, 0),(15,8, 0),
+        (12,9, 1),(13,9, 1),(14,9, 1),(15,9, 1),
+
+        (16,5, 1),
+        (16,9, 1);
 
 INSERT INTO option_rules(id, option_id1, rule, option_id2)
 VALUES

@@ -114,8 +114,8 @@
                                     </td>
                                     <td>
                                         <form:select class="form-select form-control-sm" id="ruleSelect"
-                                                     path="restrictions[${status.index}].rule">
-                                            <form:options items="${rule.rule.values()}"
+                                                     path="restrictions[${status.index}].type">
+                                            <form:options items="${rule.type.values()}"
                                                           itemLabel="typeStr"></form:options>
                                         </form:select>
                                     </td>

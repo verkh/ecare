@@ -35,8 +35,7 @@ public class DBConfig {
             @Value("${spring.datasource.url}") String dataSourceUrl,
             @Value("${spring.datasource.username}") String userName,
             @Value("${spring.datasource.password}") String password
-    )
-    {
+    ){
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(driverClassName);
         dataSource.setUrl(dataSourceUrl);

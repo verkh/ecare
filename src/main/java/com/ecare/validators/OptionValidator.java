@@ -1,6 +1,8 @@
 package com.ecare.validators;
 
 import com.ecare.dto.Option;
+import com.ecare.dto.OptionRestriction;
+import com.ecare.dto.OptionRulesConfigurer;
 import com.ecare.models.OptionRestrictionPO;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -16,7 +18,7 @@ import java.util.Map;
 public class OptionValidator  implements Validator {
     @Override
     public boolean supports(Class<?> clazz) {
-        return Option.class.equals(clazz);
+        return OptionRulesConfigurer.class.equals(clazz);
     }
 
     @Override
@@ -30,7 +32,7 @@ public class OptionValidator  implements Validator {
 
         ValidatorUtils.checkEmptiness(fields, errors);
 
-        Option option = (Option) target;
+        OptionRulesConfigurer option = (OptionRulesConfigurer) target;
 
         if(option.getAllOptionNames().containsKey(option.getValue().getName()))
             errors.rejectValue("option.name.notUnique", "NotUniqueOptionName");
@@ -40,7 +42,7 @@ public class OptionValidator  implements Validator {
 
         Map<Long, Integer> usedIds = new HashMap();
         for(int i = 0; i < option.getRestrictions().size(); i++) {
-            final OptionRestrictionPO rule = option.getRestrictions().get(i);
+            final OptionRestriction rule = option.getRestrictions().get(i);
             if(usedIds.containsKey(rule.getOptionId2())) {
                 errors.rejectValue(String.format("value.restrictions[%d]", i), "option.rule.duplicated");
                 errors.rejectValue(String.format("value.restrictions[%d]", usedIds.get(rule.getOptionId2())), "option.rule.duplicated");

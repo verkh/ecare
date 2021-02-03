@@ -1,6 +1,6 @@
 package com.ecare.controllers;
 
-import com.ecare.dao.Dao;
+import com.ecare.dto.User;
 import com.ecare.models.UserPO;
 import com.ecare.services.AuthService;
 import com.ecare.services.ContractService;
@@ -19,9 +19,6 @@ import org.springframework.ui.ModelMap;
 public class BaseUserController {
 
     private static Logger logger = LogManager.getLogger(BaseUserController.class);
-
-    @Autowired
-    protected UserService userService;
 
     @Autowired
     protected ContractService contractService;

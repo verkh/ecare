@@ -12,6 +12,16 @@ video {
     -webkit-filter: drop-shadow(0px 0px 12px #d66834);
 }
 
+#tooltip-wrapper {
+    display: inline-block; /* display: block works as well */
+    margin: 50px; /* make some space so the tooltip is visible */
+}
+
+#tooltip-wrapper  .disabled_checkbox[disabled] {
+    /* don't let button block mouse events from reaching wrapper */
+    pointer-events: none;
+}
+
 /*!
  * Bootswatch v4.5.3
  * Homepage: https://bootswatch.com

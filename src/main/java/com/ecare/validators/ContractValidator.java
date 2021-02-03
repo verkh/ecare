@@ -1,15 +1,9 @@
 package com.ecare.validators;
 
-import com.ecare.models.ContractPO;
-import com.ecare.models.UserPO;
-import com.ecare.services.AuthService;
-import com.ecare.services.ContractService;
-import com.ecare.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
+import com.ecare.dto.Contract;
+import com.ecare.dto.User;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import java.util.Calendar;
@@ -29,7 +23,7 @@ public class ContractValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return ContractPO.class.equals(clazz);
+        return Contract.class.equals(clazz);
     }
 
     @Override
@@ -47,8 +41,8 @@ public class ContractValidator implements Validator {
 
         ValidatorUtils.checkEmptiness(fields, errors);
 
-        ContractPO contract = (ContractPO) target;
-        UserPO user = contract.getUser();
+        Contract contract = (Contract) target;
+        User user = contract.getUser();
 
         if (user.getName().length() < 3)
             errors.rejectValue("user.name", "user.name.length");
