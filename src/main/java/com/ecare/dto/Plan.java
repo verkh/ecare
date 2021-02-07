@@ -4,9 +4,7 @@ import com.ecare.controllers.Utils;
 import com.ecare.models.ContractOptionPO;
 import com.ecare.models.PlanOptionPO;
 import com.ecare.models.PlanPO;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,11 +15,13 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder(toBuilder=true)
 public class Plan {
     private Long id;
     private String name;
     private Double price;
-    private List<Option> options = new ArrayList<>();
+    @Singular private List<Option> options;
 
     public Plan(Long id) {
         this.setId(id);

@@ -8,6 +8,16 @@ video {
     height: auto;
 }
 
+.dot {
+    height: 15px;
+    width: 15px;
+    background-color: #d66834;
+    border-radius: 50%;
+    display: inline-block;
+    font-size: 10px;
+    text-align: center;
+}
+
 .glow-horizontal-card:hover {
     -webkit-filter: drop-shadow(0px 0px 12px #d66834);
 }

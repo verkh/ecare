@@ -4,9 +4,7 @@ import com.ecare.models.OptionPO;
 import com.ecare.models.OptionRestrictionPO;
 import com.ecare.models.PlanOptionPO;
 import com.ecare.models.base.AttachedOption;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Transient;
@@ -17,6 +15,8 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder(toBuilder=true)
 public class Option {
     private Long attachedId;
     private Long id;
@@ -27,7 +27,7 @@ public class Option {
     private boolean undisablable;
     private boolean deprecated;
     private boolean enabled;
-    private List<OptionRestriction> restrictions = new ArrayList<>();
+    @Singular private List<OptionRestriction> restrictions;
 
     public Option(Long id) {
         this.setId(id);
@@ -46,9 +46,8 @@ public class Option {
         this.description = option.getDescription();
         this.turnOnPrice = option.getTurnOnPrice();
         this.deprecated = option.isDeprecated();
-        for(final OptionRestrictionPO rule : option.getRestrictions()){
-            this.restrictions.add(new OptionRestriction(rule));
-        }
+        this.restrictions = option.getRestrictions().stream().map(rule -> new OptionRestriction(rule))
+                .collect(Collectors.toList());
     }
 
     public OptionPO toEntity() {
@@ -71,6 +70,13 @@ public class Option {
         return optionWrapper;
     }
 
-    public static Option of(AttachedOption value) { return new Option(value); }
+    public static Option of(AttachedOption value) { return of(value, false); }
+
+    public static Option of(AttachedOption value, boolean enabled) {
+        Option opt = new Option(value);
+        opt.setEnabled(enabled);
+        return opt;
+    }
+
     public static Option of(OptionPO value) { return new Option(value); }
 }

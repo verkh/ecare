@@ -1,14 +1,17 @@
 package com.ecare.controllers;
 
+import com.ecare.dto.Contract;
 import com.ecare.dto.Plan;
 import com.ecare.services.PlanService;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Root controller that handles home and about pages
@@ -50,7 +53,6 @@ public class HomeController {
         model.addAttribute(BasicPlans.DICTATOR.getValue(), dictator);
         model.addAttribute(BasicPlans.PEASANT.getValue(), peasant);
         model.addAttribute(BasicPlans.EXILE.getValue(), exile);
-
         return "index";
     }
 

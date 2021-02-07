@@ -3,9 +3,7 @@ package com.ecare.dto;
 import com.ecare.controllers.Utils;
 import com.ecare.models.ContractOptionPO;
 import com.ecare.models.ContractPO;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,19 +12,21 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @NoArgsConstructor
+@Builder(toBuilder=true)
+@AllArgsConstructor
 public class Contract {
     private Long id;
     private String phoneNumber;
     private Plan plan;
     private User user;
-    private List<Option> options = new ArrayList<>();
+    @Singular private List<Option> options;
 
     public Contract(ContractPO contract) {
         this.id = contract.getId();
         this.phoneNumber = contract.getPhoneNumber();
         this.plan = new Plan(contract.getPlan());
         this.user = new User(contract.getUser());
-        this.options = contract.getOptions().stream().map(value -> Option.of(value)).collect(Collectors.toList());
+        this.options = contract.getOptions().stream().map(value -> Option.of(value, true)).collect(Collectors.toList());
         Utils.sortOptions(options);
     }
 
@@ -52,4 +52,5 @@ public class Contract {
     public static Contract of(ContractPO contractPO) {
         return new Contract(contractPO);
     }
+
 }

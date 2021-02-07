@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Basic class of utils for controllers
@@ -56,7 +57,7 @@ public class Utils {
      * @return the options list with set "true" flag for enabled options
      */
     public static List<Option> prepareOptions(List<Option> existentOpts, List<Option> allOpts) {
-        List<Option> options = new ArrayList<>(existentOpts);
+        List<Option> options = existentOpts.stream().map(opt -> opt.toBuilder().build()).collect(Collectors.toList());
 
         for(Option opt : options)
             opt.setEnabled(true);
@@ -69,7 +70,7 @@ public class Utils {
                     break;
                 }
             }
-            if(!found) options.add(opt);
+            if(!found) options.add(opt.toBuilder().build());
         }
         return options;
     }

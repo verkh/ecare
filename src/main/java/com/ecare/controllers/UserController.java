@@ -1,5 +1,6 @@
 package com.ecare.controllers;
 
+import com.ecare.dto.Cart;
 import com.ecare.dto.Option;
 import com.ecare.dto.User;
 import com.ecare.dto.Contract;
@@ -13,6 +14,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,7 +23,7 @@ import java.util.List;
  * Handles buisness logic of user management
  */
 @Controller
-@SessionAttributes(names= {"contract", "optionsContract", "availablePlans"}, types = Contract.class)
+@SessionAttributes(names= {"contract", "userCart", "availablePlans"}, types = Contract.class)
 public class UserController extends BaseUserController {
 
     private static Logger logger = LogManager.getLogger(UserController.class);
@@ -50,11 +53,11 @@ public class UserController extends BaseUserController {
      * @return the name of JSP file
      */
     @RequestMapping(value="/contract", method = RequestMethod.GET)
-    public String getContract(ModelMap model)
+    public String getContract(ModelMap model, @ModelAttribute(value = "userCart") Cart cart)
     {
         logger.trace("Configuring contract page of user with id=" + authService.getCurrentUser().getId());
         model.addAttribute("current_action", "contract");
-        return contractPrepare(model, authService.getCurrentUser());
+        return contractPrepare(model, authService.getCurrentUser(), cart);
     }
 
     /**
@@ -64,32 +67,77 @@ public class UserController extends BaseUserController {
      * @return the name of JSP file
      */
     @RequestMapping(value="/administration/contracts/{contract_id}", method = RequestMethod.GET)
-    public String getContractByID(ModelMap model, @PathVariable long contract_id)
+    public String getContractByID(ModelMap model, @PathVariable long contract_id, @ModelAttribute("userCart") Cart cart)
     {
         logger.trace("Configuring contracts page of user with id=" + contract_id);
         model.addAttribute("current_action", contract_id);
-        return contractPrepare(model, contractService.get(contract_id).get());
+        return contractPrepare(model, contractService.get(contract_id).get(), cart);
+    }
+
+    /**
+     * Updates Session cart
+     * @param model model for JSP page
+     * @param current current contract settings
+     * @param cart current cartof the user
+     * @param result validation errors container
+     * @return the name of JSP file
+     */
+    @RequestMapping(value= {"/contract", "/administration/contracts/{contract_id}"}, method = RequestMethod.POST)
+    public String updateContract(ModelMap model,
+                                 @ModelAttribute(value="contract") Contract current,
+                                 @ModelAttribute("userCart") Cart cart,
+                                 HttpServletRequest request,
+                                 BindingResult result
+    ) {
+        logger.trace(String.format("Update session attribute contract of user with id=%d and contract id=%d",
+                current.getUser().getId(), current.getId()));
+        contractPrepare(model,current,cart);
+        request.getSession().setAttribute("userCart", cart);
+        return "Contract";
+    }
+
+    /**
+     * Discard changes
+     * @param model model for JSP page
+     * @param current current contract settings
+     * @param cart current cartof the user
+     * @param result validation errors container
+     * @return the name of JSP file
+     */
+    @RequestMapping(params = "discard", value= {"/contract", "/administration/contracts/{contract_id}"}, method = RequestMethod.POST)
+    public String discardContract(ModelMap model,
+                                 @ModelAttribute(value="contract") Contract current,
+                                 @ModelAttribute("userCart") Cart cart,
+                                 HttpServletRequest request,
+                                 BindingResult result
+    ) {
+        logger.trace(String.format("Update session attribute contract of user with id=%d and contract id=%d",
+                current.getUser().getId(), current.getId()));
+        cart.discard();
+        contractPrepare(model,current,cart);
+        request.getSession().setAttribute("userCart", cart);
+        return "Contract";
     }
 
     /**
      * Attempts to save contract changes
      * @param model model for JSP page
      * @param current current contract settings
-     * @param contract new contract settings
+     * @param cart current cartof the user
      * @param result validation errors container
      * @return the name of JSP file
      */
-    @RequestMapping(value= {"/contract", "/administration/contracts/{contract_id}"}, method = RequestMethod.POST)
+    @RequestMapping(params = "save", value= {"/contract", "/administration/contracts/{contract_id}"}, method = RequestMethod.POST)
     public String saveContract(ModelMap model,
                                @ModelAttribute(value="contract") Contract current,
-                               @ModelAttribute(value="optionsContract") Contract contract,
+                               @ModelAttribute("userCart") Cart cart,
                                BindingResult result
     ) {
         logger.trace(String.format("Saving contract of user with id=%d and contract id=%d",
                 current.getUser().getId(), current.getId()));
 
         current.getOptions().clear();
-        for(final Option opt : contract.getOptions()) {
+        for(final Option opt : cart.getNewContract().getOptions()) {
             if(opt.isEnabled())
                 current.getOptions().add(opt);
         }
@@ -97,6 +145,7 @@ public class UserController extends BaseUserController {
         logger.trace(String.format("Saved contract of user with id=%d and contract id=%d",
                 current.getUser().getId(), current.getId()));
         setSuccess(model, "Successfully updated!");
+        cart.commitContract(current);
         return "Contract";
     }
 
@@ -254,15 +303,14 @@ public class UserController extends BaseUserController {
      * @param contract contract of selected user
      * @return the name of JSP file
      */
-    private String contractPrepare(ModelMap model, Contract contract) {
+    private String contractPrepare(ModelMap model, Contract contract, Cart cart) {
 
-        List<Option> options = Utils.prepareOptions(contract.getOptions(), contract.getPlan().getOptions());
-
-        Contract optionsContract = new Contract();
-        optionsContract.setOptions(options);
+        if(!cart.isInited()) {
+            cart.init(contract);
+        }
+        cart.findChangedOptions();
 
         model.addAttribute("contract", contract);
-        model.addAttribute("optionsContract", optionsContract);
         return "Contract";
     }
 
@@ -301,5 +349,11 @@ public class UserController extends BaseUserController {
         return currentUser.getDisabledBy() == currentUser.getId() ||
                 curLoggedUser.getUser().isAdmin() ||
                 curLoggedUser.getUser().isDictator();
+    }
+
+
+    @ModelAttribute("userCart")
+    public Cart userCart() {
+        return new Cart();
     }
 }

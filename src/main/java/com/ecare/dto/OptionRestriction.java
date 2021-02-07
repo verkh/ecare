@@ -1,13 +1,13 @@
 package com.ecare.dto;
 
 import com.ecare.models.OptionRestrictionPO;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder(toBuilder=true)
 public class OptionRestriction {
     private Long id;
     private Long optionId1;

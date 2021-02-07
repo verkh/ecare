@@ -1,14 +1,15 @@
 package com.ecare.dto;
 
 import com.ecare.models.UserPO;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 import java.sql.Date;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder(toBuilder=true)
 public class User {
     private Long id;
     private String name;
@@ -57,10 +58,23 @@ public class User {
         return user;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(String password) { // FIXME
         // encode
     }
 
     public boolean isAdmin() { return authority == UserPO.Authority.ROLE_ADMIN; }
     public boolean isDictator() { return authority == UserPO.Authority.ROLE_DICTATOR; }
+
+    public boolean equals(User other) {
+        return id.equals(other.id) &&
+        name.equals(other.name) &&
+        lastName.equals(other.lastName) &&
+        date.equals(other.date) &&
+        passport.equals(other.passport) &&
+        address.equals(other.address) &&
+        email.equals(other.email) &&
+        authority.equals(other.authority) &&
+        blocked == blocked &&
+        disabledBy.equals(other.disabledBy);
+    }
 }

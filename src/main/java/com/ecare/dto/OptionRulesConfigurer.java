@@ -2,9 +2,7 @@ package com.ecare.dto;
 
 import com.ecare.models.OptionPO;
 import com.ecare.models.OptionRestrictionPO;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +15,8 @@ import java.util.Map;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder(toBuilder=true)
 public class OptionRulesConfigurer {
 
     /**
@@ -91,7 +91,7 @@ public class OptionRulesConfigurer {
     }
 
     private Option value;
-    private List<OptionRestriction> restrictions;
-    private Map<Long, Option> allOptions = new HashMap<>();
-    private Map<Long, String> allOptionNames = new HashMap<>();
+    @Singular private List<OptionRestriction> restrictions;
+    @Singular private Map<Long, Option> allOptions = new HashMap<>();
+    @Singular private Map<Long, String> allOptionNames = new HashMap<>();
 }
