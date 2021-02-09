@@ -4,7 +4,11 @@ INSERT INTO plans (id, name, price)
 VALUES
     (1, "Dictator", 1000.0),
     (2, "Peasant" , 2.0),
-    (3, "Exile"   , 50.0);
+    (3, "Exile"   , 50.0),
+    (4, "Call me baby", 1.0),
+    (5, "In the web", 1.0),
+    (6, "Happy letter", 1.0),
+    (7, "Happy dispatch", 0.5);
 
 INSERT INTO options(id, name, price, turn_on_price, description)
 VALUES
@@ -16,7 +20,8 @@ VALUES
        (6, "News", 0, 1, "Receive news everyday"),
        (7, "Bieber", 0, 1, "Let them suffer listening Justin Bieber"),
        (8, "You don't pay", 0, 1, "Ley your friend pay for your call"),
-       (9, "You're on wire'", 0, 1, "All your actions would be reported to the ruler");
+       (9, "You're on wire", 0, 1, "All your actions would be reported to the ruler"),
+       (10, "Last call", 0, 1, "Call someone and make a harakiri");
 
 INSERT INTO plan_options(plan_id, option_id, undisablable)
 VALUES
@@ -35,8 +40,26 @@ VALUES
        (2,8, 0),
        (2,9, 1),
 
+       (3,6, 1),
        (3,5, 1),
-       (3,9, 1);
+       (3,9, 1),
+
+       (4,3, 1),
+       (4,6, 1),
+       (4,9, 1),
+
+       (5,2, 1),
+       (5,6, 1),
+       (5,9, 1),
+
+       (6,2, 1),
+       (6,3, 1),
+       (6,6, 1),
+       (6,9, 1),
+
+       (7,10, 1),
+       (7,6, 1),
+       (7,9, 1);
 
 INSERT INTO users(id, name, last_name, birth_date, passport, address, email, password, blocked, authority)
 VALUES
