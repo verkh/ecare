@@ -4,6 +4,8 @@ import com.ecare.dao.IPlanDAO;
 import com.ecare.dto.Plan;
 import com.ecare.models.PlanPO;
 import com.ecare.models.PlanPO;
+import com.ecare.network.Sender;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +18,8 @@ import java.util.stream.Collectors;
 @Service
 public class PlanService extends BaseService<IPlanDAO, PlanPO, Plan> {
 
+    @Autowired
+    private Sender notifier;
     /**
      * Seeks object by id
      * @param id id of object
@@ -49,7 +53,9 @@ public class PlanService extends BaseService<IPlanDAO, PlanPO, Plan> {
      * @return updated object
      */
     public Plan save(Plan value) {
-        return new Plan(dao.save(value.toEntity()));
+        Plan p = new Plan(dao.save(value.toEntity()));
+        notifier.notifyClients();
+        return p;
     }
 
     /**
@@ -58,14 +64,19 @@ public class PlanService extends BaseService<IPlanDAO, PlanPO, Plan> {
      * @return updated object
      */
     public Plan update(Plan value) {
-        return new Plan(dao.update(value.toEntity()));
+        Plan p = new Plan(dao.update(value.toEntity()));
+        notifier.notifyClients();
+        return p;
     }
 
     /**
      * Deletes object from database
      * @param value object to delete
      */
-    public void delete(Plan value) { dao.delete(value.toEntity()); }
+    public void delete(Plan value) {
+        dao.delete(value.toEntity());
+        notifier.notifyClients();
+    }
 
     public Plan findByName(String planName) { return new Plan(dao.findByName(planName)); }
 }

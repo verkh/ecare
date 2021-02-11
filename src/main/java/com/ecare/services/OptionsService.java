@@ -4,6 +4,8 @@ import com.ecare.dao.IOptionDAO;
 import com.ecare.dto.Option;
 import com.ecare.models.OptionPO;
 import com.ecare.models.OptionPO;
+import com.ecare.network.Sender;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +17,9 @@ import java.util.stream.Collectors;
  */
 @Service
 public class OptionsService extends BaseService<IOptionDAO, OptionPO, Option> {
+
+    @Autowired
+    private Sender notifier;
 
     /**
      * Seeks object by id
@@ -49,7 +54,9 @@ public class OptionsService extends BaseService<IOptionDAO, OptionPO, Option> {
      * @return updated object
      */
     public Option save(Option value) {
-        return new Option(dao.save(value.toEntity()));
+        Option o = new Option(dao.save(value.toEntity()));
+        notifier.notifyClients();
+        return o;
     }
 
     /**
@@ -58,14 +65,19 @@ public class OptionsService extends BaseService<IOptionDAO, OptionPO, Option> {
      * @return updated object
      */
     public Option update(Option value) {
-        return new Option(dao.update(value.toEntity()));
+        Option o = new Option(dao.update(value.toEntity()));
+        notifier.notifyClients();
+        return o;
     }
 
     /**
      * Deletes object from database
      * @param value object to delete
      */
-    public void delete(Option value) { dao.delete(value.toEntity()); }
+    public void delete(Option value) {
+        dao.delete(value.toEntity());
+        notifier.notifyClients();
+    }
 
 
     /**
@@ -73,12 +85,22 @@ public class OptionsService extends BaseService<IOptionDAO, OptionPO, Option> {
      * @param deprecated deprecated or not
      * @param id id of target option
      */
-    public void setDeprecated(Long id, boolean deprecated) { dao.setDeprecated(id, deprecated); }
+    public void setDeprecated(Long id, boolean deprecated) {
+        dao.setDeprecated(id, deprecated);
+        notifier.notifyClients();
+    }
 
     /**
      * Checks options in database that marked with "deprecated flag". If options is also not related to any contract
      * it would be deleted from database
      * @return number of deleted options
      */
-    public int deleteUnusedDeprecatedOptions() { return dao.deleteUnusedDeprecatedOptions(); }
+    public int deleteUnusedDeprecatedOptions() {
+        int deleted = dao.deleteUnusedDeprecatedOptions();
+        //if(deleted > 0) { // FIXME uncomment
+            // we want to notify only if something was actually changed
+            notifier.notifyClients();
+        //}
+        return deleted;
+    }
 }
