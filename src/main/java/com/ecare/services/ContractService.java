@@ -3,6 +3,7 @@ package com.ecare.services;
 import com.ecare.dao.IContractDAO;
 import com.ecare.dao.IUserDAO;
 import com.ecare.dto.Contract;
+import com.ecare.dto.User;
 import com.ecare.models.ContractPO;
 import com.ecare.models.UserPO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,7 +79,8 @@ public class ContractService extends BaseService<IContractDAO, ContractPO, Contr
      * @return Found contract or null if contract is not found
      */
     public Contract findByPhoneNumber(String phoneNumber) {
-        return new Contract(dao.findByPhone(phoneNumber));
+        ContractPO contract = dao.findByPhone(phoneNumber);
+        return contract == null ? null : new Contract(contract);
     }
 
     /**

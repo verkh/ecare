@@ -20,6 +20,10 @@ public class Cart {
     private Contract newContract;
     private List<Option> changedOptions;
 
+    public Cart(Contract contract) {
+        init(contract);
+    }
+
     public boolean isInited() {
         return originalContract != null && newContract != null;
     }

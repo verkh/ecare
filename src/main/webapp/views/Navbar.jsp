@@ -60,14 +60,14 @@
                                 <a class="btn btn-secondary dropdown-toggle" href="#" id="userDropdown" role="button"
                                    data-bs-toggle="dropdown" aria-expanded="false">
                                     <%= request.getUserPrincipal().getName() %>
-                                    <c:if test="${userCart != null && !userCart.isContractCommited()}">
+                                    <c:if test="${userCart != null && userCart.isInited() && !userCart.isContractCommited()}">
                                         <span class="dot">${userCart.getChangedOptions().size()}</span>
                                     </c:if>
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="userProfilenavbarDropdown">
                                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/profile">Profile</a></li>
                                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/contract">Contract
-                                        <c:if test="${userCart != null && !userCart.isContractCommited()}">
+                                        <c:if test="${userCart != null && userCart.isInited() && !userCart.isContractCommited()}">
                                             <span class="dot"> ${userCart.getChangedOptions().size()}</span>
                                         </c:if>
                                     </a></li>

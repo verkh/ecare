@@ -1,9 +1,6 @@
 package com.ecare.controllers;
 
-import com.ecare.dto.Contract;
-import com.ecare.dto.Option;
-import com.ecare.dto.Plan;
-import com.ecare.dto.User;
+import com.ecare.dto.*;
 import com.ecare.services.AuthService;
 import com.ecare.services.ContractService;
 import com.ecare.services.OptionsService;
@@ -17,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -85,7 +84,7 @@ public class PlansController {
     ) {
         logger.trace("Configuring plans page for administrators...");
         if(deleteId != null)
-            planService.delete(new Plan(deleteId));
+            planService.delete(new Plan(deleteId).toBuilder().build());
         Utils.pagination(planService, model, currentPage, "tariffs");
         return "administration/Tariffs";
     }
@@ -116,7 +115,7 @@ public class PlansController {
     @RequestMapping(value = "/administration/tariffs/new", method = RequestMethod.GET)
     public String getTariff(ModelMap model) {
         logger.trace("Configuring new plan page for administrators...");
-        Plan plan = new Plan();
+        Plan plan = Plan.builder().build();
 
         List<Option> options = Utils.prepareOptions(plan.getOptions(), optionsService.getAll());
         plan.setOptions(options);
@@ -144,8 +143,9 @@ public class PlansController {
             return "administration/Tariff";
         }
 
-        Plan planForSave = plan.getId() != null? planService.get(plan.getId()).get() : plan;
-        planForSave.getOptions().clear();
+        Plan planForSave = plan.getId() != null ? planService.get(plan.getId()).get() : plan.toBuilder().build();
+        planForSave.setOptions(new ArrayList<>());
+
         for(final Option opt : plan.getOptions()) {
             if(opt.isEnabled())
                 planForSave.getOptions().add(opt);
@@ -168,19 +168,37 @@ public class PlansController {
      */
     @RequestMapping(value = "/plans/plan")
     public String applyPlan(ModelMap model,
-                           @RequestParam(value = "apply", required = false) Long id
+                            HttpServletRequest request,
+                            @RequestParam(value = "apply", required = false) Long id,
+                            @ModelAttribute(value = "userCart") Cart cart
     ) {
         Contract contract = authService.getCurrentUser();
-        if(contract == null) {
+        if(cart == null || contract == null) {
             return "redirect:/auth";
+        } else if(!cart.isInited()) {
+            cart.init(contract);
         }
 
         Plan plan = planService.get(id).get();
-        contract.setPlan(plan);
-        contract.setOptions(plan.getOptions());
+        cart.getNewContract().setPlan(plan);
+        cart.getNewContract().setOptions(plan.getOptions());
+
+        for(final Option newOpt : cart.getNewContract().getOptions()) {
+            if(newOpt.isUndisablable()) {
+                newOpt.setEnabled(true);
+                continue;
+            }
+
+            final Option oldOption = cart.getOriginalContract().getOptions().stream()
+                    .filter(old -> newOpt.getId().equals(old.getId())).findAny().orElse(null);
+            if(oldOption != null)
+                newOpt.setEnabled(oldOption.isEnabled());
+        }
+
+        request.getSession().setAttribute("userCart", cart);
 
         logger.trace(String.format("Apply plan %s with id=%d", plan.getName(), plan.getId()));
-        contractService.save(contract);
+//        contractService.save(contract);
 
         return "redirect:/contract";
     }

@@ -50,16 +50,16 @@
 
 <div class="container horizontal-card card p-3 bg-dark">
 
-    <h2>eCare ${contract.plan.name}</h2>
-    <h6>for ${contract.user.name}. That's right, dude!</h6>
+    <h2>eCare ${contractHolder.newContract.plan.name}</h2>
+    <h6>for ${contractHolder.newContract.user.name}. That's right, dude!</h6>
     <hr/>
     <br/>
-    <h4><b>Number:</b> ${contract.phoneNumber}</h4>
+    <h4><b>Number:</b> ${contractHolder.newContract.phoneNumber}</h4>
     <br/>
     <br/>
 
     <h4>Available options</h4>
-    <form:form id="contract_form" action="${current_action}" method="POST" style="min-width: 600px;" modelAttribute="userCart">
+    <form:form id="contract_form" action="${current_action}" method="POST" style="min-width: 600px;" modelAttribute="contractHolder">
         <table class="table">
             <thead class="thead-dark">
             <tr>
@@ -69,7 +69,7 @@
                 <th scope="col">Turn on price</th>
                 <th scope="col"></th>
             </tr>
-            <c:forEach items="${userCart.newContract.options}" var="option" varStatus="status">
+            <c:forEach items="${contractHolder.newContract.options}" var="option" varStatus="status">
                 <tr>
                     <td>${option.name}
                         <p>
@@ -110,7 +110,7 @@
                 let template="option_cb_";
                 let elements = document.querySelectorAll("[id*=option_cb_]");
 
-                let jsonData = eval('('+'${userCart.getChangedOptionsIds()}'+')');
+                let jsonData = eval('('+'${contractHolder.getChangedOptionsIds()}'+')');
                 let data = jsonData.changedOptionIds;
 
                 for (let i = 0, length = elements.length; i < length; i++) {
@@ -119,7 +119,7 @@
                     elements[i].style.boxShadow = changed ? "0px 0px 12px #d66834" : "";
                 }
 
-                let blocked = eval('('+'${userCart.originalContract.user.blocked}'+')');
+                let blocked = eval('('+'${contractHolder.originalContract.user.blocked}'+')');
 
                 document.getElementById("btn_discard").disabled = (data.length == 0);
                 document.getElementById("btn_save").disabled = (data.length == 0);

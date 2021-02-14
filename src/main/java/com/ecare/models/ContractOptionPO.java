@@ -16,10 +16,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 public class ContractOptionPO extends AttachedOption {
-    @Column(name="contract_id")
-    Long contractId;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn( name="contract_id", nullable=false, insertable = false, updatable = false)
+    @JoinColumn( name="contract_id")
     private ContractPO contract;
 }

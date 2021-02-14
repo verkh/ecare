@@ -43,7 +43,7 @@ public class Plan {
         plan.setPrice(this.price);
         for(final Option option : options) {
             PlanOptionPO opt = option.toEntity(new PlanOptionPO());
-            opt.setPlanId(this.id);
+            opt.setPlan(plan);
             plan.getOptions().add(opt);
         }
         return plan;

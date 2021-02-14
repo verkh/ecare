@@ -54,7 +54,7 @@
                     <label for="priceInput">Price</label>
                     <div class="input-group">
                         <form:input type="number" min="0.1" step="0.1" path="price" class="form-control"
-                                    id="priceInput" placeholder="Enter last name"></form:input>
+                                    id="priceInput" placeholder="Enter price"></form:input>
                         <form:errors class="text-danger" path="price"/>
                         <div class="input-group-append">
                             <span class="input-group-text">$</span>

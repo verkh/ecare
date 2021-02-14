@@ -25,7 +25,7 @@ public class OptionRulesConfigurer {
      * @param allOptions all available options
      */
     public OptionRulesConfigurer(Option option, List<Option> allOptions) {
-        this.value = option;
+        this.value = option.toBuilder().build();
         this.restrictions = new ArrayList<>(option.getRestrictions());
         for(final Option opt : allOptions){
             this.allOptions.put(opt.getId(), opt);

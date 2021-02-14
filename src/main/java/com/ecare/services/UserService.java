@@ -72,6 +72,7 @@ public class UserService extends BaseService<IUserDAO, UserPO, User>  {
      * @return Found user or null if user is not found
      */
     public User findByEmail(String email) {
-        return new User(dao.findByEmail(email));
+        UserPO user = dao.findByEmail(email);
+        return user == null ? null : new User(user);
     }
 }

@@ -16,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 
 /**
  * Controller handles buisness logic of plan options management
@@ -80,7 +81,7 @@ public class OptionController {
     @Transactional
     public String getNewOption(ModelMap model) {
         logger.trace("Configuring new option page...");
-        model.addAttribute("option", new OptionRulesConfigurer(new Option(), optionsService.getAll()));
+        model.addAttribute("option", new OptionRulesConfigurer(Option.builder().build(), optionsService.getAll()));
         return "administration/Option";
     }
 
@@ -131,9 +132,10 @@ public class OptionController {
         if(result.hasErrors())
             return "administration/Option";
 
-        Option optionForSave = option.getValue();
+        Option optionForSave = option.getValue().toBuilder().build();
         if(optionForSave.getId() == null) {
-            optionsService.save(optionForSave);
+            optionForSave.setRestrictions(new ArrayList<>());
+            optionForSave = optionsService.save(optionForSave);
             option.setId(optionForSave.getId());
         }
         optionForSave.setRestrictions(option.getRestrictions());

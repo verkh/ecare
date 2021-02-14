@@ -52,7 +52,7 @@ public class User {
         user.setAddress(this.getAddress());
         user.setEmail(this.getEmail());
         user.setPasswordHash(this.getPasswordHash());
-        user.setAuthority(this.getAuthority());
+        user.setAuthority(this.getAuthority() == null ? UserPO.Authority.ROLE_USER : this.getAuthority());
         user.setBlocked(this.isBlocked());
         user.setDisabledBy(this.getDisabledBy());
         return user;

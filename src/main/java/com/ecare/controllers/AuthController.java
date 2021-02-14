@@ -92,6 +92,7 @@ public class AuthController extends BaseUserController {
         Plan plan = planService.get(newContract.getPlan().getId()).get();
         newContract.setPlan(plan);
         newContract.setOptions(new ArrayList<>(plan.getOptions()));
+        newContract.setPhoneNumber(newContract.getPhoneNumber().replaceAll("[^0-9]",""));
 
         newContractValidator.validate(newContract, result);
 
@@ -102,7 +103,7 @@ public class AuthController extends BaseUserController {
             return "Profile";
         }
 
-        contractService.save(newContract);
+        newContract = contractService.save(newContract);
         setSuccess(model, "You've been successfully registered!");
 
         logger.trace(String.format("New user '%s' is successfully registered", newUser.getEmail()));

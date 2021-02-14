@@ -54,8 +54,8 @@
 
                         <label for="priceInput">Price</label>
                         <div class="input-group">
-                            <form:input type="number" min="0.01" step="0.1" path="value.price" class="form-control"
-                                        id="priceInput" placeholder="Enter last name"></form:input>
+                            <form:input type="number" min="0.0" step="0.1" path="value.price" class="form-control"
+                                        id="priceInput" placeholder="Enter price"></form:input>
                             <form:errors class="text-danger" path="value.price"/>
                             <div class="input-group-append">
                                 <span class="input-group-text">$</span>
@@ -65,7 +65,7 @@
                         <label for="turnOnPriceInput">Turn on price</label>
                         <div class="input-group">
                             <form:input type="number" min="0.0" step="0.1" path="value.turnOnPrice" class="form-control"
-                                        id="turnOnPriceInput" placeholder="Enter last name"></form:input>
+                                        id="turnOnPriceInput" placeholder="Enter turn on price"></form:input>
                             <form:errors class="text-danger" path="value.turnOnPrice"/>
                             <div class="input-group-append">
                                 <span class="input-group-text">$</span>

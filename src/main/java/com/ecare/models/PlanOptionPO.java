@@ -16,10 +16,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 public class PlanOptionPO extends AttachedOption {
-    @Column(name="plan_id")
-    Long planId;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="plan_id", nullable=false, insertable = false, updatable = false)
+    @JoinColumn(name="plan_id")
     private PlanPO plan;
 }

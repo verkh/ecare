@@ -38,7 +38,7 @@ public class Contract {
         contract.setUser(user.toEntity());
         for(final Option option : options) {
             ContractOptionPO opt = option.toEntity(new ContractOptionPO());
-            opt.setContractId(this.id);
+            opt.setContract(contract);
             contract.getOptions().add(opt);
         }
         return contract;
