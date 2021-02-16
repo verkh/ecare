@@ -97,10 +97,10 @@ public class OptionsService extends BaseService<IOptionDAO, OptionPO, Option> {
      */
     public int deleteUnusedDeprecatedOptions() {
         int deleted = dao.deleteUnusedDeprecatedOptions();
-        //if(deleted > 0) { // FIXME uncomment
+        if(deleted > 0) {
             // we want to notify only if something was actually changed
             notifier.notifyClients();
-        //}
+        }
         return deleted;
     }
 }
