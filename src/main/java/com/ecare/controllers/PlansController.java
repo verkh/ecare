@@ -143,7 +143,7 @@ public class PlansController {
             return "administration/Tariff";
         }
 
-        Plan planForSave = plan.getId() != null ? planService.get(plan.getId()).get() : plan.toBuilder().build();
+        Plan planForSave = plan.toBuilder().build();
         planForSave.setOptions(new ArrayList<>());
 
         for(final Option opt : plan.getOptions()) {
