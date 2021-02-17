@@ -25,6 +25,8 @@ public class Sender {
     public void notifyClients() {
         try {
             final DataChangeNotification message = new DataChangeNotification();
+            message.setSender("Ecare Home Server");
+            jmsTemplate.setMessageConverter(new MsgConverter());
             jmsTemplate.convertAndSend(queue, message);
             logger.trace("Sent notification to the clients");
         } catch (Exception e) {
