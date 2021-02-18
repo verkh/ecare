@@ -11,6 +11,10 @@ import org.springframework.stereotype.Component;
 import javax.jms.Queue;
 
 
+/**
+ * Sender is responsible for communication with ActiveMQ and delivering notifications
+ * to the clients
+ */
 @Component
 public class Sender {
 
@@ -22,6 +26,9 @@ public class Sender {
     @Autowired
     private Queue queue;
 
+    /**
+     * Notifies clients about need of reloading the data
+     */
     public void notifyClients() {
         try {
             final DataChangeNotification message = new DataChangeNotification();
@@ -34,6 +41,10 @@ public class Sender {
         }
     }
 
+    /**
+     * Receive ack
+     * @return
+     */
     public String receiveAck() {
         return (String) jmsTemplate.receiveAndConvert("ackQueue");
     }

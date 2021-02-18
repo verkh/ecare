@@ -78,5 +78,13 @@ public class PlanService extends BaseService<IPlanDAO, PlanPO, Plan> {
         notifier.notifyClients();
     }
 
-    public Plan findByName(String planName) { return new Plan(dao.findByName(planName)); }
+    /**
+     * Search plan by name
+     * @param planName name of the plan
+     * @return plan if exists or null
+     */
+    public Plan findByName(String planName) {
+        PlanPO pl = dao.findByName(planName);
+        return pl == null ? null : new Plan(pl);
+    }
 }

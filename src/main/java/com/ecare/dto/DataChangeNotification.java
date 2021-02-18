@@ -7,6 +7,9 @@ import lombok.Setter;
 
 import java.io.Serializable;
 
+/**
+ * Communication message which notifies about changes in database
+ */
 @Getter
 @Setter
 @AllArgsConstructor
