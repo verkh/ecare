@@ -17,4 +17,15 @@ import java.io.Serializable;
 public class DataChangeNotification {
     final private String key = "ecare.changed";
     private String sender;
+
+    @Override
+    public boolean equals(Object other) {
+        if(other == this) return true;
+
+        if(!(other instanceof DataChangeNotification)) return false;
+
+        DataChangeNotification toCompare = (DataChangeNotification) other;
+        return this.key.equals(toCompare.getKey()) &&
+                this.sender.equals(toCompare.getSender());
+    }
 }
