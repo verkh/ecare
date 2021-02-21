@@ -49,6 +49,16 @@ CREATE TABLE IF NOT EXISTS `users` (
     PRIMARY KEY(id)
 );
 
+CREATE TABLE IF NOT EXISTS `user_locations` (
+    id INT unsigned NOT NULL AUTO_INCREMENT,
+    user_id INT unsigned NOT NULL,
+    lat DOUBLE NOT NULL,
+    lon DOUBLE NOT NULL,
+
+    FOREIGN KEY(user_id) REFERENCES users(id),
+    PRIMARY KEY(id)
+);
+
 CREATE TABLE IF NOT EXISTS `contracts` (
     id INT unsigned NOT NULL AUTO_INCREMENT,
     phone_number VARCHAR(255) NOT NULL,

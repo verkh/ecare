@@ -71,6 +71,16 @@ VALUES
        (6, "Exile", "Exilov", "1999-09-11", "23553 123122", "swamp", "exile@gmail.com", "$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a", 0, "ROLE_USER"),
        (7, "Admin", "Adminov", "1999-09-11", "23553 123122", "swamp", "admin@gmail.com", "$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a", 0, "ROLE_ADMIN");
 
+INSERT INTO user_locations(id, user_id, lat, lon)
+VALUES
+       (1, 1, 30.273112, 59.935587),
+       (2, 2, 30.312879, 59.953190),
+       (3, 3, 30.245678, 59.933523),
+       (4, 4, 30.028290, 59.945700),
+       (5, 5, 30.042775, 59.790504),
+       (6, 6, 29.967702, 57.826545),
+       (7, 7, 30.273112, 59.935587);
+
 INSERT INTO contracts(id, phone_number, user_id, plan_id)
 VALUES
        (11, "79650358599", 1, 1),
