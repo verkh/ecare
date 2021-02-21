@@ -80,4 +80,7 @@ public class UserPO extends AbstractNamedPO {
 
     @Column(name = "disabled_by")
     private Long disabledBy;
+
+    @OneToMany(mappedBy="user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    private List<LocationPO> locations = new ArrayList<>();
 }

@@ -22,7 +22,7 @@
     <link href="<spring:url value='/css/common.css'/>" rel="stylesheet">
     <link href="<spring:url value='/css/form.css'/>" rel="stylesheet">
 
-    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet"/>
     <script src="<spring:url value='/js/Validation.js'/>"></script>
 </head>
 <body>
@@ -41,14 +41,14 @@
         </div>
     </div>
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
             $('.toast').toast('show');
         });
     </script>
 </c:if>
-<div id=wrapper class="container">
+<div id=wrapper >
     <div class="d-flex justify-content-center">
-        <form:form action="${current_action}" method="POST" modelAttribute="contract">
+        <form:form action="${current_action}" method="POST" modelAttribute="contract" style="">
         <div class="row">
             <div class="col col-sm-auto"
                  style="padding-right: 3px; padding-left:3px; margin-right:3px; margin-left:3px">
@@ -64,7 +64,8 @@
                                 <label for="pathInput">Name</label>
                                 <form:input path="user.name" type="text" class="form-control"
                                             id="pathInput" aria-describedby="pathHelp"
-                                            placeholder="Enter name" onkeypress="return validateLetters(event)"></form:input>
+                                            placeholder="Enter name"
+                                            onkeypress="return validateLetters(event)"></form:input>
                                 <form:errors class="text-danger" path="user.name"/>
                                 <small id="pathHelp" class="form-text text-muted">Fake information leads to jail</small>
                             </div>
@@ -73,7 +74,8 @@
                             <div class="form-group">
                                 <label for="lastpathInput">Last name</label>
                                 <form:input path="user.lastName" type="text" class="form-control"
-                                            id="lastpathInput" placeholder="Enter last name" onkeypress="return validateLetters(event)"></form:input>
+                                            id="lastpathInput" placeholder="Enter last name"
+                                            onkeypress="return validateLetters(event)"></form:input>
                                 <form:errors class="text-danger" path="user.lastName"/>
                             </div>
                         </div>
@@ -92,7 +94,7 @@
                         </div>
                     </div>
                     <security:authorize access="hasRole('ADMIN')">
-                        <c:set var="AdminAccess" value="true" scope="session" />
+                        <c:set var="AdminAccess" value="true" scope="session"/>
                     </security:authorize>
                     <c:if test="${empty contract.user.id || not empty AdminAccess}">
                         <div class="row">
@@ -102,12 +104,17 @@
                                         <label for="phoneNumber">Phone Number</label>
                                         <c:choose>
                                             <c:when test="${empty contract.user.id}">
-                                                <form:input type="tel" path="phoneNumber" class="form-control" id="phoneNumber"
-                                                            placeholder="+7 (___)-___-__-__" data-slots="_" ></form:input>
+                                                <form:input type="tel" path="phoneNumber" class="form-control"
+                                                            id="phoneNumber"
+                                                            placeholder="+7 (___)-___-__-__"
+                                                            data-slots="_"></form:input>
                                             </c:when>
                                             <c:otherwise>
-                                                <form:input type="tel" path="phoneNumber" class="form-control" id="phoneNumber"
-                                                            placeholder="+7 (___)-___-__-__" data-slots="_"  disabled="true" data-inputmask="'mask': '8(999)-999-99-'"></form:input>
+                                                <form:input type="tel" path="phoneNumber" class="form-control"
+                                                            id="phoneNumber"
+                                                            placeholder="+7 (___)-___-__-__" data-slots="_"
+                                                            disabled="true"
+                                                            data-inputmask="'mask': '8(999)-999-99-'"></form:input>
                                             </c:otherwise>
                                         </c:choose>
                                         <form:errors class="text-danger" path="phoneNumber"/>
@@ -115,12 +122,14 @@
                                     <div class="col">
                                         <label for="planSelect">Plan</label>
                                         <div class="input-group mb-3">
-                                            <form:select class="form-select form-control-lg" id="planSelect" path="plan.id">
+                                            <form:select class="form-select form-control-lg" id="planSelect"
+                                                         path="plan.id">
                                                 <form:options items="${availablePlans}" itemValue="id"
                                                               itemLabel="name"></form:options>
                                             </form:select>
                                             <c:if test="${not empty AdminAccess && not empty contract.user.id}">
-                                                <a href="${pageContext.request.contextPath}/administration/contracts/${contract.id}" type="button" class="btn btn-secondary">
+                                                <a href="${pageContext.request.contextPath}/administration/contracts/${contract.id}"
+                                                   type="button" class="btn btn-secondary">
                                                     <i class="fa fa-cog"></i>
                                                 </a>
                                             </c:if>
@@ -209,7 +218,23 @@
                     </div>
                 </div>
             </div>
-            </form:form>
+            <security:authorize access="hasRole('ADMIN')">
+                <c:if test="${contract.user.getCurrentLatitude() != null && contract.user.getCurrentLongitude() != null}">
+                    <div class="col col-sm-auto"
+                         style="padding-right: 3px; padding-left:3px; margin-right:3px; margin-left:3px; min-width:400px;">
+                        <div class="form card p-3 bg-dark">
+                            <h4>Currently here:</h4>
+                            <div style="width: 100%">
+                                <iframe width="100%" height="400" frameborder="0" scrolling="yes" marginheight="0"
+                                        marginwidth="0"
+                                        src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=${contract.user.getCurrentLongitude()},%20${contract.user.getCurrentLatitude()}+(Currently%20here)&amp;t=&amp;z=18&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </c:if>
+            </security:authorize>
+        </div>
+        </form:form>
         </div>
     </div>
 

@@ -1,9 +1,13 @@
 package com.ecare.dto;
 
+import com.ecare.models.LocationPO;
+import com.ecare.models.PlanOptionPO;
 import com.ecare.models.UserPO;
 import lombok.*;
 
 import java.sql.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -23,6 +27,7 @@ public class User {
     private UserPO.Authority authority;
     private boolean blocked;
     private Long disabledBy;
+    @Singular private List<Location> locations;
 
     public User(UserPO subscriber) {
         this.id = subscriber.getId();
@@ -36,6 +41,8 @@ public class User {
         this.authority = subscriber.getAuthority();
         this.blocked = subscriber.isBlocked();
         this.disabledBy = subscriber.getDisabledBy();
+        locations = subscriber.getLocations().stream().map(location -> new Location(location))
+                .collect(Collectors.toList());
     }
 
     public static User of(UserPO user) {
@@ -55,6 +62,11 @@ public class User {
         user.setAuthority(this.getAuthority() == null ? UserPO.Authority.ROLE_USER : this.getAuthority());
         user.setBlocked(this.isBlocked());
         user.setDisabledBy(this.getDisabledBy());
+        for(final Location location : this.locations) {
+            LocationPO locationPO = location.toEntity();
+            locationPO.setUser(user);
+            user.getLocations().add(locationPO);
+        }
         return user;
     }
 
@@ -76,5 +88,15 @@ public class User {
         authority.equals(other.authority) &&
         blocked == blocked &&
         disabledBy.equals(other.disabledBy);
+    }
+
+    public Double getCurrentLatitude() {
+        if(locations.isEmpty()) return null;
+        return locations.get(locations.size() - 1).getLatitude();
+    }
+
+    public Double getCurrentLongitude() {
+        if(locations.isEmpty()) return null;
+        return locations.get(locations.size() - 1).getLongitude();
     }
 }
